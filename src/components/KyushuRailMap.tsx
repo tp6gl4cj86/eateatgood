@@ -23,13 +23,6 @@ const ROUTES: Array<{
     labelY: 118,
   },
   {
-    id: 'saga',
-    d: 'M 248 182 Q 198 220 152 258',
-    label: 'JR 特急 · 40分',
-    labelX: 160,
-    labelY: 204,
-  },
-  {
     id: 'yufuin',
     d: 'M 248 182 Q 332 214 416 242',
     label: '由布院之森 · 全車指定席',
@@ -119,7 +112,7 @@ export function KyushuRailMap({
                 viewBox="0 0 540 420"
                 className="w-full h-auto select-none"
                 role="img"
-                aria-label="北九州鐵道路線互動示意圖：從博多出發至佐賀、小倉門司港、由布院與熊本"
+                aria-label="北九州鐵道路線互動示意圖：從博多出發至小倉門司港、由布院與熊本"
               >
                 {/* Subtle Paper Grid Lines */}
                 <defs>

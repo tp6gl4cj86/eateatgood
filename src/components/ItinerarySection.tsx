@@ -90,20 +90,20 @@ export function ItinerarySection({
     <section
       id="itinerary"
       aria-labelledby="itinerary-heading"
-      className="py-10 md:py-14"
+      className="py-8 md:py-14"
     >
-      <div className="max-w-[1180px] mx-auto px-6 md:px-10">
+      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 md:px-10">
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 md:mb-8">
           <div className="max-w-2xl">
-            <p className="text-xs font-mono tracking-[0.14em] text-[#57534E] mb-2.5 tabular-nums">
+            <p className="text-xs font-mono tracking-[0.14em] text-[#57534E] mb-2 tabular-nums">
               {currentDayObj
                 ? `DAY 0${currentDayObj.dayNumber} · ${currentDayObj.date}（${currentDayObj.weekday}）· ${currentDayObj.regionLabel}`
                 : '六天完整行程總表 · 2027/02/23 – 02/28'}
             </p>
             <h1
               id="itinerary-heading"
-              className="font-serif text-3xl md:text-4xl font-semibold text-[#1C1917] tracking-tight headline-balance"
+              className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-[#1C1917] tracking-tight headline-balance"
             >
               {currentDayObj
                 ? currentDayObj.shortTitle
@@ -111,21 +111,21 @@ export function ItinerarySection({
             </h1>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-[#57534E] tabular-nums">
+          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-[#57534E] tabular-nums">
             <span>
               {currentDayObj ? '本日進度：' : '全團進度：'}
               <strong className="text-[#1C1917] font-mono">
                 {activeCompletedCount}/{activeBlockList.length}
               </strong>{' '}
-              時段已打卡
+              時段已打卡（儲存在本機瀏覽器）
             </span>
           </div>
         </div>
 
         {/* Sub-Toolbar: Category Filter & 19:00 Teammate Focus Mode */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-[#E5E0D8]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-6 border-b border-[#E5E0D8]">
           <div
-            className="flex items-center gap-1.5 flex-wrap"
+            className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"
             role="group"
             aria-label="行程類型篩選"
           >
@@ -136,7 +136,7 @@ export function ItinerarySection({
                   key={cat.id}
                   type="button"
                   onClick={() => setCategoryFilter(cat.id)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-sm border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                  className={`px-3 min-h-[40px] md:min-h-0 md:py-1.5 text-xs font-medium rounded-sm border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                     active
                       ? 'bg-[#1C1917] text-white border-[#1C1917]'
                       : 'bg-white text-[#57534E] border-[#E5E0D8] hover:border-[#A8A29E] hover:text-[#1C1917]'
@@ -152,7 +152,7 @@ export function ItinerarySection({
             type="button"
             onClick={() => setHighlight1900((prev) => !prev)}
             aria-pressed={highlight1900}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium rounded-sm border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`inline-flex items-center justify-center gap-2 px-3.5 min-h-[42px] md:min-h-0 md:py-2 text-xs font-medium rounded-sm border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               highlight1900
                 ? 'bg-[#B43E2B] text-white border-[#B43E2B]'
                 : 'bg-white text-[#1C1917] border-[#D6CEBE] hover:border-[#B43E2B]'
@@ -481,17 +481,19 @@ export function ItinerarySection({
 
         {/* Previous / Next Day Quick Navigation for Single-Day Tab */}
         {currentDayObj && (
-          <div className="pt-8 border-t border-[#E5E0D8] flex items-center justify-between gap-4">
+          <div className="pt-6 border-t border-[#E5E0D8] flex items-center justify-between gap-3">
             {currentDayObj.dayNumber > 1 ? (
               <button
                 type="button"
                 onClick={() => onSelectDay(currentDayObj.dayNumber - 1)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E0D8] hover:border-[#1E3A5F] text-sm font-medium text-[#1C1917] hover:text-[#1E3A5F] rounded-sm transition-colors whitespace-nowrap cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 min-h-[44px] bg-white border border-[#E5E0D8] hover:border-[#1E3A5F] text-xs sm:text-sm font-medium text-[#1C1917] hover:text-[#1E3A5F] rounded-sm transition-colors whitespace-nowrap cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 shrink-0" />
                 <span>
-                  上一天 · Day {currentDayObj.dayNumber - 1}（
-                  {DAYS_ITINERARY[currentDayObj.dayNumber - 2]?.regionLabel}）
+                  Day {currentDayObj.dayNumber - 1}
+                  <span className="hidden sm:inline">
+                    （{DAYS_ITINERARY[currentDayObj.dayNumber - 2]?.regionLabel}）
+                  </span>
                 </span>
               </button>
             ) : (
@@ -502,22 +504,24 @@ export function ItinerarySection({
               <button
                 type="button"
                 onClick={() => onSelectDay(currentDayObj.dayNumber + 1)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1E3A5F] text-white text-sm font-medium rounded-sm hover:bg-[#162C49] transition-colors whitespace-nowrap cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 min-h-[44px] bg-[#1E3A5F] text-white text-xs sm:text-sm font-medium rounded-sm hover:bg-[#162C49] transition-colors whitespace-nowrap cursor-pointer"
               >
                 <span>
-                  下一天 · Day {currentDayObj.dayNumber + 1}（
-                  {DAYS_ITINERARY[currentDayObj.dayNumber]?.regionLabel}）
+                  下一天 · Day {currentDayObj.dayNumber + 1}
+                  <span className="hidden sm:inline">
+                    （{DAYS_ITINERARY[currentDayObj.dayNumber]?.regionLabel}）
+                  </span>
                 </span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </button>
             ) : (
               <button
                 type="button"
                 onClick={() => onSelectDay('all')}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E5E0D8] hover:border-[#1E3A5F] text-sm font-medium text-[#1C1917] hover:text-[#1E3A5F] rounded-sm transition-colors whitespace-nowrap cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 min-h-[44px] bg-white border border-[#E5E0D8] hover:border-[#1E3A5F] text-xs sm:text-sm font-medium text-[#1C1917] hover:text-[#1E3A5F] rounded-sm transition-colors whitespace-nowrap cursor-pointer"
               >
-                <span>檢視 6 天完整總表</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>6 天完整總表</span>
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </button>
             )}
           </div>

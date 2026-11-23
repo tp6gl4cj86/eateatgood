@@ -473,12 +473,123 @@ export function OverviewBudgetWidget({
         </div>
 
         {/* Right: Editable Daily Budget & Actual Spending Ledger */}
-        <div className="lg:col-span-6 p-6 md:p-8">
+        <div className="lg:col-span-6 p-5 sm:p-6 md:p-8">
           <p className="text-xs font-mono tracking-wider text-[#78716C] mb-4">
             INPUT LEDGER · 直接輸入金額即時更新圖表（自動儲存）
           </p>
 
-          <div className="overflow-x-auto">
+          {/* Mobile Touch Cards (zero sideways table scroll, text-base prevents iOS auto-zoom) */}
+          <div className="md:hidden space-y-3">
+            {normalizedEntries.map((item) => {
+              const diff = item.budget - item.actual;
+              const isOver = item.actual > item.budget && item.actual > 0;
+              return (
+                <div
+                  key={item.dayNumber}
+                  onClick={() => setFocusedDay(item.dayNumber)}
+                  className={`p-3.5 border transition-colors ${
+                    isOver
+                      ? 'bg-[#FDF4F2] border-[#E5B8B0]'
+                      : 'bg-[#FBF9F5] border-[#EFECE6]'
+                  }`}
+                >
+                  <div className="flex items-baseline justify-between gap-2 mb-2.5 tabular-nums">
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        className={`font-mono text-sm font-semibold ${
+                          isOver ? 'text-[#B43E2B]' : 'text-[#1C1917]'
+                        }`}
+                      >
+                        Day {item.dayNumber}
+                      </span>
+                      <span
+                        className={`text-xs ${isOver ? 'text-[#991B1B]' : 'text-[#78716C]'}`}
+                      >
+                        {item.regionLabel}
+                      </span>
+                    </div>
+
+                    <span className="font-mono text-xs">
+                      {item.actual === 0 ? (
+                        <span className="text-[#A8A29E]">尚無支出</span>
+                      ) : isOver ? (
+                        <span className="text-[#B43E2B] font-semibold">
+                          超支 {formatYen(Math.abs(diff))}
+                        </span>
+                      ) : (
+                        <span className="text-[#1E3A5F]">餘 {formatYen(diff)}</span>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <label className="block">
+                      <span className="block text-[11px] text-[#78716C] mb-1">每日預算 (¥)</span>
+                      <div className="relative">
+                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-[#78716C]">
+                          ¥
+                        </span>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          aria-label={`Day ${item.dayNumber} 每日預算（日圓）`}
+                          value={item.budget === 0 ? '' : String(item.budget)}
+                          placeholder="0"
+                          onFocus={() => setFocusedDay(item.dayNumber)}
+                          onChange={(e) =>
+                            handleNumberInput(item.dayNumber, 'budget', e.target.value)
+                          }
+                          className={`w-full min-h-[44px] pl-7 pr-2.5 font-mono text-base tabular-nums text-[#1C1917] bg-white border focus:outline-none rounded-xs ${
+                            isOver
+                              ? 'border-[#E5B8B0] focus:border-[#B43E2B]'
+                              : 'border-[#E5E0D8] focus:border-[#1E3A5F]'
+                          }`}
+                        />
+                      </div>
+                    </label>
+
+                    <label className="block">
+                      <span
+                        className={`block text-[11px] mb-1 ${
+                          isOver ? 'text-[#B43E2B] font-medium' : 'text-[#78716C]'
+                        }`}
+                      >
+                        實際支出 (¥)
+                      </span>
+                      <div className="relative">
+                        <span
+                          className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm ${
+                            isOver ? 'text-[#B43E2B]' : 'text-[#78716C]'
+                          }`}
+                        >
+                          ¥
+                        </span>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          aria-label={`Day ${item.dayNumber} 實際支出（日圓）`}
+                          value={item.actual === 0 ? '' : String(item.actual)}
+                          placeholder="0"
+                          onFocus={() => setFocusedDay(item.dayNumber)}
+                          onChange={(e) =>
+                            handleNumberInput(item.dayNumber, 'actual', e.target.value)
+                          }
+                          className={`w-full min-h-[44px] pl-7 pr-2.5 font-mono text-base tabular-nums bg-white border focus:outline-none rounded-xs ${
+                            isOver
+                              ? 'text-[#B43E2B] font-semibold border-[#B43E2B] focus:border-[#991B1B]'
+                              : 'text-[#1C1917] border-[#E5E0D8] focus:border-[#1E3A5F]'
+                          }`}
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop Tabular Ledger */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
                 <tr className="border-b border-[#E5E0D8] text-[#78716C]">
@@ -533,7 +644,7 @@ export function OverviewBudgetWidget({
                             onChange={(e) =>
                               handleNumberInput(item.dayNumber, 'budget', e.target.value)
                             }
-                            className={`w-24 sm:w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums text-[#1C1917] bg-white border focus:outline-none rounded-xs ${
+                            className={`w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums text-[#1C1917] bg-white border focus:outline-none rounded-xs ${
                               isOver
                                 ? 'border-[#E5B8B0] focus:border-[#B43E2B]'
                                 : 'border-[#E5E0D8] focus:border-[#1E3A5F]'
@@ -560,7 +671,7 @@ export function OverviewBudgetWidget({
                             onChange={(e) =>
                               handleNumberInput(item.dayNumber, 'actual', e.target.value)
                             }
-                            className={`w-24 sm:w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums bg-white border focus:outline-none rounded-xs ${
+                            className={`w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums bg-white border focus:outline-none rounded-xs ${
                               isOver
                                 ? 'text-[#B43E2B] font-semibold border-[#B43E2B] focus:border-[#991B1B]'
                                 : 'text-[#1C1917] border-[#E5E0D8] focus:border-[#1E3A5F]'

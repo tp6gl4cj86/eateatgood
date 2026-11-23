@@ -12,6 +12,7 @@
     font-family: var(--font-sans);
     background-color: #FBF9F5;
     color: #1C1917;
+    -webkit-tap-highlight-color: transparent;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -27,4 +28,12 @@
 
 .headline-balance {
   text-wrap: balance;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

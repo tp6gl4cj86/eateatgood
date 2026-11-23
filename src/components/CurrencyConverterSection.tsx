@@ -127,18 +127,18 @@ export function CurrencyConverterSection({
     <section
       id="currency-converter"
       aria-labelledby="currency-heading"
-      className="py-12 md:py-16"
+      className="py-8 md:py-16"
     >
-      <div className="max-w-[1180px] mx-auto px-6 md:px-10 space-y-10">
+      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 md:px-10 space-y-8 md:space-y-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="text-xs font-mono tracking-[0.14em] text-[#57534E] mb-3">
+            <p className="text-xs font-mono tracking-[0.14em] text-[#57534E] mb-2">
               CURRENCY CONVERTER · 日圓 JPY ⇄ 新台幣 TWD
             </p>
             <h1
               id="currency-heading"
-              className="font-serif text-3xl md:text-4xl font-semibold text-[#1C1917] tracking-tight headline-balance"
+              className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-[#1C1917] tracking-tight headline-balance"
             >
               九州旅遊即時幣值轉換與分帳計算機
             </h1>
@@ -149,7 +149,7 @@ export function CurrencyConverterSection({
               type="button"
               onClick={fetchLiveRate}
               disabled={rateStatus === 'loading'}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium bg-white border border-[#D6CEBE] hover:border-[#1E3A5F] text-[#1C1917] hover:text-[#1E3A5F] rounded-sm transition-colors whitespace-nowrap cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3.5 min-h-[40px] md:min-h-0 md:py-2 text-xs font-medium bg-white border border-[#D6CEBE] hover:border-[#1E3A5F] text-[#1C1917] hover:text-[#1E3A5F] rounded-sm transition-colors whitespace-nowrap cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${rateStatus === 'loading' ? 'animate-spin' : ''}`} />
               <span>更新參考匯率</span>
@@ -157,7 +157,7 @@ export function CurrencyConverterSection({
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium bg-white border border-[#E5E0D8] hover:border-[#1C1917] text-[#57534E] hover:text-[#1C1917] rounded-sm transition-colors whitespace-nowrap cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 min-h-[40px] md:min-h-0 md:py-2 text-xs font-medium bg-white border border-[#E5E0D8] hover:border-[#1C1917] text-[#57534E] hover:text-[#1C1917] rounded-sm transition-colors whitespace-nowrap cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>重設</span>
@@ -166,9 +166,9 @@ export function CurrencyConverterSection({
         </div>
 
         {/* Main 2-Column Layout: Calculator (7 cols) + Quick Reference Table (5 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
           {/* Left: Interactive Converter Sheet */}
-          <div className="lg:col-span-7 bg-white border border-[#E5E0D8] p-6 md:p-8 space-y-6">
+          <div className="lg:col-span-7 bg-white border border-[#E5E0D8] p-5 sm:p-6 md:p-8 space-y-6">
             {/* Rate Control Row */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-[#EFECE6]">
               <div>
@@ -192,7 +192,7 @@ export function CurrencyConverterSection({
                   value={rateInput}
                   onChange={(e) => handleRateInputChange(e.target.value)}
                   aria-label="自訂日圓對台幣匯率"
-                  className="w-24 px-2.5 py-1.5 font-mono tabular-nums text-[#1C1917] bg-[#FBF9F5] border border-[#D6CEBE] focus:border-[#1E3A5F] focus:outline-none rounded-xs"
+                  className="w-28 px-2.5 min-h-[40px] md:min-h-0 md:py-1.5 font-mono text-base md:text-xs tabular-nums text-[#1C1917] bg-[#FBF9F5] border border-[#D6CEBE] focus:border-[#1E3A5F] focus:outline-none rounded-xs"
                 />
               </label>
             </div>

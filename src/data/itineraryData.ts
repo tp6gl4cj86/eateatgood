@@ -24,7 +24,7 @@ export interface DayItinerary {
   weekday: string;
   shortTitle: string;
   routeSummary: string;
-  regionId: 'saga' | 'kitakyushu' | 'yufuin' | 'kumamoto' | 'hakata';
+  regionId: 'kitakyushu' | 'yufuin' | 'kumamoto' | 'hakata';
   regionLabel: string;
   stay: string;
   jrPassDay?: number;
@@ -35,7 +35,7 @@ export interface DayItinerary {
 }
 
 export interface RailDestination {
-  id: 'hakata' | 'saga' | 'kitakyushu' | 'yufuin' | 'kumamoto';
+  id: 'hakata' | 'kitakyushu' | 'yufuin' | 'kumamoto';
   name: string;
   jpName: string;
   subtitle: string;
@@ -65,6 +65,16 @@ export interface ChecklistItem {
   title: string;
   detail: string;
   deadline?: string;
+}
+
+export type PackingCategory = '證件票券' | '保暖穿搭' | '3C與日用';
+
+export interface PackingItem {
+  id: string;
+  category: PackingCategory;
+  title: string;
+  note: string;
+  essential?: boolean;
 }
 
 export const ORIGINAL_PDF_PATH = `${import.meta.env.BASE_URL}assets/aistudio/__________6_5_______82bea904.pdf`;
@@ -121,19 +131,6 @@ export const RAIL_DESTINATIONS: RailDestination[] = [
     y: 182,
   },
   {
-    id: 'saga',
-    name: '佐賀',
-    jpName: '佐賀駅',
-    subtitle: '熱氣球博物館午後快閃',
-    days: [1],
-    trainName: 'JR 特急 Relay Kamome / Midori',
-    duration: '博多出發約 40 分鐘',
-    seatRecommendation: '自由席即可（班次密集）',
-    keyStops: ['佐賀熱氣球博物館（營業至 17:00）'],
-    x: 152,
-    y: 258,
-  },
-  {
     id: 'kitakyushu',
     name: '小倉・門司港',
     jpName: '小倉 / 門司港',
@@ -179,40 +176,28 @@ export const DAYS_ITINERARY: DayItinerary[] = [
     dayNumber: 1,
     date: '2027/02/23',
     weekday: '二',
-    shortTitle: '抵達福岡・佐賀熱氣球・和牛與柏青哥',
-    routeSummary: '抵達福岡 ➔ 佐賀熱氣球博物館 ➔ 燒肉 大東園 本店 ➔ 柏青哥',
-    regionId: 'saga',
-    regionLabel: '福岡・佐賀',
+    shortTitle: '抵達福岡・博多市區散策・和牛與柏青哥',
+    routeSummary: '抵達福岡 ➔ 博多站換票與市區自由活動 ➔ 燒肉 大東園 本店 ➔ 柏青哥',
+    regionId: 'hakata',
+    regionLabel: '福岡・博多',
     stay: 'Minn 博多 Station East',
     jrPassDay: 1,
-    jrTicketAdvice: '於博多站兌換並啟用 JR 北九州 5 日券；博多↔佐賀搭 JR 特急自由席即可。',
-    teammate1900Cutoff: '若 19:00 隊友未同行提早場晚餐，17:30 返抵博多後先回飯店。',
-    highlights: ['星宇 JX842 抵達福岡', '啟用 JR 北九州 5 日券', '佐賀熱氣球博物館', '上川端町燒肉大東園本店'],
+    jrTicketAdvice: '抵達後先於博多站綠色窗口兌換 JR 北九州 5 日券（確認指定席車票），本日於博多市區自由活動。',
+    teammate1900Cutoff: '若 19:00 隊友未同行提早場晚餐，下午自由活動後先返飯店休息。',
+    highlights: ['星宇 JX842 抵達福岡', '博多站兌換 JR 北九州 5 日券', '博多市區輕鬆散策', '上川端町燒肉大東園本店'],
     blocks: [
       {
         id: 'd1-1',
         timeRange: '10:00–13:30',
         title: '抵達福岡機場、寄放行李與兌換 JR Pass',
         description:
-          '搭乘星宇航空 JX842 抵達福岡機場。自國際線 1F 分搭 2 台一般計程車（約 10 分鐘直達飯店，或視排隊情況改搭 2 號站牌 ¥310 博多站直達接駁巴士）前往 Minn 博多寄放行李，隨後步行至博多站兌換並啟用 JR 北九州 5 日券。',
+          '搭乘星宇航空 JX842 抵達福岡機場。自國際線 1F 分搭 2 台一般計程車（約 10 分鐘直達飯店，或視排隊情況改搭 2 號站牌 ¥310 博多站直達接駁巴士）前往 Minn 博多寄放行李，隨後步行至博多站兌換 JR 北九州 5 日券，下午於博多市區彈性自由活動並辦理飯店入住。',
         categories: ['transport'],
         transportSummary: '星宇 JX842 ➔ 2 台計程車（約 10 分）或 ¥310 巴士 ➔ 博多站兌換 JR 5 日券',
         spots: [
           { name: '福岡機場國際線航廈', jpName: '福岡空港 国際線ターミナル', category: 'transport' },
-          { name: 'Minn 博多 Station East', jpName: '福岡市博多区博多駅東2-17-12', note: '寄放行李', category: 'transport' },
-          { name: 'JR 博多站綠色窗口', jpName: 'JR 博多駅 みどりの窓口', note: '兌換啟用北九州 5 日券', category: 'transport' },
-        ],
-      },
-      {
-        id: 'd1-2',
-        timeRange: '13:45–17:30',
-        title: '佐賀熱氣球博物館午後巡禮',
-        description:
-          '自博多站搭乘 JR 特急（車程約 40 分鐘）前往佐賀，參觀日本唯一的熱氣球主題常設館「佐賀熱氣球博物館」（營業至 17:00），逛完後搭乘 JR 特急返回博多。',
-        categories: ['transport', 'sightseeing'],
-        transportSummary: '博多站 ➔ JR 特急（約 40 分）➔ 佐賀站 ➔ 特急返博多',
-        spots: [
-          { name: '佐賀熱氣球博物館', jpName: '佐賀バルーンミュージアム', note: '營業至 17:00', category: 'sightseeing' },
+          { name: 'Minn 博多 Station East', jpName: '福岡市博多区博多駅東2-17-12', note: '寄放行李 / 辦理入住', category: 'transport' },
+          { name: 'JR 博多站綠色窗口', jpName: 'JR 博多駅 みどりの窓口', note: '兌換北九州 5 日券', category: 'transport' },
         ],
       },
       {
@@ -222,7 +207,7 @@ export const DAYS_ITINERARY: DayItinerary[] = [
         description:
           '前往上川端町名店「燒肉 大東園 本店」享用九州和牛晚餐。餐後返回博多站筑紫口對面 PLAZA Hakata 體驗柏青哥至 22:30 收工步行回飯店。',
         categories: ['dining', 'sports_entertainment'],
-        teammate1900Note: '若 19:00 隊友未同行提早場晚餐，17:30 抵博多後先返飯店休息。',
+        teammate1900Note: '若 19:00 隊友未同行提早場晚餐，下午市區自由活動後先返飯店休息。',
         spots: [
           { name: '燒肉 大東園 本店', jpName: '焼肉の大東園 本店（上川端町）', note: '九州和牛晚餐', category: 'dining' },
           { name: 'PLAZA Hakata', jpName: 'プラザ博多（筑紫口對面）', note: '柏青哥至 22:30 收工', category: 'sports_entertainment' },
@@ -541,3 +526,84 @@ export const INITIAL_CHECKLIST: ChecklistItem[] = [
     detail: '福岡新銳 vs 埼玉野馬 19:00 開球，小倉站 18:00 / 18:30 搭球團免費接駁車。',
   },
 ];
+
+export const INITIAL_PACKING_ITEMS: PackingItem[] = [
+  {
+    id: 'pack-1',
+    category: '證件票券',
+    title: '護照（效期 6 個月以上）',
+    note: '兌換 JR 北九州 5 日券與免稅採買皆須出示正本。',
+    essential: true,
+  },
+  {
+    id: 'pack-2',
+    category: '證件票券',
+    title: '日幣現金、海外回饋信用卡與交通 IC 卡',
+    note: '現金供旦過市場、小倉競馬場投注與計程車使用；Suica / ICOCA 可搭小倉單軌。',
+    essential: true,
+  },
+  {
+    id: 'pack-3',
+    category: '證件票券',
+    title: 'eSIM / 漫遊網路與數位憑證備份',
+    note: '星宇 JX842/843 電子機票、Minn 博多訂房單、JR Pass 兌換憑證、B.LEAGUE 門票。',
+    essential: true,
+  },
+  {
+    id: 'pack-4',
+    category: '保暖穿搭',
+    title: '防風羽絨外套或厚大衣',
+    note: 'Day 3 由布院早晚近 0°C、Day 2 關門海峽與 Day 5 競馬場戶外看台風大必備。',
+    essential: true,
+  },
+  {
+    id: 'pack-5',
+    category: '保暖穿搭',
+    title: '發熱衣與洋蔥式穿脫上衣（6 天份）',
+    note: '九州冬季室外清冷但列車與商場暖氣強，內層透氣好穿脫最舒適。',
+  },
+  {
+    id: 'pack-6',
+    category: '保暖穿搭',
+    title: '圍巾、毛帽與隨身暖暖包',
+    note: '門司港吊橋海風與由布院清晨湖畔賞景時特別實用。',
+  },
+  {
+    id: 'pack-7',
+    category: '保暖穿搭',
+    title: '好走防滑步行鞋與厚襪',
+    note: '每日步行量高（湯之坪街道、熊本城、上下通與博多車站商場）。',
+  },
+  {
+    id: 'pack-8',
+    category: '3C與日用',
+    title: '行動電源（限隨身手提登機，勿託運）',
+    note: '查車班、導航與全日拍照用電量高，建議備 10,000mAh 以上。',
+    essential: true,
+  },
+  {
+    id: 'pack-9',
+    category: '3C與日用',
+    title: '充電線與多孔插頭（日本雙扁頭 100V）',
+    note: '與台灣雙扁插頭相容，免轉接頭（三孔插頭才需轉接）。',
+  },
+  {
+    id: 'pack-10',
+    category: '3C與日用',
+    title: '輕便摺疊傘',
+    note: '2 月底九州偶有局部短暫陣雨，建議隨身放背包。',
+  },
+  {
+    id: 'pack-11',
+    category: '3C與日用',
+    title: '個人常備藥品、護唇膏與保濕乳液',
+    note: '日本冬季室內暖氣乾燥，保濕用品與感冒／腸胃藥建議自備。',
+  },
+  {
+    id: 'pack-12',
+    category: '3C與日用',
+    title: '輕便摺疊購物袋（預留伴手禮空間）',
+    note: 'Day 5 旦過市場外帶熟食進馬場、Day 6 博多車站最後補貨使用。',
+  },
+];
+
