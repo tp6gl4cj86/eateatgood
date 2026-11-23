@@ -67,7 +67,7 @@ export interface ChecklistItem {
   deadline?: string;
 }
 
-export const ORIGINAL_PDF_PATH = '/assets/aistudio/__________6_5_______82bea904.pdf';
+export const ORIGINAL_PDF_PATH = `${import.meta.env.BASE_URL}assets/aistudio/__________6_5_______82bea904.pdf`;
 
 export const TRIP_OVERVIEW = {
   brand: 'FAKER TRAVEL',
