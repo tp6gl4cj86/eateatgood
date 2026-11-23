@@ -1,0 +1,6 @@
+{
+  "name": "FAKER TRAVEL｜2027 日本九州 6 天 5 夜自由行指南",
+  "description": "2027/02/23–02/28 日本九州 6 天 5 夜自由行互動旅遊指南，整合星宇航空航班、Minn 博多住宿、JR 北九州 5 日券劃位攻略、鐵道路線圖與每日動線。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
