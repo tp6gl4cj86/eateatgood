@@ -283,12 +283,12 @@ export const DAYS_ITINERARY: DayItinerary[] = [
         timeRange: '15:35–18:30',
         title: '返回小倉站分流、晚餐與球團接駁入場',
         description:
-          '自門司港搭 JR 返回小倉站。三人於小倉站周邊享用晚餐後，搭乘 18:00 或 18:30 球團免費接駁巴士直達北九州市立綜合體育館進場暖身。',
+          '自門司港搭 JR 返回小倉站。前往觀戰籃球賽的兩人（尼哥、班表人）於小倉站周邊享用晚餐後，搭乘 18:00 或 18:30 球團免費接駁巴士直達北九州市立綜合體育館進場暖身。',
         categories: ['transport', 'dining'],
         transportSummary: '門司港 ➔ JR 返回小倉站 ➔ 18:00 / 18:30 免費接駁巴士直達體育館',
-        teammate1900Note: '16:00 於小倉站分流：19:00 隊友先行搭乘 JR 特急返回博多。',
+        teammate1900Note: '16:00 於小倉站分流：19:00 隊友與未看球成員先行搭乘 JR 特急返回博多；僅尼哥、班表人兩人前往籃球賽。',
         spots: [
-          { name: '小倉站周邊晚餐', jpName: '小倉駅周辺', note: '三人賽前晚餐', category: 'dining' },
+          { name: '小倉站周邊晚餐', jpName: '小倉駅周辺', note: '兩人賽前晚餐（尼哥、班表人）', category: 'dining' },
           { name: '北九州市立綜合體育館', jpName: '北九州市立総合体育館', note: '18:00 或 18:30 免費接駁車', category: 'sports_entertainment' },
         ],
       },
@@ -297,11 +297,11 @@ export const DAYS_ITINERARY: DayItinerary[] = [
         timeRange: '19:00–22:45',
         title: 'B.LEAGUE 職業籃球現場觀戰：福岡新銳 vs 埼玉野馬',
         description:
-          '19:00 準時開球！於北九州市立綜合體育館現場觀戰 B.LEAGUE 福岡新銳（Rizing Zephyr Fukuoka）對戰埼玉野馬（Saitama Broncos）。賽後搭乘 21:25 起每 5 分鐘一班的免費接駁巴士回小倉站，再轉乘 JR 特急 Sonic 返回博多飯店。',
+          '19:00 準時開球！由尼哥、班表人兩人於北九州市立綜合體育館現場觀戰 B.LEAGUE 福岡新銳（Rizing Zephyr Fukuoka）對戰埼玉野馬（Saitama Broncos）。賽後搭乘 21:25 起每 5 分鐘一班的免費接駁巴士回小倉站，再轉乘 JR 特急 Sonic 返回博多飯店。',
         categories: ['sports_entertainment', 'transport'],
         transportSummary: '21:25 起每 5 分鐘一班接駁車回小倉站 ➔ JR 特急 Sonic 返回博多',
         spots: [
-          { name: 'B.LEAGUE 福岡新銳 vs 埼玉野馬', jpName: 'ライジングゼファーフクオカ vs さいたまブロンコス', note: '19:00 準時開球', category: 'sports_entertainment' },
+          { name: 'B.LEAGUE 福岡新銳 vs 埼玉野馬', jpName: 'ライジングゼファーフクオカ vs さいたまブロンコス', note: '19:00 開球 · 尼哥、班表人觀戰', category: 'sports_entertainment' },
           { name: 'JR 特急 Sonic', jpName: '特急ソニック', note: '賽後小倉返回博多', category: 'transport' },
         ],
       },
