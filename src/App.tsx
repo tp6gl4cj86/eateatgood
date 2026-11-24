@@ -24,7 +24,9 @@ import {
   DailyBudgetEntry,
   OverviewBudgetWidget,
 } from './components/OverviewBudgetWidget';
+import { OverviewFoodMapWidget } from './components/OverviewFoodMapWidget';
 import { TripCountdownBar } from './components/TripCountdownBar';
+import { TripOverviewVisualStrip } from './components/TripOverviewVisualStrip';
 import { TaxiCardModal } from './components/UtilityModals';
 import {
   ChecklistItem,
@@ -698,6 +700,14 @@ export default function App() {
                 </div>
               </div>
 
+              {/* 7-Day Editorial Photo Filmstrip Quick-Jump */}
+              <div className="mt-7">
+                <TripOverviewVisualStrip
+                  onSelectDay={(dayNumber) => handleJumpToDay(dayNumber)}
+                  showComparisonChart={false}
+                />
+              </div>
+
               {/* Mini Weather Forecast Widget for Late February 2027 */}
               <HeroWeatherWidget
                 forecast={forecast}
@@ -713,6 +723,12 @@ export default function App() {
                 jpyToTwdRate={jpyToTwdRate}
                 onUpdateEntry={handleUpdateBudgetEntry}
                 onResetBudgets={handleResetBudgets}
+              />
+
+              {/* Interactive Kyushu Local Gourmet Recommendation Map */}
+              <OverviewFoodMapWidget
+                jpyToTwdRate={jpyToTwdRate}
+                onJumpToDay={handleJumpToDay}
               />
             </div>
           </section>

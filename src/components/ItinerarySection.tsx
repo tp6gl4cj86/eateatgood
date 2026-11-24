@@ -11,6 +11,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useState } from 'react';
+import { CATEGORY_COLORS } from '../data/dayVisuals';
 import {
   ActivityCategory,
   DAYS_ITINERARY,
@@ -22,7 +23,9 @@ import {
   TemperatureUnit,
   formatTemperature,
 } from '../hooks/useKyushuWeather';
+import { DayVisualDashboard } from './DayVisualDashboard';
 import { WeatherGlyph } from './HeroWeatherWidget';
+import { TripOverviewVisualStrip } from './TripOverviewVisualStrip';
 
 interface ItinerarySectionProps {
   selectedDay: number | 'all';
@@ -92,6 +95,14 @@ export function ItinerarySection({
     window.setTimeout(() => {
       setCopiedSpot((prev) => (prev === text ? null : prev));
     }, 1800);
+  };
+
+  const handleJumpToBlock = (blockId: string) => {
+    setCategoryFilter('all');
+    window.requestAnimationFrame(() => {
+      const target = document.getElementById(`block-${blockId}`);
+      target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   };
 
   return (
@@ -173,6 +184,16 @@ export function ItinerarySection({
           </button>
         </div>
 
+        {/* All-Days Visual Filmstrip & 7-Day Steps/Transit Comparison Chart */}
+        {selectedDay === 'all' && (
+          <div className="pt-7">
+            <TripOverviewVisualStrip
+              onSelectDay={(dayNumber) => onSelectDay(dayNumber)}
+              showComparisonChart
+            />
+          </div>
+        )}
+
         {/* Day Chapters */}
         <div className="divide-y divide-[#E5E0D8]">
           {visibleDays.map((day) => {
@@ -181,6 +202,7 @@ export function ItinerarySection({
                 ? day.blocks
                 : day.blocks.filter((b) => b.categories.includes(categoryFilter));
             const dayWeather = forecast.find((w) => w.dayNumber === day.dayNumber);
+            const dayCompletedCount = day.blocks.filter((b) => completedBlocks[b.id]).length;
 
             return (
               <article
@@ -188,6 +210,17 @@ export function ItinerarySection({
                 id={`day-${day.dayNumber}`}
                 className="py-8 md:py-12"
               >
+                {/* Rich Visual Dashboard: Bespoke Day Photo, Timeline Gantt, Temp Curve, Pace & Route Diagram */}
+                <DayVisualDashboard
+                  day={day}
+                  completedCount={dayCompletedCount}
+                  totalBlocks={day.blocks.length}
+                  dayWeather={dayWeather}
+                  unit={unit}
+                  highlight1900={highlight1900}
+                  onJumpToBlock={handleJumpToBlock}
+                />
+
                 {/* Day Header Grid (Asymmetric 4 / 8 split) */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 min-w-0">
                   {/* Left Chapter Index Column */}
@@ -363,18 +396,27 @@ export function ItinerarySection({
                         </button>
                       </div>
                     ) : (
-                      filteredBlocks.map((block) => {
+                      filteredBlocks.map((block, blockIdx) => {
                         const isDone = Boolean(completedBlocks[block.id]);
+                        const primaryCat = block.categories[0] ?? 'sightseeing';
+                        const catAccent = CATEGORY_COLORS[primaryCat].fill;
                         return (
                           <div
                             key={block.id}
-                            className={`bg-white border rounded-[28px] transition-colors p-5 sm:p-6 md:p-7 min-w-0 ${
+                            id={`block-${block.id}`}
+                            className={`scroll-mt-24 bg-white border rounded-[28px] transition-colors p-5 sm:p-6 md:p-7 min-w-0 ${
                               isDone ? 'border-[#D6CEBE] bg-[#FAF8F4]' : 'border-[#E5E0D8]'
                             }`}
                           >
-                            {/* Top Row: Time + Unboxed Metadata + Check Button */}
+                            {/* Top Row: Sequence Index + Time + Unboxed Metadata + Check Button */}
                             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#EFECE6]">
                               <div className="flex flex-wrap items-center gap-2 text-[16px] md:text-xs">
+                                <span
+                                  style={{ backgroundColor: isDone ? '#78716C' : catAccent }}
+                                  className="inline-flex items-center justify-center w-6 h-6 rounded-lg font-mono text-[11px] font-semibold text-white tabular-nums shrink-0"
+                                >
+                                  0{blockIdx + 1}
+                                </span>
                                 <span className="inline-flex items-center gap-1.5 font-mono text-[17px] md:text-sm font-semibold text-[#1E3A5F] tabular-nums">
                                   <Clock className="w-4 h-4" />
                                   {block.timeRange}
