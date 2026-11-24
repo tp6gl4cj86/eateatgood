@@ -1,3 +1,19 @@
+export type FoodCategory = 'wagyu' | 'ramen' | 'sushi' | 'cafe' | 'local';
+
+export interface FoodCategoryMeta {
+  id: FoodCategory;
+  label: string;
+  color: string;
+}
+
+export const FOOD_CATEGORIES: FoodCategoryMeta[] = [
+  { id: 'wagyu', label: '和牛', color: '#B43E2B' },
+  { id: 'ramen', label: '拉麵', color: '#B4692B' },
+  { id: 'sushi', label: '壽司', color: '#1E3A5F' },
+  { id: 'cafe', label: '咖啡廳', color: '#6D4C3D' },
+  { id: 'local', label: '在地名物', color: '#2F6B4F' },
+];
+
 export interface FoodSpot {
   id: string;
   dayNumber: number;
@@ -6,6 +22,7 @@ export interface FoodSpot {
   shortMapLabel: string;
   jpName: string;
   cuisine: string;
+  categories: FoodCategory[];
   nearestStop: string;
   description: string;
   signatureDishes: string[];
@@ -30,6 +47,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     shortMapLabel: '大東園和牛',
     jpName: '焼肉の大東園 本店',
     cuisine: '九州黑毛和牛炭火燒肉',
+    categories: ['wagyu'],
     nearestStop: 'Day 1 18:30 上川端町晚餐・近博多站',
     description:
       '創立逾半世紀的福岡代表性老字號燒肉名店，嚴選九州各地產黑毛和牛與厚切牛舌。炭火逼出豐潤油花香氣，搭配獨門秘製沾醬與石鍋拌飯，是抵達博多第一晚全員開吃的華麗揭幕宴。',
@@ -45,6 +63,29 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     mapQuery: '焼肉の大東園 本店 福岡市博多区上川端町',
   },
   {
+    id: 'hyotan-sushi',
+    dayNumber: 1,
+    regionLabel: '福岡・天神',
+    name: 'ひょうたん壽司（葫蘆壽司）',
+    shortMapLabel: '葫蘆壽司',
+    jpName: 'ひょうたんの回転寿司 / ひょうたん寿司',
+    cuisine: '玄界灘直送鮮魚握壽司',
+    categories: ['sushi'],
+    nearestStop: 'Day 1 下午市區自由時段・天神商業圈',
+    description:
+      '福岡在地人與旅人一致推爆的排隊壽司名店！每日直送玄界灘當季鮮魚，入口即化的炙燒鮭魚腹、活鮑魚、海膽軍艦與招牌蟹膏手捲，平實價格就能吃到職人現捏的高水準握壽司。',
+    signatureDishes: ['特選玄界灘鮮魚握壽司拼盤', '炙燒黑鮪魚大腹', '蟹肉蟹膏軍艦', '現炸蝦天婦羅'],
+    budgetYenMin: 2200,
+    budgetYenMax: 3800,
+    hours: '11:30–14:30 / 17:00–20:30',
+    tip: '抵達福岡放完行李後若剛好在市區自由活動，可避開正午尖峰於 13:30 左右前往較少排隊。',
+    x: 126,
+    y: 162,
+    labelPlacement: 'top',
+    accentColor: '#1E3A5F',
+    mapQuery: 'ひょうたん寿司 福岡市中央区天神',
+  },
+  {
     id: 'issou',
     dayNumber: 1,
     regionLabel: '福岡・博多',
@@ -52,6 +93,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     shortMapLabel: '博多一雙拉麵',
     jpName: '博多一双 博多駅東本店',
     cuisine: '濃厚泡系豚骨拉麵',
+    categories: ['ramen'],
     nearestStop: 'Day 1 自由時段 / 宵夜・距 Minn 博多步行 3 分',
     description:
       '就位在連住飯店 Minn 博多附近的人氣排隊拉麵名店！以長時間大火熬煮出如卡布奇諾般綿密泡沫的「豚骨卡布奇諾」濃郁湯頭聞名，配細直麵與微辣辛子高菜，是福岡必朝聖的一碗。',
@@ -60,8 +102,8 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     budgetYenMax: 1400,
     hours: '11:00–24:00',
     tip: '正餐時段常排隊 20–30 分鐘，建議 Day 1 下午剛放完行李或 21:30 後當宵夜衝最省時。',
-    x: 152,
-    y: 206,
+    x: 146,
+    y: 224,
     labelPlacement: 'left',
     accentColor: '#B4692B',
     mapQuery: '博多一双 博多駅東本店 福岡',
@@ -74,6 +116,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     shortMapLabel: '門司港燒咖哩',
     jpName: '門司港 焼きカレー 伽哩本舗',
     cuisine: '門司港名物焗烤燒咖哩',
+    categories: ['local'],
     nearestStop: 'Day 2 午餐・九州鐵道紀念館＆海峽廣場旁',
     description:
       '發源於昭和時代門司港的必吃名物！將濃郁微辣的香料咖哩覆蓋厚層起司與半熟溫泉蛋入爐高溫焗烤，趁熱劃開蛋黃拌著牽絲起司與焦香鍋巴入口，窗外就是關門海峽港景。',
@@ -85,7 +128,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     x: 428,
     y: 80,
     labelPlacement: 'bottom',
-    accentColor: '#B4692B',
+    accentColor: '#2F6B4F',
     mapQuery: '門司港レトロ 焼きカレー 伽哩本舗',
   },
   {
@@ -96,6 +139,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     shortMapLabel: '資先生烏龍麵',
     jpName: '資さんうどん 魚町店',
     cuisine: '北九州國民烏龍麵＆關東煮',
+    categories: ['local'],
     nearestStop: 'Day 2 16:30 尼哥＆班表人籃球賽前晚餐',
     description:
       '發跡於北九州的靈魂級庶民美食！外酥內嫩的超長條炸牛蒡天婦羅配上甘甜牛肉、微軟彈滑的烏龍麵與清澈昆布柴魚高湯，出餐快速、24 小時營業，完全不耽誤 18:00 / 18:30 免費籃球接駁車。',
@@ -107,7 +151,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     x: 342,
     y: 108,
     labelPlacement: 'top',
-    accentColor: '#1E3A5F',
+    accentColor: '#2F6B4F',
     mapQuery: '資さんうどん 魚町店 小倉',
   },
   {
@@ -115,22 +159,46 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     dayNumber: 3,
     regionLabel: '大分・由布院',
     name: '由布まぶし 心（豐後牛釜飯三吃）',
-    shortMapLabel: '由布院豐後牛釜飯',
+    shortMapLabel: '由布院豐後牛',
     jpName: '由布まぶし 心 由布院',
     cuisine: '炭烤豐後牛土鍋釜飯三吃',
+    categories: ['wagyu'],
     nearestStop: 'Day 3 午餐・由布院站前＆金鱗湖畔皆有分店',
     description:
-      '由布院人氣居高不下的土鍋釜飯名店！炭烤大分頂級豐後牛鋪滿熱騰騰米飯：一吃品原味焦香、二吃拌柚子胡椒與在地漬物、三吃淋上滾燙高湯化作茶泡飯，在二月寒冬的溫泉小鎮格外暖胃。',
+      '由布院人氣居高不下的土鍋釜飯名店！炭烤大分頂級豐後和牛鋪滿熱騰騰米飯：一吃品原味焦香、二吃拌柚子胡椒與在地漬物、三吃淋上滾燙高湯化作茶泡飯，在二月寒冬的溫泉小鎮格外暖胃。',
     signatureDishes: ['豐後牛釜飯三吃', '大分地雞炭烤釜飯', '附餐在地時蔬小菜拼盤'],
     budgetYenMin: 2600,
     budgetYenMax: 3300,
     hours: '10:30–18:30',
     tip: '金鱗湖本店與由布院站前店人氣都高，搭「由布院之森」抵站後可先領整理券。',
     x: 440,
-    y: 256,
+    y: 248,
     labelPlacement: 'top',
-    accentColor: '#2F6B4F',
+    accentColor: '#B43E2B',
     mapQuery: '由布まぶし 心 由布院駅前支店',
+  },
+  {
+    id: 'yufuin-cafe',
+    dayNumber: 3,
+    regionLabel: '大分・由布院',
+    name: 'Café LA RUCHE（金鱗湖畔景觀咖啡廳）',
+    shortMapLabel: '金鱗湖咖啡廳',
+    jpName: 'CAFE LA RUCHE（カフェ ラ・リューシュ）',
+    cuisine: '湖畔露台手沖咖啡＆現烤可頌',
+    categories: ['cafe'],
+    nearestStop: 'Day 3 午後散策・金鱗湖畔步道正旁',
+    description:
+      '座落於金鱗湖畔的絕景美術館咖啡廳！大片落地窗與湖邊木質露台直面薄霧繚繞的湖水與山嵐，點一杯現煮熱拿鐵搭配酥脆現烤可頌與法式吐司，是逛完湯之坪街道後的夢幻歇腳點。',
+    signatureDishes: ['湖景手沖深焙咖啡 / 熱拿鐵', '現烤法式可頌三明治', '季節限定焦糖蘋果派'],
+    budgetYenMin: 900,
+    budgetYenMax: 1600,
+    hours: '09:00–16:30（週三公休，週四營業）',
+    tip: 'Day 3 為週四正好營業！午後坐戶外露台記得穿保暖羽絨外套，15:15 前動身回由布院站搭 16:00 特急。',
+    x: 420,
+    y: 310,
+    labelPlacement: 'bottom',
+    accentColor: '#6D4C3D',
+    mapQuery: 'CAFE LA RUCHE 由布院 金鱗湖',
   },
   {
     id: 'ooyama',
@@ -139,10 +207,11 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     name: '博多もつ鍋 おおやま（牛腸鍋）',
     shortMapLabel: '博多牛腸鍋',
     jpName: '博多もつ鍋 おおやま 博多デイトス',
-    cuisine: '福岡經典濃厚味噌牛腸鍋',
+    cuisine: '九州國產牛・濃厚味噌牛腸鍋',
+    categories: ['wagyu'],
     nearestStop: 'Day 3 18:30 返抵博多站晚餐・共構商場直達',
     description:
-      '從由布院搭特急回到博多站就能無縫開鍋的福岡必吃名物！精選九州國產彈嫩牛腸，搭配融合九州味噌與西京味噌的濃厚蒜香湯底，煮入滿滿韭菜與高麗菜，最後加點強棒麵吸飽湯汁最過癮。',
+      '從由布院搭特急回到博多站就能無縫開鍋的福岡必吃名物！精選九州國產和牛小腸，搭配融合九州味噌與西京味噌的濃厚蒜香湯底，煮入滿滿韭菜與高麗菜，最後加點強棒麵吸飽湯汁最過癮。',
     signatureDishes: ['濃厚味噌牛腸鍋', '醋拌嫩牛腸（酢もつ）', '收尾強棒麵（ちゃんぽん）'],
     budgetYenMin: 3500,
     budgetYenMax: 4800,
@@ -162,6 +231,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     shortMapLabel: '勝烈亭黑豚豬排',
     jpName: '勝烈亭 新市街本店',
     cuisine: '米其林必比登・六白黑豚炸豬排',
+    categories: ['local'],
     nearestStop: 'Day 4 午餐・熊本城與上下通商店街步行圈',
     description:
       '熊本極具代表性的炸豬排名店！嚴選鹿兒島珍稀「六白黑豚」厚切現炸，麵衣金黃酥脆不油膩、肉質鮮甜多汁。桌邊自磨白芝麻配上和洋兩款特製豬排醬，高麗菜絲、白飯與赤味噌湯皆可免費續加。',
@@ -170,24 +240,48 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     budgetYenMax: 3500,
     hours: '11:00–21:30',
     tip: '參訪完熊本城與城彩苑後步行前往，餐後直接順逛熊本最熱鬧的上下通商店街。',
-    x: 248,
+    x: 256,
     y: 358,
     labelPlacement: 'right',
-    accentColor: '#B4692B',
+    accentColor: '#2F6B4F',
     mapQuery: '勝烈亭 新市街本店 熊本',
+  },
+  {
+    id: 'kumamoto-ramen',
+    dayNumber: 4,
+    regionLabel: '熊本市區',
+    name: '熊本 桂花拉麵 本店（焦蒜豚骨拉麵）',
+    shortMapLabel: '熊本桂花拉麵',
+    jpName: '桂花ラーメン 本店',
+    cuisine: '熊本流・焦香黑蒜麻油豚骨拉麵',
+    categories: ['ramen'],
+    nearestStop: 'Day 4 午後點心 / 晚餐・上下通商店街旁',
+    description:
+      '創立於 1955 年的熊本拉麵始祖之一！在香醇豚骨雞白雙湯底中淋入獨家烘焙的焦蒜黑麻油（マー油），搭配軟嫩入味的大塊太肉（滷三層肉）與爽脆生高麗菜，濃烈蒜香令人一吃上癮。',
+    signatureDishes: ['招牌太肉麵（滷肉焦蒜拉麵）', '桂花豚骨拉麵', '半份炒飯套餐'],
+    budgetYenMin: 950,
+    budgetYenMax: 1450,
+    hours: '11:00–21:00',
+    tip: '就位在下通商店街旁，逛街途中想解饞或傍晚回博多前先吃一碗都超順路。',
+    x: 176,
+    y: 336,
+    labelPlacement: 'left',
+    accentColor: '#B4692B',
+    mapQuery: '桂花ラーメン 本店 熊本市中央区',
   },
   {
     id: 'tanga-market',
     dayNumber: 5,
     regionLabel: '北九州・小倉',
-    name: '旦過市場 大學堂「大學丼」＆百年糠煮魚',
-    shortMapLabel: '旦過市場大學丼',
+    name: '旦過市場 大學堂「海鮮大學丼」',
+    shortMapLabel: '旦過市場海鮮丼',
     jpName: '旦過市場 大學堂 ぬか炊き',
-    cuisine: '北九州廚房・自選市場海鮮熟食丼',
+    cuisine: '市場直送海鮮刺身丼＆百年糠煮魚',
+    categories: ['sushi', 'local'],
     nearestStop: 'Day 5 09:30 早午餐・北九州單軌「旦過站」直達',
     description:
-      '走過百年的「北九州廚房」！先在大學堂買一碗熱白飯，再穿梭市場魚舖與熟食攤自由挑選現切生魚片、明太子、鯨魚炸物與小倉獨有的「百年糠床慢燉鯖魚」，拼出專屬於自己的澎湃市場早午餐。',
-    signatureDishes: ['自選料大學丼', '小倉百年糠煮鯖魚（ぬか炊き）', '現炸魚板＆雞唐揚'],
+      '走過百年的「北九州廚房」！先在大學堂買一碗熱白飯，再穿梭市場鮮魚舖自由挑選現切鮪魚、甜蝦、海膽刺身與小倉獨有的「百年糠煮鯖魚」，自組一碗澎湃海鮮丼，鮮度直逼壽司名店。',
+    signatureDishes: ['自選鮮魚刺身大學丼', '小倉百年糠煮鯖魚（ぬか炊き）', '現炸魚板＆雞唐揚'],
     budgetYenMin: 1200,
     budgetYenMax: 2000,
     hours: '10:00–17:00（週六熱鬧營業，多數店家週日休）',
@@ -195,7 +289,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     x: 334,
     y: 164,
     labelPlacement: 'bottom',
-    accentColor: '#2F6B4F',
+    accentColor: '#1E3A5F',
     mapQuery: '旦過市場 大学堂 北九州市小倉北区',
   },
   {
@@ -206,6 +300,7 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     shortMapLabel: '魚町鐵鍋餃・燒烏龍',
     jpName: '小倉鉄なべ 総本店 / 焼うどん だるま堂',
     cuisine: '小倉發源名物・鐵鍋一口餃＆燒烏龍麵',
+    categories: ['local'],
     nearestStop: 'Day 5 17:30 賽馬尾場後慶功晚餐・魚町銀天街',
     description:
       '小倉站旁最熱鬧的拱廊商店街，一次網羅兩大北九州代表味：外皮煎得金黃香脆、上桌滋滋作響的「小倉鐵鍋一口煎餃」，以及誕生於魚町的「元祖小倉燒烏龍麵」，配冰涼生啤酒最對味。',
@@ -217,29 +312,30 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     x: 406,
     y: 154,
     labelPlacement: 'right',
-    accentColor: '#B43E2B',
+    accentColor: '#2F6B4F',
     mapQuery: '小倉鉄なべ 総本店 魚町銀天街',
   },
   {
     id: 'hakata-souvenir',
     dayNumber: 6,
     regionLabel: '福岡・博多',
-    name: '博多站名物街（明太子法國麵包＆努努雞）',
-    shortMapLabel: '博多站明太子＆伴手禮',
-    jpName: '博多阪急 B1 / マイング博多 明太フランス',
-    cuisine: '福岡名產巡禮・明太子麵包＆冷吃炸雞',
-    nearestStop: 'Day 6 上午最後採買・AMU PLAZA / 博多阪急 B1',
+    name: '博多站名物咖啡＆明太子麵包巡禮',
+    shortMapLabel: '博多站咖啡＆明太子',
+    jpName: 'REC COFFEE 博多マルイ / FULL FULL 博多',
+    cuisine: '福岡冠軍烘焙咖啡廳＆明太子法國麵包',
+    categories: ['cafe', 'local'],
+    nearestStop: 'Day 6 上午最後採買・AMU PLAZA / 博多丸井＆阪急',
     description:
-      '返台前在博多站共構商場一次收齊福岡人氣滋味！推薦現烤外脆內潤的博多明太子法國麵包配咖啡當早午餐，並打包冷吃越吃越涮嘴的「努努雞」、如水庵筑紫麻糬與明太子仙貝滿載返台。',
-    signatureDishes: ['現烤博多明太子法國麵包', '冷吃手羽先「努努雞」', '如水庵筑紫麻糬／明太子仙貝'],
-    budgetYenMin: 1500,
-    budgetYenMax: 3500,
-    hours: '09:00–21:00（依商場櫃位略有不同）',
-    tip: '退房寄放行李後步行 8 分鐘即可一站購足，中午領行李分搭 2 台計程車直達福岡機場。',
+      '返台前在博多站周邊享受福岡冠軍咖啡品牌 REC COFFEE 的手沖拿鐵，搭配外酥內潤的 FULL FULL 明太子法國麵包當早午餐，順手打包冷吃努努雞、如水庵筑紫麻糬滿載返台。',
+    signatureDishes: ['REC COFFEE 博多ブレンド手沖拿鐵', '現烤博多明太子法國麵包', '冷吃努努雞＆筑紫麻糬'],
+    budgetYenMin: 1200,
+    budgetYenMax: 3000,
+    hours: '09:00–21:00（依櫃位略有不同）',
+    tip: '退房寄放行李後步行 8 分鐘即可悠閒喝咖啡與一站補貨，中午領行李搭 2 台計程車直達福岡機場。',
     x: 206,
-    y: 256,
+    y: 264,
     labelPlacement: 'bottom',
-    accentColor: '#1E3A5F',
-    mapQuery: '博多阪急 マイング 博多駅',
+    accentColor: '#6D4C3D',
+    mapQuery: 'REC COFFEE 博多マルイ 福岡',
   },
 ];

@@ -5,11 +5,17 @@ import {
   Copy,
   ExternalLink,
   MapPin,
+  RotateCcw,
   Utensils,
   Wallet,
 } from 'lucide-react';
 import { useState } from 'react';
-import { FoodSpot, KYUSHU_FOOD_SPOTS } from '../data/foodMapData';
+import {
+  FOOD_CATEGORIES,
+  FoodCategory,
+  FoodSpot,
+  KYUSHU_FOOD_SPOTS,
+} from '../data/foodMapData';
 
 interface OverviewFoodMapWidgetProps {
   jpyToTwdRate: number;
@@ -17,7 +23,7 @@ interface OverviewFoodMapWidgetProps {
 }
 
 const DAY_FILTER_OPTIONS: Array<{ value: number | 'all'; label: string }> = [
-  { value: 'all', label: '全部推薦' },
+  { value: 'all', label: '全部天數' },
   { value: 1, label: 'Day 1 博多' },
   { value: 2, label: 'Day 2 門司港・小倉' },
   { value: 3, label: 'Day 3 由布院・博多' },
@@ -40,31 +46,57 @@ function formatTwdRange(min: number, max: number, rate: number): string {
   return `約 NT$${twdMin.toLocaleString('en-US')}–$${twdMax.toLocaleString('en-US')}`;
 }
 
+function matchesSpotFilters(
+  spot: FoodSpot,
+  dayFilter: number | 'all',
+  categoryFilter: FoodCategory | 'all'
+): boolean {
+  const dayMatch = dayFilter === 'all' || spot.dayNumber === dayFilter;
+  const categoryMatch =
+    categoryFilter === 'all' || spot.categories.includes(categoryFilter);
+  return dayMatch && categoryMatch;
+}
+
 export function OverviewFoodMapWidget({
   jpyToTwdRate,
   onJumpToDay,
 }: OverviewFoodMapWidgetProps) {
   const [dayFilter, setDayFilter] = useState<number | 'all'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<FoodCategory | 'all'>('all');
   const [selectedSpotId, setSelectedSpotId] = useState<string>(KYUSHU_FOOD_SPOTS[0].id);
   const [copiedJpName, setCopiedJpName] = useState(false);
 
-  const visibleSpots =
-    dayFilter === 'all'
-      ? KYUSHU_FOOD_SPOTS
-      : KYUSHU_FOOD_SPOTS.filter((spot) => spot.dayNumber === dayFilter);
+  const visibleSpots = KYUSHU_FOOD_SPOTS.filter((spot) =>
+    matchesSpotFilters(spot, dayFilter, categoryFilter)
+  );
 
-  const activeSpot: FoodSpot =
-    visibleSpots.find((spot) => spot.id === selectedSpotId) ??
-    visibleSpots[0] ??
-    KYUSHU_FOOD_SPOTS[0];
+  const hasMatches = visibleSpots.length > 0;
+  const activeSpot: FoodSpot | null = hasMatches
+    ? (visibleSpots.find((spot) => spot.id === selectedSpotId) ?? visibleSpots[0])
+    : null;
+
+  const activeCategoryLabel =
+    categoryFilter === 'all'
+      ? '全部類型'
+      : (FOOD_CATEGORIES.find((c) => c.id === categoryFilter)?.label ?? '全部類型');
+
+  const handleSelectCategoryFilter = (nextCategory: FoodCategory | 'all') => {
+    setCategoryFilter(nextCategory);
+    const nextMatches = KYUSHU_FOOD_SPOTS.filter((spot) =>
+      matchesSpotFilters(spot, dayFilter, nextCategory)
+    );
+    if (nextMatches.length > 0 && !nextMatches.some((s) => s.id === selectedSpotId)) {
+      setSelectedSpotId(nextMatches[0].id);
+    }
+  };
 
   const handleSelectDayFilter = (nextDay: number | 'all') => {
     setDayFilter(nextDay);
-    if (nextDay !== 'all') {
-      const firstMatch = KYUSHU_FOOD_SPOTS.find((spot) => spot.dayNumber === nextDay);
-      if (firstMatch) {
-        setSelectedSpotId(firstMatch.id);
-      }
+    const nextMatches = KYUSHU_FOOD_SPOTS.filter((spot) =>
+      matchesSpotFilters(spot, nextDay, categoryFilter)
+    );
+    if (nextMatches.length > 0 && !nextMatches.some((s) => s.id === selectedSpotId)) {
+      setSelectedSpotId(nextMatches[0].id);
     }
   };
 
@@ -73,6 +105,15 @@ export function OverviewFoodMapWidget({
     if (dayFilter !== 'all' && spot.dayNumber !== dayFilter) {
       setDayFilter('all');
     }
+    if (categoryFilter !== 'all' && !spot.categories.includes(categoryFilter)) {
+      setCategoryFilter('all');
+    }
+  };
+
+  const handleResetFilters = () => {
+    setDayFilter('all');
+    setCategoryFilter('all');
+    setSelectedSpotId(KYUSHU_FOOD_SPOTS[0].id);
   };
 
   const handleCopyJpName = (text: string) => {
@@ -82,11 +123,19 @@ export function OverviewFoodMapWidget({
   };
 
   // Clamp floating SVG callout position cleanly within the 560 x 430 viewBox
-  const calloutW = 188;
+  const calloutW = 192;
   const calloutH = 44;
-  const calloutCenterX = Math.min(560 - calloutW / 2 - 14, Math.max(calloutW / 2 + 14, activeSpot.x));
-  const placeCalloutBelow = activeSpot.y < 105;
-  const calloutTopY = placeCalloutBelow ? activeSpot.y + 20 : activeSpot.y - calloutH - 20;
+  const calloutCenterX = activeSpot
+    ? Math.min(560 - calloutW / 2 - 14, Math.max(calloutW / 2 + 14, activeSpot.x))
+    : 280;
+  const placeCalloutBelow = activeSpot ? activeSpot.y < 105 : false;
+  const calloutTopY = activeSpot
+    ? placeCalloutBelow
+      ? activeSpot.y + 20
+      : activeSpot.y - calloutH - 20
+    : 0;
+
+  const isFiltered = dayFilter !== 'all' || categoryFilter !== 'all';
 
   return (
     <section
@@ -108,48 +157,146 @@ export function OverviewFoodMapWidget({
             北九州互動式在地美食推薦地圖
           </h2>
           <p className="mt-1.5 text-[17px] md:text-sm text-[#57534E] leading-[1.75]">
-            點擊地圖上的餐廳標記或依天數篩選，立即查看每日行程周邊必吃名店的特色簡介、必點招牌與人均預算。
+            可依餐廳類型（和牛、拉麵、壽司、咖啡廳、在地名物）與行程天數自由篩選，點擊地圖標記立即查看特色簡介與必點招牌。
           </p>
         </div>
 
-        <div className="text-sm md:text-xs font-mono text-[#78716C] shrink-0 tabular-nums">
-          收錄 {KYUSHU_FOOD_SPOTS.length} 間行程順路名店 · 涵蓋 Day 1 – Day 6
+        <div className="flex flex-wrap items-center gap-3 shrink-0 tabular-nums">
+          <span className="text-sm md:text-xs font-mono text-[#78716C]">
+            符合條件 {visibleSpots.length} / {KYUSHU_FOOD_SPOTS.length} 間
+          </span>
+          {isFiltered && (
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="inline-flex items-center gap-1.5 px-3.5 min-h-[40px] md:min-h-[32px] text-[15px] md:text-xs font-medium text-[#57534E] bg-[#FBF9F5] border border-[#E5E0D8] hover:border-[#1C1917] hover:text-[#1C1917] rounded-2xl transition-colors whitespace-nowrap cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>重設篩選</span>
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Day Filter Segmented Bar */}
-      <div className="px-5 sm:px-6 md:px-8 py-3.5 bg-[#FBF9F5] border-b border-[#EFECE6]">
-        <div
-          role="tablist"
-          aria-label="依行程天數篩選推薦餐廳"
-          className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5"
-        >
-          {DAY_FILTER_OPTIONS.map((opt) => {
-            const isActive = dayFilter === opt.value;
-            const count =
-              opt.value === 'all'
-                ? KYUSHU_FOOD_SPOTS.length
-                : KYUSHU_FOOD_SPOTS.filter((s) => s.dayNumber === opt.value).length;
-            return (
-              <button
-                key={String(opt.value)}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => handleSelectDayFilter(opt.value)}
-                className={`inline-flex items-center gap-1.5 px-4 min-h-[44px] md:min-h-[38px] text-[16px] md:text-xs font-medium rounded-2xl border transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer tabular-nums ${
-                  isActive
-                    ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]'
-                    : 'bg-white text-[#57534E] border-[#E5E0D8] hover:border-[#1E3A5F] hover:text-[#1C1917]'
-                }`}
+      {/* Dual Filter Controls: Restaurant Type Filter + Trip Day Filter */}
+      <div className="px-5 sm:px-6 md:px-8 py-4 bg-[#FBF9F5] border-b border-[#EFECE6] space-y-3">
+        {/* Row 1: Cuisine / Restaurant Type Filter Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+          <span className="text-sm md:text-xs font-mono text-[#78716C] shrink-0">
+            餐廳類型：
+          </span>
+          <div
+            role="group"
+            aria-label="篩選地圖上的餐廳類型"
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5"
+          >
+            <button
+              type="button"
+              aria-pressed={categoryFilter === 'all'}
+              onClick={() => handleSelectCategoryFilter('all')}
+              className={`inline-flex items-center gap-1.5 px-4 min-h-[44px] md:min-h-[36px] text-[16px] md:text-xs font-medium rounded-2xl border transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer tabular-nums ${
+                categoryFilter === 'all'
+                  ? 'bg-[#1C1917] text-white border-[#1C1917]'
+                  : 'bg-white text-[#57534E] border-[#E5E0D8] hover:border-[#1C1917] hover:text-[#1C1917]'
+              }`}
+            >
+              <span>全部類型</span>
+              <span
+                className={
+                  categoryFilter === 'all'
+                    ? 'text-white/75 font-mono'
+                    : 'text-[#A8A29E] font-mono'
+                }
               >
-                <span>{opt.label}</span>
-                <span className={isActive ? 'text-white/75 font-mono' : 'text-[#A8A29E] font-mono'}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+                {KYUSHU_FOOD_SPOTS.filter((s) => dayFilter === 'all' || s.dayNumber === dayFilter).length}
+              </span>
+            </button>
+
+            {FOOD_CATEGORIES.map((cat) => {
+              const isActive = categoryFilter === cat.id;
+              const matchCount = KYUSHU_FOOD_SPOTS.filter(
+                (s) =>
+                  (dayFilter === 'all' || s.dayNumber === dayFilter) &&
+                  s.categories.includes(cat.id)
+              ).length;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => handleSelectCategoryFilter(cat.id)}
+                  style={
+                    isActive
+                      ? { backgroundColor: cat.color, borderColor: cat.color }
+                      : undefined
+                  }
+                  className={`inline-flex items-center gap-2 px-4 min-h-[44px] md:min-h-[36px] text-[16px] md:text-xs font-medium rounded-2xl border transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer tabular-nums ${
+                    isActive
+                      ? 'text-white shadow-xs'
+                      : 'bg-white text-[#44403C] border-[#E5E0D8] hover:border-[#A8A29E] hover:text-[#1C1917]'
+                  }`}
+                >
+                  <span
+                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    style={{
+                      backgroundColor: isActive ? '#FFFFFF' : cat.color,
+                    }}
+                    aria-hidden="true"
+                  />
+                  <span>{cat.label}</span>
+                  <span
+                    className={
+                      isActive ? 'text-white/80 font-mono' : 'text-[#A8A29E] font-mono'
+                    }
+                  >
+                    {matchCount}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Row 2: Trip Day Filter Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 pt-2.5 border-t border-[#EFECE6]">
+          <span className="text-sm md:text-xs font-mono text-[#78716C] shrink-0">
+            行程天數：
+          </span>
+          <div
+            role="tablist"
+            aria-label="依行程天數篩選推薦餐廳"
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5"
+          >
+            {DAY_FILTER_OPTIONS.map((opt) => {
+              const isActive = dayFilter === opt.value;
+              const count = KYUSHU_FOOD_SPOTS.filter((s) =>
+                matchesSpotFilters(s, opt.value, categoryFilter)
+              ).length;
+              return (
+                <button
+                  key={String(opt.value)}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => handleSelectDayFilter(opt.value)}
+                  className={`inline-flex items-center gap-1.5 px-3.5 min-h-[42px] md:min-h-[34px] text-[15px] md:text-xs font-medium rounded-2xl border transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer tabular-nums ${
+                    isActive
+                      ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]'
+                      : 'bg-white text-[#57534E] border-[#E5E0D8] hover:border-[#1E3A5F] hover:text-[#1C1917]'
+                  }`}
+                >
+                  <span>{opt.label}</span>
+                  <span
+                    className={
+                      isActive ? 'text-white/75 font-mono' : 'text-[#A8A29E] font-mono'
+                    }
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -160,19 +307,17 @@ export function OverviewFoodMapWidget({
           <div>
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm md:text-xs text-[#78716C] pb-3.5 border-b border-[#EFECE6]">
               <span className="font-mono tracking-wider">INTERACTIVE CULINARY SCHEMATIC</span>
-              <div className="flex items-center gap-3.5 text-xs">
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#B43E2B] inline-block" aria-hidden="true" />
-                  燒肉・鍋物
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#B4692B] inline-block" aria-hidden="true" />
-                  拉麵・豬排・咖哩
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#2F6B4F] inline-block" aria-hidden="true" />
-                  市場・釜飯
-                </span>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+                {FOOD_CATEGORIES.map((cat) => (
+                  <span key={cat.id} className="inline-flex items-center gap-1.5">
+                    <span
+                      className="w-2.5 h-2.5 rounded-full inline-block"
+                      style={{ backgroundColor: cat.color }}
+                      aria-hidden="true"
+                    />
+                    {cat.label}
+                  </span>
+                ))}
               </div>
             </div>
 
@@ -182,7 +327,7 @@ export function OverviewFoodMapWidget({
                 viewBox="0 0 560 430"
                 className="w-full h-auto select-none"
                 role="img"
-                aria-label="北九州互動式美食推薦地圖：點擊餐廳標記查看簡介"
+                aria-label="北九州互動式美食推薦地圖：可篩選和牛、拉麵、壽司、咖啡廳與在地名物，點擊標記查看簡介"
               >
                 <defs>
                   <pattern
@@ -219,7 +364,7 @@ export function OverviewFoodMapWidget({
                   strokeWidth="1.25"
                 />
 
-                {/* Subtle Geography & Sea Labels */}
+                {/* Sea Labels */}
                 <text
                   x="68"
                   y="68"
@@ -241,8 +386,8 @@ export function OverviewFoodMapWidget({
                   關門海峽
                 </text>
                 <text
-                  x="92"
-                  y="374"
+                  x="88"
+                  y="386"
                   fill="#A8A29E"
                   fontSize="10"
                   letterSpacing="0.22em"
@@ -252,18 +397,17 @@ export function OverviewFoodMapWidget({
                 </text>
 
                 {/* Faint Rail Reference Lines Connecting Major Hubs */}
-                <g opacity="0.32" stroke="#9C9589" strokeWidth="1.5" strokeDasharray="4 4" fill="none">
+                <g opacity="0.3" stroke="#9C9589" strokeWidth="1.5" strokeDasharray="4 4" fill="none">
                   <path d="M 222 198 Q 304 142 406 96" />
-                  <path d="M 222 198 Q 332 224 440 256" />
-                  <path d="M 222 198 Q 228 282 248 358" />
+                  <path d="M 222 198 Q 332 224 440 248" />
+                  <path d="M 222 198 Q 228 282 256 358" />
                 </g>
 
                 {/* Restaurant Interactive Markers */}
                 {KYUSHU_FOOD_SPOTS.map((spot) => {
-                  const isSelected = spot.id === activeSpot.id;
-                  const isFilteredIn = dayFilter === 'all' || spot.dayNumber === dayFilter;
+                  const isSelected = activeSpot?.id === spot.id;
+                  const isFilteredIn = matchesSpotFilters(spot, dayFilter, categoryFilter);
 
-                  // Position short label cleanly based on non-overlapping placement
                   let labelX = spot.x;
                   let labelY = spot.y - 16;
                   let textAnchor: 'start' | 'middle' | 'end' = 'middle';
@@ -295,7 +439,7 @@ export function OverviewFoodMapWidget({
                       aria-label={`Day ${spot.dayNumber} ${spot.name}（${spot.regionLabel}）`}
                       aria-pressed={isSelected}
                       className="cursor-pointer focus:outline-none"
-                      opacity={isFilteredIn || isSelected ? 1 : 0.25}
+                      opacity={isFilteredIn || isSelected ? 1 : 0.2}
                     >
                       {/* Generous Invisible Touch Hitbox (r=24) */}
                       <circle cx={spot.x} cy={spot.y} r="24" fill="transparent" />
@@ -338,7 +482,7 @@ export function OverviewFoodMapWidget({
                       </text>
 
                       {/* Static Compact Label (hidden on selected node to keep floating callout crisp) */}
-                      {!isSelected && (
+                      {!isSelected && isFilteredIn && (
                         <text
                           x={labelX}
                           y={labelY}
@@ -358,223 +502,295 @@ export function OverviewFoodMapWidget({
                 })}
 
                 {/* Floating Active Callout Card Directly Above / Below Selected Pin */}
-                <g
-                  filter="url(#food-callout-shadow)"
-                  className="pointer-events-none"
-                >
-                  <line
-                    x1={activeSpot.x}
-                    y1={placeCalloutBelow ? activeSpot.y + 13 : activeSpot.y - 13}
-                    x2={activeSpot.x}
-                    y2={placeCalloutBelow ? calloutTopY : calloutTopY + calloutH}
-                    stroke={activeSpot.accentColor}
-                    strokeWidth="1.5"
-                    strokeDasharray="2 2"
-                  />
-                  <rect
-                    x={calloutCenterX - calloutW / 2}
-                    y={calloutTopY}
-                    width={calloutW}
-                    height={calloutH}
-                    rx="12"
-                    fill="#FFFFFF"
-                    stroke={activeSpot.accentColor}
-                    strokeWidth="1.5"
-                  />
-                  <text
-                    x={calloutCenterX}
-                    y={calloutTopY + 18}
-                    textAnchor="middle"
-                    fontSize="11.5"
-                    fontWeight="700"
-                    fill="#1C1917"
+                {activeSpot && (
+                  <g
+                    filter="url(#food-callout-shadow)"
+                    className="pointer-events-none"
                   >
-                    {activeSpot.shortMapLabel}
-                  </text>
-                  <text
-                    x={calloutCenterX}
-                    y={calloutTopY + 34}
-                    textAnchor="middle"
-                    fontSize="9.5"
-                    fontWeight="600"
-                    fill={activeSpot.accentColor}
-                    fontFamily="JetBrains Mono, monospace"
-                  >
-                    Day {activeSpot.dayNumber} · {activeSpot.regionLabel}
-                  </text>
-                </g>
+                    <line
+                      x1={activeSpot.x}
+                      y1={placeCalloutBelow ? activeSpot.y + 13 : activeSpot.y - 13}
+                      x2={activeSpot.x}
+                      y2={placeCalloutBelow ? calloutTopY : calloutTopY + calloutH}
+                      stroke={activeSpot.accentColor}
+                      strokeWidth="1.5"
+                      strokeDasharray="2 2"
+                    />
+                    <rect
+                      x={calloutCenterX - calloutW / 2}
+                      y={calloutTopY}
+                      width={calloutW}
+                      height={calloutH}
+                      rx="12"
+                      fill="#FFFFFF"
+                      stroke={activeSpot.accentColor}
+                      strokeWidth="1.5"
+                    />
+                    <text
+                      x={calloutCenterX}
+                      y={calloutTopY + 18}
+                      textAnchor="middle"
+                      fontSize="11.5"
+                      fontWeight="700"
+                      fill="#1C1917"
+                    >
+                      {activeSpot.shortMapLabel}
+                    </text>
+                    <text
+                      x={calloutCenterX}
+                      y={calloutTopY + 34}
+                      textAnchor="middle"
+                      fontSize="9.5"
+                      fontWeight="600"
+                      fill={activeSpot.accentColor}
+                      fontFamily="JetBrains Mono, monospace"
+                    >
+                      Day {activeSpot.dayNumber} · {activeSpot.regionLabel}
+                    </text>
+                  </g>
+                )}
               </svg>
             </div>
           </div>
 
           {/* Mobile-Friendly Quick Spot Selector Strip */}
           <div className="pt-3.5 border-t border-[#EFECE6]">
-            <p className="text-sm md:text-xs font-mono text-[#78716C] mb-2.5">
-              快速切換餐廳標記（共 {visibleSpots.length} 間）：
+            <p className="text-sm md:text-xs font-mono text-[#78716C] mb-2.5 tabular-nums">
+              {hasMatches
+                ? `快速切換餐廳標記（目前符合 ${visibleSpots.length} 間）：`
+                : '目前篩選條件無符合餐廳，可切換天數或點擊地圖淡化標記：'}
             </p>
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
-              {visibleSpots.map((spot) => {
-                const isSelected = spot.id === activeSpot.id;
-                return (
-                  <button
-                    key={spot.id}
-                    type="button"
-                    onClick={() => handleSelectSpot(spot)}
-                    aria-pressed={isSelected}
-                    className={`inline-flex items-center gap-2 px-3.5 min-h-[42px] md:min-h-[34px] text-[15px] md:text-xs font-medium rounded-2xl border transition-all whitespace-nowrap shrink-0 cursor-pointer ${
-                      isSelected
-                        ? 'bg-[#1C1917] text-white border-[#1C1917]'
-                        : 'bg-[#FBF9F5] text-[#44403C] border-[#E5E0D8] hover:border-[#1E3A5F]'
-                    }`}
-                  >
-                    <span
-                      className="font-mono text-xs font-semibold tabular-nums"
-                      style={{ color: isSelected ? '#FDE68A' : spot.accentColor }}
+            {hasMatches ? (
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
+                {visibleSpots.map((spot) => {
+                  const isSelected = activeSpot?.id === spot.id;
+                  return (
+                    <button
+                      key={spot.id}
+                      type="button"
+                      onClick={() => handleSelectSpot(spot)}
+                      aria-pressed={isSelected}
+                      className={`inline-flex items-center gap-2 px-3.5 min-h-[42px] md:min-h-[34px] text-[15px] md:text-xs font-medium rounded-2xl border transition-all whitespace-nowrap shrink-0 cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#1C1917] text-white border-[#1C1917]'
+                          : 'bg-[#FBF9F5] text-[#44403C] border-[#E5E0D8] hover:border-[#1E3A5F]'
+                      }`}
                     >
-                      D{spot.dayNumber}
-                    </span>
-                    <span>{spot.shortMapLabel}</span>
+                      <span
+                        className="font-mono text-xs font-semibold tabular-nums"
+                        style={{ color: isSelected ? '#FDE68A' : spot.accentColor }}
+                      >
+                        D{spot.dayNumber}
+                      </span>
+                      <span>{spot.shortMapLabel}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center gap-2.5">
+                {dayFilter !== 'all' && categoryFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => handleSelectDayFilter('all')}
+                    className="px-4 min-h-[42px] md:min-h-[34px] text-[15px] md:text-xs font-medium bg-[#1E3A5F] text-white rounded-2xl hover:bg-[#162C49] transition-colors whitespace-nowrap cursor-pointer"
+                  >
+                    查看全部天數的「{activeCategoryLabel}」
                   </button>
-                );
-              })}
-            </div>
+                )}
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="px-4 min-h-[42px] md:min-h-[34px] text-[15px] md:text-xs font-medium bg-white text-[#1C1917] border border-[#D6CEBE] hover:border-[#1C1917] rounded-2xl transition-colors whitespace-nowrap cursor-pointer"
+                >
+                  顯示全部 {KYUSHU_FOOD_SPOTS.length} 間餐廳
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Right: Selected Restaurant Featured Dossier Card */}
+        {/* Right: Selected Restaurant Featured Dossier Card (or Graceful Empty State) */}
         <div
           aria-live="polite"
           className="lg:col-span-5 p-5 sm:p-6 md:p-8 bg-[#FBF9F5] flex flex-col justify-between gap-6"
         >
-          <div>
-            {/* Quiet Unboxed Editorial Kicker */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
-              <span
-                className="font-semibold"
-                style={{ color: activeSpot.accentColor }}
-              >
-                DAY 0{activeSpot.dayNumber}
-              </span>
-              <span aria-hidden="true">·</span>
-              <span>{activeSpot.regionLabel}</span>
-              <span aria-hidden="true">·</span>
-              <span>{activeSpot.cuisine}</span>
-            </div>
+          {activeSpot ? (
+            <>
+              <div>
+                {/* Quiet Unboxed Editorial Kicker */}
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
+                  <span
+                    className="font-semibold"
+                    style={{ color: activeSpot.accentColor }}
+                  >
+                    DAY 0{activeSpot.dayNumber}
+                  </span>
+                  <span aria-hidden="true">·</span>
+                  <span>{activeSpot.regionLabel}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {activeSpot.categories
+                      .map((id) => FOOD_CATEGORIES.find((c) => c.id === id)?.label)
+                      .filter(Boolean)
+                      .join(' / ')}
+                  </span>
+                </div>
 
-            <h3 className="font-serif text-2xl sm:text-[1.6rem] font-semibold text-[#1C1917] mt-2 leading-snug">
-              {activeSpot.name}
-            </h3>
+                <h3 className="font-serif text-2xl sm:text-[1.6rem] font-semibold text-[#1C1917] mt-2 leading-snug">
+                  {activeSpot.name}
+                </h3>
 
-            <div className="mt-2 flex flex-wrap items-center gap-2.5">
-              <span className="font-mono text-[15px] md:text-xs text-[#57534E]">
-                {activeSpot.jpName}
-              </span>
-              <button
-                type="button"
-                onClick={() => handleCopyJpName(activeSpot.jpName)}
-                className="inline-flex items-center gap-1 text-sm md:text-xs font-medium text-[#1E3A5F] hover:underline underline-offset-4 whitespace-nowrap cursor-pointer"
-              >
-                {copiedJpName ? (
-                  <>
-                    <Check className="w-3.5 h-3.5" />
-                    <span>已複製店名</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>複製日文店名</span>
-                  </>
+                <p className="text-[16px] md:text-xs text-[#57534E] mt-1">
+                  {activeSpot.cuisine}
+                </p>
+
+                <div className="mt-2.5 flex flex-wrap items-center gap-2.5">
+                  <span className="font-mono text-[15px] md:text-xs text-[#57534E]">
+                    {activeSpot.jpName}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyJpName(activeSpot.jpName)}
+                    className="inline-flex items-center gap-1 text-sm md:text-xs font-medium text-[#1E3A5F] hover:underline underline-offset-4 whitespace-nowrap cursor-pointer"
+                  >
+                    {copiedJpName ? (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>已複製店名</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>複製日文店名</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Restaurant Specialty Introduction */}
+                <p className="mt-4 text-[18px] md:text-[15px] text-[#292524] leading-[1.85]">
+                  {activeSpot.description}
+                </p>
+
+                {/* Signature Dishes */}
+                <div className="mt-5 pt-4 border-t border-[#E5E0D8]">
+                  <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C] mb-2.5">
+                    MUST-ORDER · 推薦必點招牌
+                  </p>
+                  <ul className="space-y-1.5 text-[17px] md:text-sm text-[#1C1917]">
+                    {activeSpot.signatureDishes.map((dish, idx) => (
+                      <li key={dish} className="flex items-baseline gap-2.5 leading-relaxed">
+                        <span className="font-mono text-xs text-[#A8A29E] tabular-nums shrink-0">
+                          0{idx + 1}
+                        </span>
+                        <span>{dish}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Clean Unboxed Practical Metadata Ledger */}
+                <dl className="mt-5 pt-4 border-t border-[#E5E0D8] space-y-3 text-[17px] md:text-xs leading-[1.7] tabular-nums">
+                  <div className="flex items-start justify-between gap-4">
+                    <dt className="inline-flex items-center gap-1.5 text-[#78716C] shrink-0">
+                      <MapPin className="w-4 h-4 md:w-3.5 md:h-3.5" />
+                      <span>順路行程</span>
+                    </dt>
+                    <dd className="text-[#1C1917] font-medium text-right">
+                      {activeSpot.nearestStop}
+                    </dd>
+                  </div>
+
+                  <div className="flex items-start justify-between gap-4">
+                    <dt className="inline-flex items-center gap-1.5 text-[#78716C] shrink-0">
+                      <Wallet className="w-4 h-4 md:w-3.5 md:h-3.5" />
+                      <span>預估人均</span>
+                    </dt>
+                    <dd className="text-right">
+                      <span className="font-mono font-semibold text-[#1C1917]">
+                        {formatYenRange(activeSpot.budgetYenMin, activeSpot.budgetYenMax)}
+                      </span>
+                      <span className="block text-sm md:text-[11px] font-mono text-[#78716C]">
+                        {formatTwdRange(
+                          activeSpot.budgetYenMin,
+                          activeSpot.budgetYenMax,
+                          jpyToTwdRate
+                        )}
+                      </span>
+                    </dd>
+                  </div>
+
+                  <div className="flex items-start justify-between gap-4">
+                    <dt className="inline-flex items-center gap-1.5 text-[#78716C] shrink-0">
+                      <Clock className="w-4 h-4 md:w-3.5 md:h-3.5" />
+                      <span>營業時間</span>
+                    </dt>
+                    <dd className="text-[#57534E] text-right">{activeSpot.hours}</dd>
+                  </div>
+                </dl>
+
+                {/* Local Insider Tip */}
+                <div className="mt-4 px-4 py-3.5 bg-white border border-[#E5E0D8] rounded-[22px] text-[16px] md:text-xs text-[#44403C] leading-[1.75]">
+                  <span className="font-semibold text-[#1E3A5F] mr-1.5">用餐建議：</span>
+                  {activeSpot.tip}
+                </div>
+              </div>
+
+              {/* Action Footer: Google Maps Navigation + Jump to Day Itinerary */}
+              <div className="pt-4 border-t border-[#E5E0D8] grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <a
+                  href={buildGoogleMapsUrl(activeSpot.mapQuery)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-4 min-h-[48px] bg-[#1E3A5F] text-white text-[16px] md:text-xs font-medium rounded-2xl hover:bg-[#162C49] active:scale-[0.98] transition-all whitespace-nowrap"
+                >
+                  <MapPin className="w-4 h-4 shrink-0" />
+                  <span>Google Maps 導航</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-75 shrink-0" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => onJumpToDay(activeSpot.dayNumber)}
+                  className="inline-flex items-center justify-center gap-2 px-4 min-h-[48px] bg-white text-[#1C1917] border border-[#D6CEBE] hover:border-[#1E3A5F] hover:text-[#1E3A5F] text-[16px] md:text-xs font-medium rounded-2xl active:scale-[0.98] transition-all whitespace-nowrap cursor-pointer"
+                >
+                  <span>查看 Day {activeSpot.dayNumber} 行程</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="my-auto py-8 text-center space-y-4">
+              <Utensils className="w-8 h-8 text-[#A8A29E] mx-auto" />
+              <div>
+                <h3 className="font-serif text-xl font-semibold text-[#1C1917]">
+                  Day {dayFilter} 暫無「{activeCategoryLabel}」分類餐廳
+                </h3>
+                <p className="mt-2 text-[17px] md:text-sm text-[#57534E] leading-[1.75]">
+                  可切換為「全部天數」查看其他日期的「{activeCategoryLabel}」推薦，或直接點擊地圖上任一標記瀏覽。
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                {dayFilter !== 'all' && categoryFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => handleSelectDayFilter('all')}
+                    className="px-5 min-h-[46px] bg-[#1E3A5F] text-white text-[16px] md:text-xs font-medium rounded-2xl hover:bg-[#162C49] transition-colors whitespace-nowrap cursor-pointer"
+                  >
+                    查看全部天數的「{activeCategoryLabel}」
+                  </button>
                 )}
-              </button>
-            </div>
-
-            {/* Restaurant Specialty Introduction */}
-            <p className="mt-4 text-[18px] md:text-[15px] text-[#292524] leading-[1.85]">
-              {activeSpot.description}
-            </p>
-
-            {/* Signature Dishes */}
-            <div className="mt-5 pt-4 border-t border-[#E5E0D8]">
-              <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C] mb-2.5">
-                MUST-ORDER · 推薦必點招牌
-              </p>
-              <ul className="space-y-1.5 text-[17px] md:text-sm text-[#1C1917]">
-                {activeSpot.signatureDishes.map((dish, idx) => (
-                  <li key={dish} className="flex items-baseline gap-2.5 leading-relaxed">
-                    <span className="font-mono text-xs text-[#A8A29E] tabular-nums shrink-0">
-                      0{idx + 1}
-                    </span>
-                    <span>{dish}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Clean Unboxed Practical Metadata Ledger */}
-            <dl className="mt-5 pt-4 border-t border-[#E5E0D8] space-y-3 text-[17px] md:text-xs leading-[1.7] tabular-nums">
-              <div className="flex items-start justify-between gap-4">
-                <dt className="inline-flex items-center gap-1.5 text-[#78716C] shrink-0">
-                  <MapPin className="w-4 h-4 md:w-3.5 md:h-3.5" />
-                  <span>順路行程</span>
-                </dt>
-                <dd className="text-[#1C1917] font-medium text-right">
-                  {activeSpot.nearestStop}
-                </dd>
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="px-5 min-h-[46px] bg-white text-[#1C1917] border border-[#D6CEBE] hover:border-[#1C1917] text-[16px] md:text-xs font-medium rounded-2xl transition-colors whitespace-nowrap cursor-pointer"
+                >
+                  重設所有篩選
+                </button>
               </div>
-
-              <div className="flex items-start justify-between gap-4">
-                <dt className="inline-flex items-center gap-1.5 text-[#78716C] shrink-0">
-                  <Wallet className="w-4 h-4 md:w-3.5 md:h-3.5" />
-                  <span>預估人均</span>
-                </dt>
-                <dd className="text-right">
-                  <span className="font-mono font-semibold text-[#1C1917]">
-                    {formatYenRange(activeSpot.budgetYenMin, activeSpot.budgetYenMax)}
-                  </span>
-                  <span className="block text-sm md:text-[11px] font-mono text-[#78716C]">
-                    {formatTwdRange(activeSpot.budgetYenMin, activeSpot.budgetYenMax, jpyToTwdRate)}
-                  </span>
-                </dd>
-              </div>
-
-              <div className="flex items-start justify-between gap-4">
-                <dt className="inline-flex items-center gap-1.5 text-[#78716C] shrink-0">
-                  <Clock className="w-4 h-4 md:w-3.5 md:h-3.5" />
-                  <span>營業時間</span>
-                </dt>
-                <dd className="text-[#57534E] text-right">{activeSpot.hours}</dd>
-              </div>
-            </dl>
-
-            {/* Local Insider Tip */}
-            <div className="mt-4 px-4 py-3.5 bg-white border border-[#E5E0D8] rounded-[22px] text-[16px] md:text-xs text-[#44403C] leading-[1.75]">
-              <span className="font-semibold text-[#1E3A5F] mr-1.5">用餐建議：</span>
-              {activeSpot.tip}
             </div>
-          </div>
-
-          {/* Action Footer: Google Maps Navigation + Jump to Day Itinerary */}
-          <div className="pt-4 border-t border-[#E5E0D8] grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a
-              href={buildGoogleMapsUrl(activeSpot.mapQuery)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-4 min-h-[48px] bg-[#1E3A5F] text-white text-[16px] md:text-xs font-medium rounded-2xl hover:bg-[#162C49] active:scale-[0.98] transition-all whitespace-nowrap"
-            >
-              <MapPin className="w-4 h-4 shrink-0" />
-              <span>Google Maps 導航</span>
-              <ExternalLink className="w-3.5 h-3.5 opacity-75 shrink-0" />
-            </a>
-
-            <button
-              type="button"
-              onClick={() => onJumpToDay(activeSpot.dayNumber)}
-              className="inline-flex items-center justify-center gap-2 px-4 min-h-[48px] bg-white text-[#1C1917] border border-[#D6CEBE] hover:border-[#1E3A5F] hover:text-[#1E3A5F] text-[16px] md:text-xs font-medium rounded-2xl active:scale-[0.98] transition-all whitespace-nowrap cursor-pointer"
-            >
-              <span>查看 Day {activeSpot.dayNumber} 行程</span>
-              <ArrowRight className="w-4 h-4 shrink-0" />
-            </button>
-          </div>
+          )}
         </div>
       </div>
     </section>
