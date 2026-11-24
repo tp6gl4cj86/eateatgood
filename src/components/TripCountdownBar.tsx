@@ -42,13 +42,13 @@ export function TripCountdownBar() {
       aria-label="行程出發倒數"
       className="bg-white border-b border-[#E5E0D8]"
     >
-      <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 text-xs">
+      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 md:px-10 py-3 md:py-2.5 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 text-[17px] md:text-xs leading-relaxed">
         <div className="flex items-center gap-2 text-[#1C1917] tabular-nums">
-          <Calendar className="w-3.5 h-3.5 text-[#1E3A5F] shrink-0" />
+          <Calendar className="w-4 h-4 md:w-3.5 md:h-3.5 text-[#1E3A5F] shrink-0" />
           {!isDuringTrip && !isFinished && (
             <span>
               距離 <span className="font-mono font-medium">2027/02/23</span> 九州出發還有{' '}
-              <strong className="font-mono text-sm font-semibold text-[#1E3A5F]">
+              <strong className="font-mono text-[18px] md:text-sm font-semibold text-[#1E3A5F]">
                 {daysUntilTrip}
               </strong>{' '}
               天
@@ -57,7 +57,7 @@ export function TripCountdownBar() {
           {isDuringTrip && (
             <span>
               九州自由行進行中 ·{' '}
-              <strong className="font-mono font-semibold text-[#1E3A5F]">
+              <strong className="font-mono text-[18px] md:text-sm font-semibold text-[#1E3A5F]">
                 Day {currentTripDay} / 6
               </strong>
             </span>

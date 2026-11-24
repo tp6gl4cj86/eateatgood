@@ -28,18 +28,18 @@ export function PdfViewerModal({ open, onClose }: PdfViewerModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-[#FBF9F5] border border-[#D6CEBE] w-full max-w-5xl h-[86vh] flex flex-col shadow-xl"
+        className="bg-[#FBF9F5] border border-[#D6CEBE] rounded-[28px] overflow-hidden w-full max-w-5xl h-[86vh] flex flex-col shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-[#E5E0D8] bg-white">
           <div className="min-w-0">
             <h3
               id="pdf-modal-title"
-              className="font-serif text-lg font-semibold text-[#1C1917] truncate"
+              className="font-serif text-xl md:text-lg font-semibold text-[#1C1917] truncate"
             >
               FAKER TRAVEL — 原始行程確認書 PDF
             </h3>
-            <p className="text-xs text-[#78716C] truncate">
+            <p className="text-[17px] md:text-xs text-[#78716C] truncate">
               2027 日本九州 6 天 5 夜自由行（最終定稿版 · 共 2 頁）
             </p>
           </div>
@@ -47,18 +47,18 @@ export function PdfViewerModal({ open, onClose }: PdfViewerModalProps) {
             <a
               href={ORIGINAL_PDF_PATH}
               download="FAKER_TRAVEL_2027日本九州6天5夜自由行.pdf"
-              className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#1E3A5F] text-white text-xs font-medium rounded-sm hover:bg-[#162C49] transition-colors whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-2 px-4 min-h-[44px] md:min-h-0 md:py-2 bg-[#1E3A5F] text-white text-[17px] md:text-xs font-medium rounded-2xl hover:bg-[#162C49] transition-colors whitespace-nowrap shrink-0"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-4 h-4 md:w-3.5 md:h-3.5" />
               <span>下載 PDF</span>
             </a>
             <button
               type="button"
               onClick={onClose}
               aria-label="關閉預覽視窗"
-              className="p-2 text-[#57534E] hover:text-[#1C1917] border border-[#E5E0D8] rounded-sm cursor-pointer"
+              className="min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0 p-2 flex items-center justify-center text-[#57534E] hover:text-[#1C1917] border border-[#E5E0D8] rounded-2xl cursor-pointer"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5 md:w-4 md:h-4" />
             </button>
           </div>
         </div>
@@ -129,38 +129,43 @@ export function TaxiCardModal({ open, onClose }: TaxiCardModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-[#1C1917]/70 backdrop-blur-[2px] flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-[#1C1917]/65 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="taxi-card-title"
       onClick={onClose}
     >
       <div
-        className="bg-white border border-[#D6CEBE] w-full max-w-2xl shadow-xl"
+        className="bg-white border border-[#D6CEBE] rounded-t-[28px] sm:rounded-[28px] w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-[#E5E0D8]">
-          <h3 id="taxi-card-title" className="font-serif text-lg font-semibold text-[#1C1917]">
+        {/* Mobile Grab Handle */}
+        <div className="sm:hidden pt-3 pb-1">
+          <div className="w-10 h-1.5 bg-[#D6CEBE] rounded-full mx-auto" aria-hidden="true" />
+        </div>
+
+        <div className="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 border-b border-[#E5E0D8]">
+          <h3 id="taxi-card-title" className="font-serif text-2xl sm:text-lg font-semibold text-[#1C1917]">
             日本計程車司機放大溝通卡
           </h3>
           <button
             type="button"
             onClick={onClose}
             aria-label="關閉計程車溝通卡"
-            className="p-2 text-[#57534E] hover:text-[#1C1917] border border-[#E5E0D8] rounded-sm cursor-pointer"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center text-[#57534E] hover:text-[#1C1917] border border-[#E5E0D8] rounded-2xl cursor-pointer"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-6 md:p-8">
-          <div className="flex items-center gap-1 p-1 bg-[#F3EFE8] rounded-md mb-6">
+        <div className="p-5 sm:p-6 md:p-8 pb-8">
+          <div className="flex items-center gap-1.5 p-1.5 bg-[#F3EFE8] rounded-[28px] mb-6">
             {TAXI_DESTINATIONS.map((dest) => (
               <button
                 key={dest.id}
                 type="button"
                 onClick={() => setSelectedId(dest.id as 'hotel' | 'airport')}
-                className={`flex-1 px-3 py-2 text-xs font-medium rounded-sm transition-colors whitespace-nowrap cursor-pointer ${
+                className={`flex-1 px-3 min-h-[46px] text-[16px] md:text-xs font-medium rounded-[22px] transition-colors whitespace-nowrap cursor-pointer ${
                   selectedId === dest.id
                     ? 'bg-white text-[#1E3A5F] shadow-xs'
                     : 'text-[#57534E] hover:text-[#1C1917]'
@@ -171,29 +176,35 @@ export function TaxiCardModal({ open, onClose }: TaxiCardModalProps) {
             ))}
           </div>
 
-          <div className="bg-[#FBF9F5] border border-[#D6CEBE] p-6 md:p-8 space-y-4">
-            <p className="text-sm font-medium text-[#1E3A5F]">{active.politeLine}</p>
+          <div className="bg-[#FBF9F5] border border-[#D6CEBE] rounded-[28px] p-5 sm:p-6 md:p-8 space-y-4">
+            <p className="text-[18px] md:text-sm font-medium text-[#1E3A5F] leading-relaxed">
+              {active.politeLine}
+            </p>
             <p className="font-serif text-3xl md:text-4xl font-bold text-[#1C1917] leading-tight">
               {active.jpTitle}
             </p>
-            <p className="text-sm text-[#57534E]">{active.jpSub}</p>
+            <p className="text-[17px] md:text-sm text-[#57534E]">{active.jpSub}</p>
             <div className="pt-4 border-t border-[#E5E0D8]">
-              <p className="text-xs text-[#78716C] mb-1">住所 / 地址</p>
-              <p className="text-xl md:text-2xl font-bold text-[#1C1917] tracking-wide">
+              <p className="text-sm md:text-xs text-[#78716C] mb-1">住所 / 地址</p>
+              <p className="text-2xl font-bold text-[#1C1917] tracking-wide leading-snug">
                 {active.jpAddress}
               </p>
-              <p className="text-xs text-[#57534E] mt-2">{active.hint}</p>
+              <p className="text-[17px] md:text-xs text-[#57534E] mt-2 leading-relaxed">
+                {active.hint}
+              </p>
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-            <p className="text-xs text-[#78716C] tabular-nums">{active.fareNote}</p>
+          <div className="mt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <p className="text-[17px] md:text-xs text-[#78716C] leading-relaxed tabular-nums">
+              {active.fareNote}
+            </p>
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#1C1917] text-white text-xs font-medium rounded-sm hover:bg-[#292524] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 min-h-[50px] bg-[#1C1917] text-white text-[17px] md:text-sm font-medium rounded-2xl hover:bg-[#292524] active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer"
             >
-              {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               <span>{copied ? '已複製日文地址' : '複製日文地址'}</span>
             </button>
           </div>

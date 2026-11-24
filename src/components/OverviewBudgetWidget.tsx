@@ -9,6 +9,7 @@ export interface DailyBudgetEntry {
 }
 
 export const DEFAULT_DAILY_BUDGETS: DailyBudgetEntry[] = [
+  { dayNumber: 0, budget: 0, actual: 0 },
   { dayNumber: 1, budget: 25000, actual: 0 },
   { dayNumber: 2, budget: 15000, actual: 0 },
   { dayNumber: 3, budget: 16000, actual: 0 },
@@ -123,13 +124,13 @@ export function OverviewBudgetWidget({
   return (
     <div
       aria-labelledby="budget-widget-heading"
-      className="mt-8 bg-white border border-[#E5E0D8]"
+      className="mt-7 bg-white border border-[#E5E0D8] rounded-[28px] overflow-hidden"
     >
       {/* Header Bar */}
-      <div className="px-6 md:px-8 py-5 border-b border-[#EFECE6] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="px-5 sm:px-6 md:px-8 py-5 border-b border-[#EFECE6] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono tracking-wider text-[#1E3A5F] mb-1.5">
-            <Wallet className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-2 text-sm md:text-xs font-mono tracking-wider text-[#1E3A5F] mb-1.5">
+            <Wallet className="w-4 h-4" />
             <span>TRIP BUDGET TRACKER · 單人日圓估算</span>
           </div>
           <h2
@@ -145,7 +146,7 @@ export function OverviewBudgetWidget({
             type="button"
             onClick={() => setShowTwd((prev) => !prev)}
             aria-pressed={showTwd}
-            className={`px-3 py-1.5 text-xs font-medium rounded-sm border transition-colors whitespace-nowrap cursor-pointer tabular-nums ${
+            className={`px-4 min-h-[44px] md:min-h-0 md:py-2 text-[16px] md:text-xs font-medium rounded-2xl border transition-all active:scale-[0.98] whitespace-nowrap cursor-pointer tabular-nums ${
               showTwd
                 ? 'bg-[#F7F4EE] text-[#1E3A5F] border-[#1E3A5F]/40'
                 : 'bg-white text-[#57534E] border-[#E5E0D8] hover:text-[#1C1917]'
@@ -157,9 +158,9 @@ export function OverviewBudgetWidget({
           <button
             type="button"
             onClick={onResetBudgets}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#57534E] bg-white border border-[#E5E0D8] hover:border-[#1C1917] hover:text-[#1C1917] rounded-sm transition-colors whitespace-nowrap cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 min-h-[44px] md:min-h-0 md:py-2 text-[16px] md:text-xs font-medium text-[#57534E] bg-white border border-[#E5E0D8] hover:border-[#1C1917] hover:text-[#1C1917] rounded-2xl transition-all active:scale-[0.98] whitespace-nowrap cursor-pointer"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-4 h-4 md:w-3.5 md:h-3.5" />
             <span>重設預算</span>
           </button>
         </div>
@@ -169,11 +170,11 @@ export function OverviewBudgetWidget({
       {hasAnyOverBudget && (
         <div
           role="alert"
-          className="px-6 md:px-8 py-3 bg-[#FDF4F2] border-b border-[#E5B8B0] flex flex-wrap items-center justify-between gap-3 text-xs text-[#991B1B]"
+          className="px-5 sm:px-6 md:px-8 py-4 bg-[#FDF4F2] border-b border-[#E5B8B0] flex flex-wrap items-center justify-between gap-3 text-[17px] md:text-xs text-[#991B1B]"
         >
-          <div className="flex items-center gap-2.5">
-            <AlertTriangle className="w-4 h-4 text-[#B43E2B] shrink-0" />
-            <p className="leading-relaxed tabular-nums">
+          <div className="flex items-start gap-2.5">
+            <AlertTriangle className="w-5 h-5 md:w-4 md:h-4 text-[#B43E2B] shrink-0 mt-0.5" />
+            <p className="leading-[1.75] tabular-nums">
               <strong className="font-semibold text-[#B43E2B] mr-1.5">超出預期支出</strong>
               {overBudgetDays.length > 0 && (
                 <span>
@@ -198,66 +199,66 @@ export function OverviewBudgetWidget({
       )}
 
       {/* Overall Summary KPIs + Progress Gauge */}
-      <div className="px-6 md:px-8 py-6 border-b border-[#EFECE6] bg-[#FBF9F5]">
+      <div className="px-5 sm:px-6 md:px-8 py-6 border-b border-[#EFECE6] bg-[#FBF9F5]">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 tabular-nums">
           <div>
-            <p className="text-[11px] font-mono tracking-wider text-[#78716C]">旅程總預算</p>
-            <p className="mt-1 font-mono text-xl font-semibold text-[#1C1917]">
+            <p className="text-sm md:text-[11px] font-mono tracking-wider text-[#78716C]">旅程總預算</p>
+            <p className="mt-1 font-mono text-2xl md:text-xl font-semibold text-[#1C1917]">
               {formatYen(totalBudget)}
             </p>
             {showTwd && (
-              <p className="text-[11px] font-mono text-[#78716C] mt-0.5">
+              <p className="text-sm md:text-[11px] font-mono text-[#78716C] mt-0.5">
                 約 {formatTwd(totalBudget, jpyToTwdRate)}
               </p>
             )}
           </div>
 
           <div>
-            <p className="text-[11px] font-mono tracking-wider text-[#78716C]">累積實際支出</p>
+            <p className="text-sm md:text-[11px] font-mono tracking-wider text-[#78716C]">累積實際支出</p>
             <p
-              className={`mt-1 font-mono text-xl font-semibold ${
+              className={`mt-1 font-mono text-2xl md:text-xl font-semibold ${
                 isOverallOver ? 'text-[#B43E2B]' : 'text-[#1E3A5F]'
               }`}
             >
               {formatYen(totalActual)}
             </p>
             {showTwd && (
-              <p className="text-[11px] font-mono text-[#78716C] mt-0.5">
+              <p className="text-sm md:text-[11px] font-mono text-[#78716C] mt-0.5">
                 約 {formatTwd(totalActual, jpyToTwdRate)}
               </p>
             )}
           </div>
 
           <div>
-            <p className="text-[11px] font-mono tracking-wider text-[#78716C]">
+            <p className="text-sm md:text-[11px] font-mono tracking-wider text-[#78716C]">
               {isOverallOver ? '預算超支金額' : '剩餘可用預算'}
             </p>
             <p
-              className={`mt-1 font-mono text-xl font-semibold ${
+              className={`mt-1 font-mono text-2xl md:text-xl font-semibold ${
                 isOverallOver ? 'text-[#B43E2B]' : 'text-[#1C1917]'
               }`}
             >
               {isOverallOver ? `-${formatYen(Math.abs(remaining))}` : formatYen(remaining)}
             </p>
             {showTwd && (
-              <p className="text-[11px] font-mono text-[#78716C] mt-0.5">
+              <p className="text-sm md:text-[11px] font-mono text-[#78716C] mt-0.5">
                 約 {formatTwd(Math.abs(remaining), jpyToTwdRate)}
               </p>
             )}
           </div>
 
           <div>
-            <p className="text-[11px] font-mono tracking-wider text-[#78716C]">總預算使用進度</p>
-            <div className="mt-1 flex items-baseline gap-2">
+            <p className="text-sm md:text-[11px] font-mono tracking-wider text-[#78716C]">總預算使用進度</p>
+            <div className="mt-1 flex flex-wrap items-baseline gap-2">
               <span
-                className={`font-mono text-xl font-semibold ${
+                className={`font-mono text-2xl md:text-xl font-semibold ${
                   isOverallOver ? 'text-[#B43E2B]' : 'text-[#1E3A5F]'
                 }`}
               >
                 {usagePercent}%
               </span>
               <span
-                className={`text-xs font-medium ${
+                className={`text-sm md:text-xs font-medium ${
                   hasAnyOverBudget ? 'text-[#B43E2B]' : 'text-[#57534E]'
                 }`}
               >
@@ -275,7 +276,7 @@ export function OverviewBudgetWidget({
 
         {/* Full-Width Budget Progress Bar */}
         <div className="mt-5">
-          <div className="flex items-center justify-between text-[11px] font-mono text-[#78716C] mb-1.5 tabular-nums">
+          <div className="flex items-center justify-between text-sm md:text-[11px] font-mono text-[#78716C] mb-1.5 tabular-nums">
             <span>整趟旅程累積進度</span>
             <span>
               {formatYen(totalActual)} / {formatYen(totalBudget)}
@@ -287,10 +288,10 @@ export function OverviewBudgetWidget({
             aria-valuenow={usagePercent}
             aria-valuemin={0}
             aria-valuemax={100}
-            className="h-2.5 w-full bg-[#E8E2D8] overflow-hidden"
+            className="h-3 w-full bg-[#E8E2D8] rounded-full overflow-hidden"
           >
             <div
-              className={`h-full transition-all duration-200 ${
+              className={`h-full rounded-full transition-all duration-200 ${
                 isOverallOver ? 'bg-[#B43E2B]' : 'bg-[#1E3A5F]'
               }`}
               style={{ width: `${clampedBarPercent}%` }}
@@ -329,7 +330,7 @@ export function OverviewBudgetWidget({
               viewBox={`0 0 ${svgWidth} ${svgHeight}`}
               className="w-full h-auto select-none"
               role="img"
-              aria-label="六天每日預算與實際支出長條對比圖"
+              aria-label="每日預算與實際支出長條對比圖"
             >
               {/* Horizontal Gridlines & Y-Axis Labels */}
               {yTicks.map((tick) => {
@@ -451,7 +452,7 @@ export function OverviewBudgetWidget({
           </div>
 
           {/* Focused Day Readout Footer */}
-          <div className="mt-4 pt-4 border-t border-[#EFECE6] flex flex-wrap items-center justify-between gap-3 text-xs tabular-nums">
+          <div className="mt-4 pt-4 border-t border-[#EFECE6] flex flex-wrap items-center justify-between gap-3 text-[17px] md:text-xs tabular-nums">
             <span
               className={`font-medium ${
                 activeEntry.actual > activeEntry.budget ? 'text-[#B43E2B]' : 'text-[#1C1917]'
@@ -474,12 +475,12 @@ export function OverviewBudgetWidget({
 
         {/* Right: Editable Daily Budget & Actual Spending Ledger */}
         <div className="lg:col-span-6 p-5 sm:p-6 md:p-8">
-          <p className="text-xs font-mono tracking-wider text-[#78716C] mb-4">
+          <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C] mb-4">
             INPUT LEDGER · 直接輸入金額即時更新圖表（自動儲存）
           </p>
 
-          {/* Mobile Touch Cards (zero sideways table scroll, text-base prevents iOS auto-zoom) */}
-          <div className="md:hidden space-y-3">
+          {/* Mobile Touch Cards (zero sideways table scroll, text-[17px] prevents iOS auto-zoom) */}
+          <div className="md:hidden space-y-4">
             {normalizedEntries.map((item) => {
               const diff = item.budget - item.actual;
               const isOver = item.actual > item.budget && item.actual > 0;
@@ -487,29 +488,29 @@ export function OverviewBudgetWidget({
                 <div
                   key={item.dayNumber}
                   onClick={() => setFocusedDay(item.dayNumber)}
-                  className={`p-3.5 border transition-colors ${
+                  className={`p-5 border rounded-[28px] transition-colors ${
                     isOver
                       ? 'bg-[#FDF4F2] border-[#E5B8B0]'
                       : 'bg-[#FBF9F5] border-[#EFECE6]'
                   }`}
                 >
-                  <div className="flex items-baseline justify-between gap-2 mb-2.5 tabular-nums">
+                  <div className="flex items-baseline justify-between gap-2 mb-3.5 tabular-nums">
                     <div className="flex items-baseline gap-2">
                       <span
-                        className={`font-mono text-sm font-semibold ${
+                        className={`font-mono text-[18px] font-semibold ${
                           isOver ? 'text-[#B43E2B]' : 'text-[#1C1917]'
                         }`}
                       >
                         Day {item.dayNumber}
                       </span>
                       <span
-                        className={`text-xs ${isOver ? 'text-[#991B1B]' : 'text-[#78716C]'}`}
+                        className={`text-[17px] ${isOver ? 'text-[#991B1B]' : 'text-[#57534E]'}`}
                       >
                         {item.regionLabel}
                       </span>
                     </div>
 
-                    <span className="font-mono text-xs">
+                    <span className="font-mono text-[16px]">
                       {item.actual === 0 ? (
                         <span className="text-[#A8A29E]">尚無支出</span>
                       ) : isOver ? (
@@ -522,11 +523,11 @@ export function OverviewBudgetWidget({
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-2 gap-3">
                     <label className="block">
-                      <span className="block text-[11px] text-[#78716C] mb-1">每日預算 (¥)</span>
+                      <span className="block text-[15px] text-[#57534E] mb-1.5">每日預算 (¥)</span>
                       <div className="relative">
-                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-[#78716C]">
+                        <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-[17px] text-[#78716C]">
                           ¥
                         </span>
                         <input
@@ -539,7 +540,7 @@ export function OverviewBudgetWidget({
                           onChange={(e) =>
                             handleNumberInput(item.dayNumber, 'budget', e.target.value)
                           }
-                          className={`w-full min-h-[44px] pl-7 pr-2.5 font-mono text-base tabular-nums text-[#1C1917] bg-white border focus:outline-none rounded-xs ${
+                          className={`w-full min-h-[48px] pl-8 pr-3 font-mono text-[18px] tabular-nums text-[#1C1917] bg-white border focus:outline-none rounded-2xl ${
                             isOver
                               ? 'border-[#E5B8B0] focus:border-[#B43E2B]'
                               : 'border-[#E5E0D8] focus:border-[#1E3A5F]'
@@ -550,15 +551,15 @@ export function OverviewBudgetWidget({
 
                     <label className="block">
                       <span
-                        className={`block text-[11px] mb-1 ${
-                          isOver ? 'text-[#B43E2B] font-medium' : 'text-[#78716C]'
+                        className={`block text-[15px] mb-1.5 ${
+                          isOver ? 'text-[#B43E2B] font-medium' : 'text-[#57534E]'
                         }`}
                       >
                         實際支出 (¥)
                       </span>
                       <div className="relative">
                         <span
-                          className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm ${
+                          className={`pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-[17px] ${
                             isOver ? 'text-[#B43E2B]' : 'text-[#78716C]'
                           }`}
                         >
@@ -574,7 +575,7 @@ export function OverviewBudgetWidget({
                           onChange={(e) =>
                             handleNumberInput(item.dayNumber, 'actual', e.target.value)
                           }
-                          className={`w-full min-h-[44px] pl-7 pr-2.5 font-mono text-base tabular-nums bg-white border focus:outline-none rounded-xs ${
+                          className={`w-full min-h-[48px] pl-8 pr-3 font-mono text-[18px] tabular-nums bg-white border focus:outline-none rounded-2xl ${
                             isOver
                               ? 'text-[#B43E2B] font-semibold border-[#B43E2B] focus:border-[#991B1B]'
                               : 'text-[#1C1917] border-[#E5E0D8] focus:border-[#1E3A5F]'
@@ -644,7 +645,7 @@ export function OverviewBudgetWidget({
                             onChange={(e) =>
                               handleNumberInput(item.dayNumber, 'budget', e.target.value)
                             }
-                            className={`w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums text-[#1C1917] bg-white border focus:outline-none rounded-xs ${
+                            className={`w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums text-[#1C1917] bg-white border focus:outline-none rounded-xl ${
                               isOver
                                 ? 'border-[#E5B8B0] focus:border-[#B43E2B]'
                                 : 'border-[#E5E0D8] focus:border-[#1E3A5F]'
@@ -671,7 +672,7 @@ export function OverviewBudgetWidget({
                             onChange={(e) =>
                               handleNumberInput(item.dayNumber, 'actual', e.target.value)
                             }
-                            className={`w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums bg-white border focus:outline-none rounded-xs ${
+                            className={`w-28 pl-6 pr-2 py-1.5 font-mono tabular-nums bg-white border focus:outline-none rounded-xl ${
                               isOver
                                 ? 'text-[#B43E2B] font-semibold border-[#B43E2B] focus:border-[#991B1B]'
                                 : 'text-[#1C1917] border-[#E5E0D8] focus:border-[#1E3A5F]'

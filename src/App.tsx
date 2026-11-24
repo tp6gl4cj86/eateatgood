@@ -292,7 +292,7 @@ export default function App() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-[#FBF9F5] text-[#1C1917] flex flex-col">
+    <div className="min-h-screen bg-[#FBF9F5] text-[#1C1917] flex flex-col overflow-x-clip">
       {/* Strict 3-Zone Top Navigation Bar (scrolls naturally on mobile to preserve 15% sticky budget) */}
       <header className="md:sticky md:top-0 z-40 bg-[#FBF9F5]/95 backdrop-blur-xs border-b border-[#E5E0D8]">
         <div className="max-w-[1180px] mx-auto px-4 sm:px-6 md:px-10 h-14 md:h-16 flex items-center justify-between gap-4 md:gap-8">
@@ -300,7 +300,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => handleOpenTab({ type: 'overview' })}
-            className="font-serif text-lg md:text-xl font-bold tracking-[0.12em] text-[#1E3A5F] whitespace-nowrap shrink-0 cursor-pointer"
+            className="font-serif text-xl font-bold tracking-[0.12em] text-[#1E3A5F] whitespace-nowrap shrink-0 cursor-pointer"
           >
             {TRIP_OVERVIEW.brand}
           </button>
@@ -377,9 +377,9 @@ export default function App() {
             <button
               type="button"
               onClick={() => setTaxiCardOpen(true)}
-              className="inline-flex items-center gap-2 px-3.5 min-h-[40px] md:min-h-0 md:py-2 bg-[#1E3A5F] text-white text-xs font-medium rounded-sm hover:bg-[#162C49] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 min-h-[42px] md:min-h-0 md:py-2 bg-[#1E3A5F] text-white text-sm md:text-xs font-medium rounded-xl hover:bg-[#162C49] active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer"
             >
-              <CarTaxiFront className="w-3.5 h-3.5" />
+              <CarTaxiFront className="w-4 h-4 md:w-3.5 md:h-3.5" />
               <span>司機溝通卡</span>
             </button>
           </div>
@@ -393,10 +393,10 @@ export default function App() {
       <div
         role="tablist"
         aria-label="每日行程置頂快速切換"
-        className="sticky top-0 md:top-16 z-30 bg-[#F7F4EE]/95 backdrop-blur-xs border-b border-[#E5E0D8]"
+        className="sticky top-0 md:top-16 z-30 w-full min-w-0 bg-[#F7F4EE]/95 backdrop-blur-md border-b border-[#E5E0D8]"
       >
-        <div className="max-w-[1180px] mx-auto px-3 sm:px-6 md:px-10 h-11 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-          {/* Dedicated Day 1 – Day 6 Tabs */}
+        <div className="max-w-[1180px] mx-auto px-3 sm:px-6 md:px-10 h-13 md:h-12 flex items-center gap-2 overflow-x-auto no-scrollbar">
+          {/* Dedicated Day 0 – Day 6 Tabs */}
           {DAYS_ITINERARY.map((day) => {
             const isActive = currentDayValue === day.dayNumber;
             const shortDate = day.date.slice(5);
@@ -407,18 +407,18 @@ export default function App() {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => handleJumpToDay(day.dayNumber)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-medium rounded-sm transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 min-h-[40px] md:min-h-[36px] text-[15px] md:text-xs font-medium rounded-2xl transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer ${
                   isActive
-                    ? 'bg-[#1E3A5F] text-white'
-                    : 'text-[#44403C] hover:bg-white hover:text-[#1C1917]'
+                    ? 'bg-[#1E3A5F] text-white shadow-xs'
+                    : 'text-[#44403C] bg-white/80 hover:bg-white hover:text-[#1C1917]'
                 }`}
               >
                 <span className="font-mono tabular-nums font-semibold">Day {day.dayNumber}</span>
-                <span className={isActive ? 'text-white/85' : 'text-[#78716C]'}>
+                <span className={isActive ? 'text-white/90' : 'text-[#57534E]'}>
                   {day.regionLabel}
                 </span>
                 <span
-                  className={`hidden lg:inline font-mono text-[11px] tabular-nums ${
+                  className={`hidden lg:inline font-mono text-xs tabular-nums ${
                     isActive ? 'text-white/70' : 'text-[#A8A29E]'
                   }`}
                 >
@@ -428,73 +428,103 @@ export default function App() {
             );
           })}
 
-          <span className="h-4 w-px bg-[#D6CEBE] mx-1 shrink-0" aria-hidden="true" />
+          <span className="h-5 w-px bg-[#D6CEBE] mx-1 shrink-0" aria-hidden="true" />
 
           <button
             type="button"
             role="tab"
             aria-selected={currentDayValue === 'all'}
             onClick={() => handleJumpToDay('all')}
-            className={`px-3 py-1.5 min-h-[36px] text-xs font-medium rounded-sm transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`px-3.5 py-1.5 min-h-[40px] md:min-h-[36px] text-[15px] md:text-xs font-medium rounded-2xl transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer ${
               currentDayValue === 'all'
-                ? 'bg-[#1E3A5F] text-white'
-                : 'text-[#57534E] hover:bg-white hover:text-[#1C1917]'
+                ? 'bg-[#1E3A5F] text-white shadow-xs'
+                : 'text-[#44403C] bg-white/80 hover:bg-white hover:text-[#1C1917]'
             }`}
           >
-            6 天總表
+            完整總表
           </button>
         </div>
       </div>
 
       {/* Dedicated Tab Content Area */}
-      <main className="flex-1">
+      <main className="flex-1 min-w-0 w-full">
         {/* TAB 1: Overview (Hero + Flight/Hotel Dossier + Ribbon + Weather + Budget) */}
         {activeTab.type === 'overview' && (
-          <section id="overview" className="py-8 md:py-16">
+          <section id="overview" className="py-7 md:py-14">
             <div className="max-w-[1180px] mx-auto px-4 sm:px-6 md:px-10">
               {/* Asymmetric 2-Column Editorial Hero */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-stretch">
                 {/* Left Column: Title, Deck & Primary Controls */}
                 <div className="lg:col-span-7 flex flex-col justify-between">
                   <div>
-                    <p className="text-xs font-mono tracking-[0.14em] text-[#57534E] mb-3">
+                    <p className="text-sm md:text-xs font-mono tracking-[0.12em] text-[#57534E] mb-3">
                       {TRIP_OVERVIEW.edition} · 2027 九州鐵道自由行
                     </p>
 
-                    <h1 className="font-serif text-[clamp(1.95rem,5vw,3.75rem)] font-semibold text-[#1C1917] leading-[1.15] tracking-tight headline-balance">
+                    <h1 className="font-serif text-[clamp(2.1rem,6.5vw,3.75rem)] font-semibold text-[#1C1917] leading-[1.16] tracking-tight headline-balance">
                       {TRIP_OVERVIEW.title}
                     </h1>
 
-                    <p className="mt-4 md:mt-6 text-[15px] md:text-[16px] text-[#44403C] leading-[1.75] max-w-[60ch]">
-                      以博多為圓心連住五晚，串聯福岡博多市區和牛美食、門司港懷舊海峽與 B.LEAGUE 職業籃球賽、全車指定席觀光特急「由布院之森」、九州新幹線直達熊本城，以及週六 JRA 小倉競馬場全日熱戰的完整行動手冊。
+                    <p className="mt-4 md:mt-5 text-[18px] md:text-[16px] text-[#44403C] leading-[1.85] max-w-[60ch]">
+                      從 Day 0「樂house」開趴披薩夜暖身起跑，飛往福岡以博多為圓心連住五晚，串聯博多和牛美食、門司港懷舊海峽與 B.LEAGUE 職業籃球賽、全車指定席觀光特急「由布院之森」、九州新幹線直達熊本城，以及週六 JRA 小倉競馬場全日熱戰。
                     </p>
 
-                    <div className="mt-6 md:mt-8 grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-3">
+                    {/* 4-Member Travel Crew Roster */}
+                    <div className="mt-6 pt-5 border-t border-[#E5E0D8]">
+                      <p className="text-sm md:text-xs font-mono tracking-[0.12em] text-[#78716C] mb-3">
+                        TRAVEL CREW · 同行成員（{TRIP_OVERVIEW.members.length} 人）
+                      </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {TRIP_OVERVIEW.members.map((member, index) => (
+                          <div
+                            key={member}
+                            className="px-4 py-3.5 bg-white border border-[#E5E0D8] rounded-[28px] flex items-center justify-between gap-2"
+                          >
+                            <span className="font-mono text-sm md:text-xs text-[#A8A29E] tabular-nums">
+                              0{index + 1}
+                            </span>
+                            <span className="text-[18px] md:text-sm font-semibold text-[#1C1917] truncate">
+                              {member}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-6 md:mt-7 grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-3">
                       <button
                         type="button"
-                        onClick={() => handleJumpToDay(1)}
-                        className="inline-flex items-center justify-center gap-2 px-5 min-h-[48px] bg-[#1C1917] text-white text-sm font-medium rounded-sm hover:bg-[#292524] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                        onClick={() => handleJumpToDay(0)}
+                        className="inline-flex items-center justify-center gap-2 px-5 min-h-[52px] bg-[#1C1917] text-white text-[17px] md:text-sm font-medium rounded-2xl hover:bg-[#292524] active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer"
                       >
-                        <span>進入 Day 1 專屬行程</span>
+                        <span>Day 0 樂house 披薩夜</span>
                         <ArrowDownRight className="w-4 h-4" />
                       </button>
 
                       <button
                         type="button"
+                        onClick={() => handleJumpToDay(1)}
+                        className="inline-flex items-center justify-center gap-2 px-5 min-h-[52px] bg-white text-[#1C1917] text-[17px] md:text-sm font-medium border border-[#D6CEBE] hover:border-[#1E3A5F] hover:text-[#1E3A5F] rounded-2xl active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer"
+                      >
+                        <span>進入 Day 1 九州出發</span>
+                      </button>
+
+                      <button
+                        type="button"
                         onClick={() => handleOpenTab({ type: 'logistics' })}
-                        className="inline-flex items-center justify-center gap-2 px-5 min-h-[48px] bg-white text-[#1C1917] text-sm font-medium border border-[#D6CEBE] hover:border-[#1E3A5F] hover:text-[#1E3A5F] rounded-sm transition-colors whitespace-nowrap shrink-0 cursor-pointer tabular-nums"
+                        className="inline-flex items-center justify-center gap-2 px-5 min-h-[52px] bg-white text-[#1C1917] text-[17px] md:text-sm font-medium border border-[#D6CEBE] hover:border-[#1E3A5F] hover:text-[#1E3A5F] rounded-2xl active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer tabular-nums"
                       >
                         <Luggage className="w-4 h-4" />
                         <span>
-                          行李備忘清單（{packedCount}/{totalPackingCount}）
+                          行李清單（{packedCount}/{totalPackingCount}）
                         </span>
                       </button>
                     </div>
                   </div>
 
                   {/* Quick Tab Links */}
-                  <div className="mt-8 pt-5 border-t border-[#E5E0D8] flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[#57534E]">
-                    <span className="font-mono text-[#78716C]">快速入口：</span>
+                  <div className="mt-7 pt-5 border-t border-[#E5E0D8] flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[17px] md:text-xs text-[#57534E]">
+                    <span className="font-mono text-sm md:text-xs text-[#78716C]">快速入口：</span>
                     <button
                       type="button"
                       onClick={() => handleOpenTab({ type: 'rail-map' })}
@@ -520,40 +550,40 @@ export default function App() {
                 </div>
 
                 {/* Right Column: Flight & Base Hotel Archival Slip */}
-                <div className="lg:col-span-5 bg-white border border-[#E5E0D8] p-5 sm:p-6 md:p-8 flex flex-col justify-between">
+                <div className="lg:col-span-5 bg-white border border-[#E5E0D8] rounded-[28px] p-5 sm:p-6 md:p-8 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center justify-between text-xs font-mono text-[#78716C] pb-3.5 border-b border-[#EFECE6]">
+                    <div className="flex items-center justify-between text-sm md:text-xs font-mono text-[#78716C] pb-3.5 border-b border-[#EFECE6]">
                       <span>FLIGHT &amp; BASE STAY</span>
                       <span className="tabular-nums">STARLUX · HAKATA</span>
                     </div>
 
                     {/* Flights Block */}
                     <div className="py-4 md:py-5 border-b border-[#EFECE6] space-y-3.5">
-                      <div className="flex items-center gap-2 text-xs font-medium text-[#1E3A5F]">
-                        <Plane className="w-3.5 h-3.5" />
+                      <div className="flex items-center gap-2 text-[17px] md:text-xs font-medium text-[#1E3A5F]">
+                        <Plane className="w-4 h-4 md:w-3.5 md:h-3.5" />
                         <span>星宇航空直飛航班</span>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <p className="text-[11px] font-mono text-[#78716C] tabular-nums">
+                          <p className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
                             去程 · 02/23（二）
                           </p>
-                          <p className="font-mono text-lg font-semibold text-[#1C1917] mt-1 tabular-nums">
+                          <p className="font-mono text-2xl md:text-xl font-semibold text-[#1C1917] mt-1 tabular-nums">
                             {TRIP_OVERVIEW.flights.outbound.code}
                           </p>
-                          <p className="text-xs text-[#57534E] mt-0.5">
+                          <p className="text-[17px] md:text-xs text-[#57534E] mt-1">
                             {TRIP_OVERVIEW.flights.outbound.from} ➔ {TRIP_OVERVIEW.flights.outbound.to}
                           </p>
                         </div>
                         <div className="pl-4 border-l border-[#EFECE6]">
-                          <p className="text-[11px] font-mono text-[#78716C] tabular-nums">
+                          <p className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
                             回程 · 02/28（日）
                           </p>
-                          <p className="font-mono text-lg font-semibold text-[#1C1917] mt-1 tabular-nums">
+                          <p className="font-mono text-2xl md:text-xl font-semibold text-[#1C1917] mt-1 tabular-nums">
                             {TRIP_OVERVIEW.flights.inbound.code}
                           </p>
-                          <p className="text-xs text-[#57534E] mt-0.5">
+                          <p className="text-[17px] md:text-xs text-[#57534E] mt-1">
                             {TRIP_OVERVIEW.flights.inbound.from} ➔ {TRIP_OVERVIEW.flights.inbound.to}
                           </p>
                         </div>
@@ -561,19 +591,19 @@ export default function App() {
                     </div>
 
                     {/* Base Hotel Block */}
-                    <div className="pt-4 md:pt-5 space-y-2">
-                      <div className="flex items-center gap-2 text-xs font-medium text-[#1E3A5F]">
-                        <Building2 className="w-3.5 h-3.5" />
+                    <div className="pt-4 md:pt-5 space-y-2.5">
+                      <div className="flex items-center gap-2 text-[17px] md:text-xs font-medium text-[#1E3A5F]">
+                        <Building2 className="w-4 h-4 md:w-3.5 md:h-3.5" />
                         <span>全期五晚連住據點</span>
                       </div>
 
-                      <h2 className="font-serif text-xl font-semibold text-[#1C1917]">
+                      <h2 className="font-serif text-2xl sm:text-xl font-semibold text-[#1C1917]">
                         {TRIP_OVERVIEW.hotel.name}
                       </h2>
-                      <p className="text-xs text-[#57534E] leading-relaxed">
+                      <p className="text-[17px] md:text-xs text-[#57534E] leading-relaxed">
                         {TRIP_OVERVIEW.hotel.access} · {TRIP_OVERVIEW.hotel.nights}
                       </p>
-                      <p className="font-mono text-xs text-[#292524] bg-[#FBF9F5] border border-[#EFECE6] px-3 py-2">
+                      <p className="font-mono text-[16px] md:text-xs text-[#292524] bg-[#FBF9F5] border border-[#EFECE6] rounded-[28px] px-4 py-3 leading-relaxed">
                         {TRIP_OVERVIEW.hotel.postal} {TRIP_OVERVIEW.hotel.addressJp}
                       </p>
                     </div>
@@ -583,12 +613,12 @@ export default function App() {
                     <button
                       type="button"
                       onClick={handleCopyHotelAddress}
-                      className="inline-flex items-center gap-1.5 min-h-[36px] text-xs font-medium text-[#1E3A5F] hover:underline underline-offset-4 whitespace-nowrap cursor-pointer"
+                      className="inline-flex items-center gap-1.5 min-h-[44px] text-[17px] md:text-xs font-medium text-[#1E3A5F] hover:underline underline-offset-4 whitespace-nowrap cursor-pointer"
                     >
                       {addressCopied ? (
-                        <Check className="w-3.5 h-3.5" />
+                        <Check className="w-4 h-4" />
                       ) : (
-                        <Copy className="w-3.5 h-3.5" />
+                        <Copy className="w-4 h-4" />
                       )}
                       <span>{addressCopied ? '已複製飯店地址' : '複製地址'}</span>
                     </button>
@@ -598,17 +628,17 @@ export default function App() {
                         href={hotelMapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 min-h-[36px] text-xs font-medium text-[#1E3A5F] hover:underline underline-offset-4 whitespace-nowrap"
+                        className="inline-flex items-center gap-1 min-h-[44px] text-[17px] md:text-xs font-medium text-[#1E3A5F] hover:underline underline-offset-4 whitespace-nowrap"
                       >
-                        <MapPin className="w-3.5 h-3.5" />
+                        <MapPin className="w-4 h-4" />
                         <span>Google Maps</span>
-                        <ExternalLink className="w-3 h-3 opacity-70" />
+                        <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                       </a>
 
                       <button
                         type="button"
                         onClick={() => setTaxiCardOpen(true)}
-                        className="min-h-[36px] text-xs font-medium text-[#57534E] hover:text-[#1C1917] underline underline-offset-4 whitespace-nowrap cursor-pointer"
+                        className="min-h-[44px] text-[17px] md:text-xs font-medium text-[#57534E] hover:text-[#1C1917] underline underline-offset-4 whitespace-nowrap cursor-pointer"
                       >
                         給司機看
                       </button>
@@ -618,51 +648,51 @@ export default function App() {
               </div>
 
               {/* Full-Width 4-Column Operational Ribbon Below Hero Split */}
-              <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 border border-[#E5E0D8] bg-white divide-y lg:divide-y-0 divide-x divide-[#E5E0D8]">
-                <div className="p-4 sm:p-5 md:p-6">
-                  <p className="text-[11px] font-mono tracking-wider text-[#78716C]">
+              <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-[#E5E0D8] bg-white rounded-[28px] overflow-hidden divide-y lg:divide-y-0 sm:divide-x divide-[#E5E0D8]">
+                <div className="p-5 md:p-6">
+                  <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C]">
                     旅遊日期
                   </p>
-                  <p className="mt-1 font-mono text-xs sm:text-sm font-semibold text-[#1C1917] tabular-nums">
+                  <p className="mt-1.5 font-mono text-[18px] md:text-base font-semibold text-[#1C1917] tabular-nums">
                     2027/02/23–02/28
                   </p>
-                  <p className="mt-1 text-[11px] sm:text-xs text-[#57534E]">
-                    週二至週日 · 6 天 5 夜
+                  <p className="mt-1 text-[17px] md:text-sm text-[#57534E]">
+                    Day 0 開趴 + 6 天 5 夜
                   </p>
                 </div>
 
-                <div className="p-4 sm:p-5 md:p-6">
-                  <p className="text-[11px] font-mono tracking-wider text-[#78716C]">
+                <div className="p-5 md:p-6">
+                  <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C]">
                     主要鐵道票券
                   </p>
-                  <p className="mt-1 text-xs sm:text-sm font-semibold text-[#1C1917]">
+                  <p className="mt-1.5 text-[18px] md:text-base font-semibold text-[#1C1917]">
                     JR 北九州 5 日券
                   </p>
-                  <p className="mt-1 text-[11px] sm:text-xs text-[#57534E] tabular-nums">
+                  <p className="mt-1 text-[17px] md:text-sm text-[#57534E] tabular-nums">
                     含 6 次免費指定席
                   </p>
                 </div>
 
-                <div className="p-4 sm:p-5 md:p-6">
-                  <p className="text-[11px] font-mono tracking-wider text-[#78716C]">
+                <div className="p-5 md:p-6">
+                  <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C]">
                     關鍵搶票時間
                   </p>
-                  <p className="mt-1 font-mono text-xs sm:text-sm font-semibold text-[#B43E2B] tabular-nums">
+                  <p className="mt-1.5 font-mono text-[18px] md:text-base font-semibold text-[#B43E2B] tabular-nums">
                     2027/01/25 09:00
                   </p>
-                  <p className="mt-1 text-[11px] sm:text-xs text-[#57534E]">
+                  <p className="mt-1 text-[17px] md:text-sm text-[#57534E]">
                     由布院之森來回開搶
                   </p>
                 </div>
 
-                <div className="p-4 sm:p-5 md:p-6">
-                  <p className="text-[11px] font-mono tracking-wider text-[#78716C]">
+                <div className="p-5 md:p-6">
+                  <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C]">
                     機場接送建議
                   </p>
-                  <p className="mt-1 text-xs sm:text-sm font-semibold text-[#1C1917]">
+                  <p className="mt-1.5 text-[18px] md:text-base font-semibold text-[#1C1917]">
                     2 台計程車直達
                   </p>
-                  <p className="mt-1 text-[11px] sm:text-xs text-[#57534E] tabular-nums">
+                  <p className="mt-1 text-[17px] md:text-sm text-[#57534E] tabular-nums">
                     約 10–15 分 · ¥1,500 起
                   </p>
                 </div>
@@ -741,13 +771,13 @@ export default function App() {
       </main>
 
       {/* Quiet Editorial Footer (extra bottom padding on mobile for fixed thumb tab bar) */}
-      <footer className="border-t border-[#E5E0D8] bg-white pb-20 md:pb-0">
-        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 md:px-10 py-8 md:py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 text-xs text-[#78716C]">
+      <footer className="border-t border-[#E5E0D8] bg-white pb-24 md:pb-0">
+        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 md:px-10 py-8 md:py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 text-[17px] md:text-xs text-[#78716C]">
           <div>
-            <p className="font-serif text-sm font-semibold text-[#1C1917] tracking-wider">
+            <p className="font-serif text-[18px] md:text-sm font-semibold text-[#1C1917] tracking-wider">
               {TRIP_OVERVIEW.brand} — 2027 日本九州 6 天 5 夜自由行行程手冊
             </p>
-            <p className="mt-1 leading-relaxed">
+            <p className="mt-2 leading-[1.75]">
               所有打卡完成紀錄、行李勾選、指定席劃位與費用統計皆儲存於此裝置的瀏覽器本機（localStorage）。
             </p>
           </div>
@@ -781,67 +811,67 @@ export default function App() {
       {/* Mobile-First Fixed Bottom Tab Bar (Thumb Reach Zone) */}
       <nav
         aria-label="手機底部主導覽"
-        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FBF9F5]/95 backdrop-blur-md border-t border-[#E5E0D8] pb-[env(safe-area-inset-bottom)]"
+        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E5E0D8] rounded-t-[28px] shadow-[0_-4px_20px_rgba(28,25,23,0.06)] pb-[env(safe-area-inset-bottom)]"
       >
-        <div className="grid grid-cols-5 h-14">
+        <div className="grid grid-cols-5 h-16 px-1">
           <button
             type="button"
             onClick={() => handleOpenTab({ type: 'overview' })}
             aria-current={activeTab.type === 'overview' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors ${
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
               activeTab.type === 'overview' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
             }`}
           >
-            <Compass className="w-5 h-5" />
-            <span className="text-[10px] font-medium whitespace-nowrap">總覽</span>
+            <Compass className="w-[22px] h-[22px]" />
+            <span className="text-[11px] font-medium whitespace-nowrap">總覽</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleOpenTab({ type: 'day', day: lastViewedDay })}
             aria-current={activeTab.type === 'day' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors ${
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
               activeTab.type === 'day' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
             }`}
           >
-            <CalendarDays className="w-5 h-5" />
-            <span className="text-[10px] font-medium whitespace-nowrap">行程</span>
+            <CalendarDays className="w-[22px] h-[22px]" />
+            <span className="text-[11px] font-medium whitespace-nowrap">行程</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleOpenTab({ type: 'rail-map' })}
             aria-current={activeTab.type === 'rail-map' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors ${
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
               activeTab.type === 'rail-map' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
             }`}
           >
-            <TrainFront className="w-5 h-5" />
-            <span className="text-[10px] font-medium whitespace-nowrap">路線</span>
+            <TrainFront className="w-[22px] h-[22px]" />
+            <span className="text-[11px] font-medium whitespace-nowrap">路線</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleOpenTab({ type: 'logistics' })}
             aria-current={activeTab.type === 'logistics' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors ${
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
               activeTab.type === 'logistics' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
             }`}
           >
-            <Luggage className="w-5 h-5" />
-            <span className="text-[10px] font-medium whitespace-nowrap">行李攻略</span>
+            <Luggage className="w-[22px] h-[22px]" />
+            <span className="text-[11px] font-medium whitespace-nowrap">行李攻略</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleOpenTab({ type: 'currency' })}
             aria-current={activeTab.type === 'currency' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors ${
+            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
               activeTab.type === 'currency' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
             }`}
           >
-            <ArrowLeftRight className="w-5 h-5" />
-            <span className="text-[10px] font-medium whitespace-nowrap">匯率</span>
+            <ArrowLeftRight className="w-[22px] h-[22px]" />
+            <span className="text-[11px] font-medium whitespace-nowrap">匯率</span>
           </button>
         </div>
       </nav>

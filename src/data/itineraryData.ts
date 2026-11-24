@@ -5,6 +5,7 @@ export interface SpotTag {
   jpName?: string;
   note?: string;
   category: ActivityCategory;
+  mapUrl?: string;
 }
 
 export interface TimelineBlock {
@@ -24,7 +25,7 @@ export interface DayItinerary {
   weekday: string;
   shortTitle: string;
   routeSummary: string;
-  regionId: 'kitakyushu' | 'yufuin' | 'kumamoto' | 'hakata';
+  regionId: 'taiwan' | 'kitakyushu' | 'yufuin' | 'kumamoto' | 'hakata';
   regionLabel: string;
   stay: string;
   jrPassDay?: number;
@@ -83,8 +84,9 @@ export const TRIP_OVERVIEW = {
   brand: 'FAKER TRAVEL',
   edition: '自由行行程確認書 / 最終定稿版',
   title: '日本九州 6 天 5 夜自由行',
-  dateRange: '2027/02/23（二）– 2027/02/28（日）',
-  durationText: '6 天 5 夜 · 4 人同行',
+  dateRange: '2027/02/22（一）行前派對 · 02/23（二）– 02/28（日）',
+  durationText: 'Day 0 開趴 + 6 天 5 夜 · 4 人同行',
+  members: ['假髮', '班表人', '尼哥', '跟隨俠'] as const,
   passName: 'JR 北九州鐵路周遊券（5 日版）',
   passDetail: 'Day 1 至 Day 5 連續 5 日啟用，含 6 次免費指定席劃位',
   flights: {
@@ -172,6 +174,38 @@ export const RAIL_DESTINATIONS: RailDestination[] = [
 ];
 
 export const DAYS_ITINERARY: DayItinerary[] = [
+  {
+    dayNumber: 0,
+    date: '2027/02/22',
+    weekday: '一',
+    shortTitle: '「樂house」開趴披薩夜',
+    routeSummary: '行前全員集結 ➔ 樂HOUSE社區 ➔ 披薩開趴與行前最後確認',
+    regionId: 'taiwan',
+    regionLabel: '行前派對',
+    stay: '台灣・出發前夕',
+    jrTicketAdvice: '隔日出發搭乘星宇航空 JX842 前往福岡，今晚最後確認護照、行動電源、日幣現金與機場集合時間。',
+    highlights: ['「樂house」開趴披薩夜', '假髮・班表人・尼哥・跟隨俠 全員集結', '行前行李與機票最後核對'],
+    blocks: [
+      {
+        id: 'd0-1',
+        timeRange: '出發前夜',
+        title: '「樂house」開趴披薩夜・行前熱身集結',
+        description:
+          '出發前夕四位成員（假髮、班表人、尼哥、跟隨俠）全員集結於「樂HOUSE社區」舉辦行前披薩開趴夜！邊吃披薩邊熱身暖場，順便做最後一次護照、eSIM、日幣現金與明日桃園機場星宇 JX842 集合動線確認。',
+        categories: ['dining', 'sports_entertainment'],
+        spots: [
+          {
+            name: '樂HOUSE社區',
+            jpName: '樂house · 行前披薩開趴夜',
+            note: '四成員行前集結場地',
+            category: 'dining',
+            mapUrl:
+              'https://www.google.com/maps/place/%E6%A8%82HOUSE%E7%A4%BE%E5%8D%80/data=!4m2!3m1!1s0x0:0x2d4762a0e03ba727?sa=X&ved=1t:2428&ictx=111',
+          },
+        ],
+      },
+    ],
+  },
   {
     dayNumber: 1,
     date: '2027/02/23',

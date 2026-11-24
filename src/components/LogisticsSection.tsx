@@ -105,12 +105,12 @@ export function LogisticsSection({
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="text-xs font-mono tracking-[0.14em] text-[#57534E] mb-2">
+            <p className="text-sm md:text-xs font-mono tracking-[0.12em] text-[#57534E] mb-2">
               FAKER TRAVEL 貼心叮嚀與行前實戰
             </p>
             <h1
               id="logistics-heading"
-              className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-[#1C1917] tracking-tight headline-balance"
+              className="font-serif text-[1.75rem] sm:text-3xl md:text-4xl font-semibold text-[#1C1917] tracking-tight headline-balance"
             >
               行李備忘、JR 劃位與行前攻略
             </h1>
@@ -119,9 +119,9 @@ export function LogisticsSection({
           <button
             type="button"
             onClick={onResetProgress}
-            className="inline-flex items-center justify-center gap-2 px-3.5 min-h-[44px] md:min-h-0 md:py-2 text-xs font-medium text-[#57534E] border border-[#E5E0D8] bg-white hover:border-[#1C1917] hover:text-[#1C1917] rounded-sm transition-colors whitespace-nowrap shrink-0 cursor-pointer self-start md:self-auto"
+            className="inline-flex items-center justify-center gap-2 px-4 min-h-[48px] md:min-h-0 md:py-2 text-[16px] md:text-xs font-medium text-[#57534E] border border-[#E5E0D8] bg-white hover:border-[#1C1917] hover:text-[#1C1917] rounded-2xl active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer self-start md:self-auto"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-4 h-4 md:w-3.5 md:h-3.5" />
             <span>重設所有勾選紀錄</span>
           </button>
         </div>
@@ -129,27 +129,27 @@ export function LogisticsSection({
         {/* Part 1: Packing Summary Checklist (Luggage) */}
         <div
           id="packing-list"
-          className="bg-white border border-[#E5E0D8] p-5 sm:p-6 md:p-8"
+          className="bg-white border border-[#E5E0D8] rounded-[28px] p-5 sm:p-6 md:p-8"
         >
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-5 border-b border-[#EFECE6]">
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono text-[#1E3A5F] mb-1.5">
+              <div className="flex items-center gap-2 text-sm md:text-xs font-mono text-[#1E3A5F] mb-1.5">
                 <Luggage className="w-4 h-4" />
                 <span>PACKING CHECKLIST · 2 月底九州冬末 6 天 5 夜</span>
               </div>
-              <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#1C1917]">
+              <h2 className="font-serif text-2xl font-semibold text-[#1C1917]">
                 行李備忘概要清單
               </h2>
-              <p className="text-xs sm:text-sm text-[#57534E] mt-1 leading-relaxed">
+              <p className="text-[18px] md:text-sm text-[#57534E] mt-2 leading-[1.8]">
                 依福岡／門司港海風、由布院近 0°C 低溫與小倉競馬場戶外觀賽需求整理；勾選紀錄自動保存於本機裝置。
               </p>
             </div>
 
             <div className="shrink-0 font-mono tabular-nums">
-              <p className="text-[11px] text-[#78716C]">打包進度</p>
-              <p className="text-xl sm:text-2xl font-semibold text-[#1E3A5F]">
+              <p className="text-sm md:text-xs text-[#78716C]">打包進度</p>
+              <p className="text-2xl font-semibold text-[#1E3A5F]">
                 {packedCount} / {allPackingItems.length}{' '}
-                <span className="text-xs font-normal text-[#78716C]">
+                <span className="text-base md:text-sm font-normal text-[#78716C]">
                   ({packingProgressPct}%)
                 </span>
               </p>
@@ -164,10 +164,10 @@ export function LogisticsSection({
               aria-valuenow={packingProgressPct}
               aria-valuemin={0}
               aria-valuemax={100}
-              className="h-2 w-full bg-[#EFECE6] overflow-hidden"
+              className="h-3 w-full bg-[#EFECE6] rounded-full overflow-hidden"
             >
               <div
-                className="h-full bg-[#1E3A5F] transition-all duration-200"
+                className="h-full bg-[#1E3A5F] rounded-full transition-all duration-200"
                 style={{ width: `${packingProgressPct}%` }}
               />
             </div>
@@ -177,7 +177,7 @@ export function LogisticsSection({
           <div
             role="tablist"
             aria-label="行李分類篩選"
-            className="mt-5 flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1"
+            className="mt-5 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"
           >
             {PACKING_CATEGORIES.map((cat) => {
               const isActive = packingFilter === cat;
@@ -193,14 +193,14 @@ export function LogisticsSection({
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setPackingFilter(cat)}
-                  className={`px-3.5 min-h-[40px] text-xs font-medium rounded-sm border transition-colors whitespace-nowrap shrink-0 cursor-pointer tabular-nums ${
+                  className={`px-4 min-h-[46px] text-[16px] md:text-xs font-medium rounded-2xl border transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer tabular-nums ${
                     isActive
                       ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]'
                       : 'bg-[#FBF9F5] text-[#57534E] border-[#E5E0D8] hover:border-[#1E3A5F]'
                   }`}
                 >
                   {cat}{' '}
-                  <span className={isActive ? 'text-white/75' : 'text-[#A8A29E]'}>
+                  <span className={isActive ? 'text-white/80' : 'text-[#A8A29E]'}>
                     {catDone}/{catItems.length}
                   </span>
                 </button>
@@ -221,36 +221,36 @@ export function LogisticsSection({
                   <button
                     type="button"
                     onClick={() => onTogglePacking(item.id)}
-                    className="flex items-start gap-3.5 text-left flex-1 py-3.5 min-h-[52px] cursor-pointer group"
+                    className="flex items-start gap-3.5 text-left flex-1 py-4 min-h-[56px] cursor-pointer group"
                   >
                     <span
-                      className={`mt-0.5 w-5 h-5 rounded-xs border flex items-center justify-center shrink-0 transition-colors ${
+                      className={`mt-1 w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
                         isPacked
                           ? 'bg-[#1E3A5F] border-[#1E3A5F] text-white'
                           : 'bg-white border-[#CBC3B6] group-hover:border-[#1E3A5F]'
                       }`}
                     >
-                      {isPacked && <Check className="w-3.5 h-3.5" />}
+                      {isPacked && <Check className="w-4 h-4" />}
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                         <span
-                          className={`text-sm font-medium ${
+                          className={`text-[18px] md:text-sm font-medium ${
                             isPacked ? 'text-[#A8A29E] line-through' : 'text-[#1C1917]'
                           }`}
                         >
                           {item.title}
                         </span>
-                        <span className="text-[11px] text-[#78716C]">
+                        <span className="text-sm md:text-xs text-[#78716C]">
                           · {item.category}
                         </span>
                         {item.essential && !isPacked && (
-                          <span className="text-[11px] font-semibold text-[#B43E2B]">
+                          <span className="text-sm md:text-xs font-semibold text-[#B43E2B]">
                             · 必帶
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-[#78716C] mt-1 leading-relaxed">
+                      <p className="text-[17px] md:text-xs text-[#57534E] mt-1.5 leading-[1.75]">
                         {item.note}
                       </p>
                     </div>
@@ -274,13 +274,13 @@ export function LogisticsSection({
           {/* Add Custom Packing Item Form */}
           <form
             onSubmit={handlePackingSubmit}
-            className="mt-5 pt-5 border-t border-[#EFECE6] grid grid-cols-1 sm:grid-cols-12 gap-2.5"
+            className="mt-5 pt-5 border-t border-[#EFECE6] grid grid-cols-1 sm:grid-cols-12 gap-3"
           >
             <select
               value={newPackCategory}
               onChange={(e) => setNewPackCategory(e.target.value as PackingCategory)}
               aria-label="選擇行李分類"
-              className="sm:col-span-3 px-3 min-h-[44px] text-base md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-sm text-[#1C1917] focus:outline-none focus:border-[#1E3A5F]"
+              className="sm:col-span-3 px-4 min-h-[50px] text-[17px] md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-2xl text-[#1C1917] focus:outline-none focus:border-[#1E3A5F]"
             >
               <option value="證件票券">證件票券</option>
               <option value="保暖穿搭">保暖穿搭</option>
@@ -291,18 +291,18 @@ export function LogisticsSection({
               value={newPackTitle}
               onChange={(e) => setNewPackTitle(e.target.value)}
               placeholder="新增行李項目（例如：隱形眼鏡、拍立得）"
-              className="sm:col-span-4 px-3.5 min-h-[44px] text-base md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-sm text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
+              className="sm:col-span-4 px-4 min-h-[50px] text-[17px] md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-2xl text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
             />
             <input
               type="text"
               value={newPackNote}
               onChange={(e) => setNewPackNote(e.target.value)}
               placeholder="備註（選填）"
-              className="sm:col-span-3 px-3.5 min-h-[44px] text-base md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-sm text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
+              className="sm:col-span-3 px-4 min-h-[50px] text-[17px] md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-2xl text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
             />
             <button
               type="submit"
-              className="sm:col-span-2 inline-flex items-center justify-center gap-1.5 px-4 min-h-[44px] bg-[#1C1917] text-white text-sm font-medium rounded-sm hover:bg-[#292524] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="sm:col-span-2 inline-flex items-center justify-center gap-1.5 px-4 min-h-[50px] bg-[#1C1917] text-white text-[17px] md:text-sm font-medium rounded-2xl hover:bg-[#292524] active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>新增</span>
@@ -311,17 +311,17 @@ export function LogisticsSection({
         </div>
 
         {/* Part 2: JR North Kyushu 5-Day Pass 6-Seat Allocation */}
-        <div className="bg-white border border-[#E5E0D8] p-5 sm:p-6 md:p-8">
+        <div className="bg-white border border-[#E5E0D8] rounded-[28px] p-5 sm:p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-5 border-b border-[#EFECE6]">
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono text-[#1E3A5F] mb-1.5">
+              <div className="flex items-center gap-2 text-sm md:text-xs font-mono text-[#1E3A5F] mb-1.5">
                 <Ticket className="w-4 h-4" />
                 <span>JR 北九州 5 日券 · 6 次免費指定席規劃表</span>
               </div>
-              <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#1C1917]">
+              <h2 className="font-serif text-2xl font-semibold text-[#1C1917]">
                 指定席配額與搶票時程
               </h2>
-              <p className="text-xs sm:text-sm text-[#57534E] mt-1.5 leading-relaxed max-w-2xl">
+              <p className="text-[18px] md:text-sm text-[#57534E] mt-2 leading-[1.8] max-w-2xl">
                 北九州 5 日券內含 6 次免費指定席。建議優先鎖定{' '}
                 <strong className="text-[#B43E2B]">
                   Day 3 由布院之森來回（2027/01/25 台灣時間 09:00 開搶）
@@ -332,15 +332,15 @@ export function LogisticsSection({
 
             <div className="flex items-baseline gap-6 shrink-0 font-mono tabular-nums pt-1 md:pt-0">
               <div>
-                <p className="text-[11px] text-[#78716C]">已劃位</p>
-                <p className="text-xl sm:text-2xl font-semibold text-[#1E3A5F]">
+                <p className="text-sm md:text-[11px] text-[#78716C]">已劃位</p>
+                <p className="text-2xl font-semibold text-[#1E3A5F]">
                   {bookedCount} / 6
                 </p>
               </div>
               <div className="h-8 w-px bg-[#E5E0D8]" aria-hidden="true" />
               <div>
-                <p className="text-[11px] text-[#78716C]">剩餘額度</p>
-                <p className="text-xl sm:text-2xl font-semibold text-[#1C1917]">
+                <p className="text-sm md:text-[11px] text-[#78716C]">剩餘額度</p>
+                <p className="text-2xl font-semibold text-[#1C1917]">
                   {remainingCount}
                 </p>
               </div>
@@ -352,10 +352,10 @@ export function LogisticsSection({
             {JR_SEAT_SLOTS.map((slot) => {
               const isBooked = Boolean(bookedSeats[slot.id]);
               return (
-                <div key={slot.id} className="py-4 space-y-2.5">
+                <div key={slot.id} className="py-5 space-y-3">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2 text-xs font-mono tabular-nums">
+                      <div className="flex flex-wrap items-center gap-2 text-[16px] font-mono tabular-nums">
                         <span className="text-[#78716C]">#{slot.slotNumber}</span>
                         <span className="font-semibold text-[#1C1917]">
                           Day {slot.dayNumber}
@@ -372,27 +372,27 @@ export function LogisticsSection({
                           · {slot.priority}
                         </span>
                       </div>
-                      <p className="text-sm font-semibold text-[#1C1917] mt-1">
+                      <p className="text-[18px] font-semibold text-[#1C1917] mt-1.5 leading-snug">
                         {slot.route}
                       </p>
-                      <p className="text-xs text-[#78716C] mt-0.5">{slot.train}</p>
+                      <p className="text-[17px] text-[#78716C] mt-1">{slot.train}</p>
                     </div>
 
                     <button
                       type="button"
                       onClick={() => onToggleSeat(slot.id)}
                       aria-pressed={isBooked}
-                      className={`inline-flex items-center justify-center gap-1.5 px-3 min-h-[40px] text-xs font-medium rounded-sm border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                      className={`inline-flex items-center justify-center gap-1.5 px-4 min-h-[46px] text-[16px] font-medium rounded-2xl border transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer ${
                         isBooked
                           ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]'
                           : 'bg-white text-[#1C1917] border-[#D6CEBE]'
                       }`}
                     >
-                      <Check className="w-3.5 h-3.5" />
+                      <Check className="w-4 h-4" />
                       <span>{isBooked ? '已劃位' : '未劃位'}</span>
                     </button>
                   </div>
-                  <p className="text-xs text-[#57534E] leading-relaxed tabular-nums">
+                  <p className="text-[17px] text-[#57534E] leading-[1.75] tabular-nums">
                     {slot.bookingNote}
                   </p>
                 </div>
@@ -452,7 +452,7 @@ export function LogisticsSection({
                           type="button"
                           onClick={() => onToggleSeat(slot.id)}
                           aria-pressed={isBooked}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-sm border transition-colors cursor-pointer ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl border transition-colors cursor-pointer ${
                             isBooked
                               ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]'
                               : 'bg-white text-[#1C1917] border-[#D6CEBE] hover:border-[#1E3A5F]'
@@ -473,27 +473,27 @@ export function LogisticsSection({
         {/* Part 3: 2-Column Split — Airport Transfer Comparison & Pre-Departure Checklist */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
           {/* Left 5 cols: Airport Transfer Strategy */}
-          <div className="lg:col-span-5 bg-white border border-[#E5E0D8] p-5 sm:p-6 md:p-8">
-            <p className="text-xs font-mono tracking-wider text-[#78716C] mb-1.5">
+          <div className="lg:col-span-5 bg-white border border-[#E5E0D8] rounded-[28px] p-5 sm:p-6 md:p-8">
+            <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C] mb-1.5">
               AIRPORT TRANSFER · 4 人含大行李
             </p>
-            <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#1C1917]">
+            <h2 className="font-serif text-2xl font-semibold text-[#1C1917]">
               福岡機場 ↔ Minn 博多接送方案
             </h2>
-            <p className="text-xs sm:text-sm text-[#57534E] mt-2 leading-relaxed">
+            <p className="text-[18px] md:text-sm text-[#57534E] mt-2 leading-[1.8]">
               福岡機場距離博多市區極近。四人同行且每人攜帶大型行李時，建議依現場排隊人潮在兩方案之間彈性選擇：
             </p>
 
             <div className="mt-5 space-y-4">
               {/* Option 1 */}
-              <div className="p-4 sm:p-5 bg-[#FBF9F5] border border-[#1E3A5F]/35">
+              <div className="p-5 bg-[#FBF9F5] border border-[#1E3A5F]/35 rounded-[28px]">
                 <div className="flex items-baseline justify-between gap-2">
-                  <h3 className="text-sm font-semibold text-[#1C1917]">
+                  <h3 className="text-[18px] md:text-sm font-semibold text-[#1C1917]">
                     方案 A：分搭 2 台一般計程車
                   </h3>
-                  <span className="text-xs font-medium text-[#1E3A5F]">推薦省時</span>
+                  <span className="text-sm md:text-xs font-medium text-[#1E3A5F] shrink-0">推薦省時</span>
                 </div>
-                <dl className="mt-3 space-y-2 text-xs tabular-nums">
+                <dl className="mt-3.5 space-y-3 text-[17px] md:text-xs tabular-nums">
                   <div className="flex justify-between gap-4">
                     <dt className="text-[#78716C] shrink-0">乘車位置</dt>
                     <dd className="text-[#1C1917] text-right">國際線航廈 1F 計程車招呼站</dd>
@@ -512,14 +512,14 @@ export function LogisticsSection({
               </div>
 
               {/* Option 2 */}
-              <div className="p-4 sm:p-5 bg-white border border-[#E5E0D8]">
+              <div className="p-5 bg-white border border-[#E5E0D8] rounded-[28px]">
                 <div className="flex items-baseline justify-between gap-2">
-                  <h3 className="text-sm font-semibold text-[#1C1917]">
+                  <h3 className="text-[18px] md:text-sm font-semibold text-[#1C1917]">
                     方案 B：博多站直達接駁巴士
                   </h3>
-                  <span className="text-xs text-[#78716C]">平價備案</span>
+                  <span className="text-sm md:text-xs text-[#78716C] shrink-0">平價備案</span>
                 </div>
-                <dl className="mt-3 space-y-2 text-xs tabular-nums">
+                <dl className="mt-3.5 space-y-3 text-[17px] md:text-xs tabular-nums">
                   <div className="flex justify-between gap-4">
                     <dt className="text-[#78716C] shrink-0">乘車位置</dt>
                     <dd className="text-[#1C1917] text-right">國際線 1F 2 號公車站牌</dd>
@@ -540,17 +540,17 @@ export function LogisticsSection({
           </div>
 
           {/* Right 7 cols: Interactive Pre-Trip Checklist */}
-          <div className="lg:col-span-7 bg-white border border-[#E5E0D8] p-5 sm:p-6 md:p-8">
+          <div className="lg:col-span-7 bg-white border border-[#E5E0D8] rounded-[28px] p-5 sm:p-6 md:p-8">
             <div className="flex items-baseline justify-between gap-4 pb-5 border-b border-[#EFECE6]">
               <div>
-                <p className="text-xs font-mono tracking-wider text-[#78716C] mb-1.5">
+                <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C] mb-1.5">
                   PRE-DEPARTURE CHECKLIST
                 </p>
-                <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#1C1917]">
+                <h2 className="font-serif text-2xl font-semibold text-[#1C1917]">
                   行前準備與搶票檢核
                 </h2>
               </div>
-              <span className="font-mono text-sm text-[#1E3A5F] font-semibold tabular-nums shrink-0">
+              <span className="font-mono text-[18px] md:text-sm text-[#1E3A5F] font-semibold tabular-nums shrink-0">
                 {checkedCount} / {allChecklistItems.length}
               </span>
             </div>
@@ -567,21 +567,21 @@ export function LogisticsSection({
                     <button
                       type="button"
                       onClick={() => onToggleChecklist(item.id)}
-                      className="flex items-start gap-3.5 text-left flex-1 py-3.5 min-h-[52px] cursor-pointer group"
+                      className="flex items-start gap-3.5 text-left flex-1 py-4.5 min-h-[58px] cursor-pointer group"
                     >
                       <span
-                        className={`mt-0.5 w-5 h-5 rounded-xs border flex items-center justify-center shrink-0 transition-colors ${
+                        className={`mt-1 w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
                           isChecked
                             ? 'bg-[#1E3A5F] border-[#1E3A5F] text-white'
                             : 'bg-white border-[#CBC3B6] group-hover:border-[#1E3A5F]'
                         }`}
                       >
-                        {isChecked && <Check className="w-3.5 h-3.5" />}
+                        {isChecked && <Check className="w-4 h-4" />}
                       </span>
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                           <span
-                            className={`text-sm font-medium ${
+                            className={`text-[18px] md:text-sm font-medium ${
                               isChecked
                                 ? 'text-[#A8A29E] line-through'
                                 : 'text-[#1C1917]'
@@ -590,12 +590,12 @@ export function LogisticsSection({
                             {item.title}
                           </span>
                           {item.deadline && (
-                            <span className="font-mono text-[11px] text-[#B43E2B] tabular-nums">
+                            <span className="font-mono text-sm md:text-xs text-[#B43E2B] tabular-nums">
                               · {item.deadline}
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-[#78716C] mt-1 leading-relaxed">
+                        <p className="text-[17px] md:text-xs text-[#57534E] mt-1.5 leading-[1.75]">
                           {item.detail}
                         </p>
                       </div>
@@ -619,25 +619,25 @@ export function LogisticsSection({
             {/* Add Custom Note Form */}
             <form
               onSubmit={handleTaskSubmit}
-              className="mt-5 pt-5 border-t border-[#EFECE6] grid grid-cols-1 sm:grid-cols-12 gap-2.5"
+              className="mt-5 pt-5 border-t border-[#EFECE6] grid grid-cols-1 sm:grid-cols-12 gap-3"
             >
               <input
                 type="text"
                 value={newTaskTitle}
                 onChange={(e) => setNewTaskTitle(e.target.value)}
                 placeholder="新增行前待辦（例如：預訂餐廳、買旅遊險）"
-                className="sm:col-span-5 px-3.5 min-h-[44px] text-base md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-sm text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
+                className="sm:col-span-5 px-4 min-h-[50px] text-[17px] md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-2xl text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
               />
               <input
                 type="text"
                 value={newTaskDetail}
                 onChange={(e) => setNewTaskDetail(e.target.value)}
                 placeholder="補充備註（選填）"
-                className="sm:col-span-4 px-3.5 min-h-[44px] text-base md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-sm text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
+                className="sm:col-span-4 px-4 min-h-[50px] text-[17px] md:text-sm bg-[#FBF9F5] border border-[#E5E0D8] rounded-2xl text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:border-[#1E3A5F]"
               />
               <button
                 type="submit"
-                className="sm:col-span-3 inline-flex items-center justify-center gap-1.5 px-4 min-h-[44px] bg-[#1C1917] text-white text-sm font-medium rounded-sm hover:bg-[#292524] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="sm:col-span-3 inline-flex items-center justify-center gap-1.5 px-4 min-h-[50px] bg-[#1C1917] text-white text-[17px] md:text-sm font-medium rounded-2xl hover:bg-[#292524] active:scale-[0.98] transition-all whitespace-nowrap shrink-0 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>新增待辦</span>
