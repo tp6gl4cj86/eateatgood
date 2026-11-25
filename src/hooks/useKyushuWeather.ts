@@ -28,7 +28,7 @@ export const BASELINE_KYUSHU_FEB_FORECAST: DailyForecastItem[] = [
     rainChance: 20,
     condition: '晴時多雲',
     icon: 'partly_cloudy',
-    layeringTip: '冬末微涼乾爽，洋蔥式薄發熱衣加防風大衣即可應付福岡市區行程。',
+    layeringTip: '市區微涼乾爽：發熱衣＋防風大衣。',
     tempOffsetC: 0,
   },
   {
@@ -41,7 +41,7 @@ export const BASELINE_KYUSHU_FEB_FORECAST: DailyForecastItem[] = [
     rainChance: 25,
     condition: '海風微涼',
     icon: 'windy',
-    layeringTip: '關門海峽與藍翼吊橋風勢偏強，建議攜帶圍巾；晚間體育館室內較暖和。',
+    layeringTip: '海峽風大帶圍巾；晚間體育館室內較暖。',
     tempOffsetC: -1,
   },
   {
@@ -54,7 +54,7 @@ export const BASELINE_KYUSHU_FEB_FORECAST: DailyForecastItem[] = [
     rainChance: 30,
     condition: '山區清冷',
     icon: 'cloudy',
-    layeringTip: '由布院盆地海拔較高，早晚氣溫接近 0°C，務必穿著羽絨外套或毛衣保暖。',
+    layeringTip: '山區早晚近 0°C，必穿羽絨或厚外套。',
     tempOffsetC: -4,
   },
   {
@@ -67,7 +67,7 @@ export const BASELINE_KYUSHU_FEB_FORECAST: DailyForecastItem[] = [
     rainChance: 15,
     condition: '晴朗舒適',
     icon: 'sun',
-    layeringTip: '熊本白天陽光充足、體感較福岡略暖，但入夜溫差大，建議好穿脫外套。',
+    layeringTip: '白天晴暖、入夜溫差大，洋蔥式穿搭。',
     tempOffsetC: 1,
   },
   {
@@ -80,7 +80,7 @@ export const BASELINE_KYUSHU_FEB_FORECAST: DailyForecastItem[] = [
     rainChance: 20,
     condition: '多雲時晴',
     icon: 'partly_cloudy',
-    layeringTip: '小倉競馬場戶外看台久待較涼，建議備妥防風外套與暖暖包。',
+    layeringTip: '賽馬場戶外看台較涼，備防風外套＋暖暖包。',
     tempOffsetC: 0,
   },
   {
@@ -93,7 +93,7 @@ export const BASELINE_KYUSHU_FEB_FORECAST: DailyForecastItem[] = [
     rainChance: 15,
     condition: '晴時多雲',
     icon: 'sun',
-    layeringTip: '返台日主要於博多站室內商場採買，輕便保暖穿搭最利於搭機。',
+    layeringTip: '室內採買與搭機為主，輕便保暖好穿脫。',
     tempOffsetC: 0,
   },
 ];

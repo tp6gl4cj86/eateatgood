@@ -232,7 +232,7 @@ export function DayVisualDashboard({
             <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-[#EFECE6]">
               <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono font-semibold text-[#1E3A5F]">
                 <Clock className="w-4 h-4 shrink-0" />
-                <span>當日時間軸節奏圖（點擊跳至該時段）</span>
+                <span>當日時間軸</span>
               </div>
               <span className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
                 {formatHourTick(minHour)} – {formatHourTick(maxHour)}
@@ -340,7 +340,7 @@ export function DayVisualDashboard({
                     highlight1900 ? 'text-[#B43E2B] font-semibold' : 'text-[#991B1B]'
                   }`}
                 >
-                  紅虛線標記：{profile.cutoffLabel}
+                  分流：{profile.cutoffLabel}
                 </p>
               )}
             </div>
@@ -481,10 +481,10 @@ export function DayVisualDashboard({
             <div className="pb-3 border-b border-[#EFECE6]">
               <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono font-semibold text-[#1E3A5F]">
                 <Users className="w-4 h-4 shrink-0" />
-                <span>行前開趴全員狀態</span>
+                <span>行前集合狀態</span>
               </div>
               <p className="text-[17px] md:text-xs text-[#57534E] mt-2 leading-relaxed">
-                四位成員出發前最後合體熱身，輕鬆整理護照、eSIM 與日幣現金，養足體力隔日搭星宇 JX842 直飛福岡！
+                4 人集合暖身，核對護照正本、eSIM 與日幣現鈔。
               </p>
             </div>
           )}
@@ -593,10 +593,10 @@ export function DayVisualDashboard({
         <div className="flex items-center justify-between gap-2 mb-4">
           <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono font-semibold text-[#1E3A5F]">
             <MapPin className="w-4 h-4 shrink-0" />
-            <span>當日站點移動動線圖</span>
+            <span>移動動線</span>
           </div>
           <span className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
-            共 {profile.routeNodes.length} 個主要節點
+            {profile.routeNodes.length} 站
           </span>
         </div>
 

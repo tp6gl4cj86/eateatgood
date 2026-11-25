@@ -140,8 +140,8 @@ export function LogisticsSection({
               <h2 className="font-serif text-2xl font-semibold text-[#1C1917]">
                 行李備忘概要清單
               </h2>
-              <p className="text-[18px] md:text-sm text-[#57534E] mt-2 leading-[1.8]">
-                依福岡／門司港海風、由布院近 0°C 低溫與小倉競馬場戶外觀賽需求整理；勾選紀錄自動保存於本機裝置。
+              <p className="text-[18px] md:text-sm text-[#57534E] mt-1.5 leading-[1.7]">
+                對應九州 2 月底低溫、海風與戶外行程，勾選自動存於本機。
               </p>
             </div>
 
@@ -321,12 +321,12 @@ export function LogisticsSection({
               <h2 className="font-serif text-2xl font-semibold text-[#1C1917]">
                 指定席配額與搶票時程
               </h2>
-              <p className="text-[18px] md:text-sm text-[#57534E] mt-2 leading-[1.8] max-w-2xl">
-                北九州 5 日券內含 6 次免費指定席。建議優先鎖定{' '}
+              <p className="text-[18px] md:text-sm text-[#57534E] mt-1.5 leading-[1.7] max-w-2xl">
+                優先鎖定{' '}
                 <strong className="text-[#B43E2B]">
-                  Day 3 由布院之森來回（2027/01/25 台灣時間 09:00 開搶）
+                  Day 3 由布院之森（2027/01/25 09:00 開搶）
                 </strong>{' '}
-                與 Day 4 熊本九州新幹線來回；其餘小倉、門司港路線搭自由席即可。
+                與 Day 4 熊本新幹線來回；小倉／門司港搭自由席即可。
               </p>
             </div>
 
@@ -480,8 +480,8 @@ export function LogisticsSection({
             <h2 className="font-serif text-2xl font-semibold text-[#1C1917]">
               福岡機場 ↔ Minn 博多接送方案
             </h2>
-            <p className="text-[18px] md:text-sm text-[#57534E] mt-2 leading-[1.8]">
-              福岡機場距離博多市區極近。四人同行且每人攜帶大型行李時，建議依現場排隊人潮在兩方案之間彈性選擇：
+            <p className="text-[18px] md:text-sm text-[#57534E] mt-1.5 leading-[1.7]">
+              4 人含大行李，視現場排隊人潮二擇一：
             </p>
 
             <div className="mt-5 space-y-4">

@@ -156,8 +156,8 @@ export function OverviewFoodMapWidget({
           >
             北九州互動式在地美食推薦地圖
           </h2>
-          <p className="mt-1.5 text-[17px] md:text-sm text-[#57534E] leading-[1.75]">
-            可依餐廳類型（和牛、拉麵、壽司、咖啡廳、在地名物）與行程天數自由篩選，點擊地圖標記立即查看特色簡介與必點招牌。
+          <p className="mt-1.5 text-[17px] md:text-sm text-[#57534E] leading-[1.7]">
+            依類型或天數篩選，點擊標記查看必點與順路建議。
           </p>
         </div>
 

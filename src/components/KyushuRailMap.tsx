@@ -140,8 +140,8 @@ export function KyushuRailMap({
               以博多為圓心的北九州五日放射網
             </h2>
           </div>
-          <p className="text-[18px] md:text-sm text-[#57534E] max-w-md leading-[1.8]">
-            點選地圖任一車站或上方站點列，即可高亮顯示從博多出發的建議乘車路徑、特急列車名稱與大約行駛時間。
+          <p className="text-[18px] md:text-sm text-[#57534E] max-w-md leading-[1.7]">
+            點擊站點高亮博多出發建議列車與車程。
           </p>
         </div>
 
@@ -697,7 +697,7 @@ export function KyushuRailMap({
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#EFECE6] text-[15px] md:text-xs text-[#78716C]">
-              <span>點擊地圖站點或路線即可切換博多出發高亮路徑</span>
+              <span>點擊站點或路線切換路徑</span>
               <span>
                 <span className="text-[#1E3A5F] font-medium">深藍線</span>：特急 / 新幹線 ·{' '}
                 <span className="text-[#B43E2B] font-medium">朱紅線</span>：由布院之森指定席

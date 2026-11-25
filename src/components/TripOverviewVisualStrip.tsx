@@ -50,7 +50,7 @@ export function TripOverviewVisualStrip({
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono font-semibold text-[#1E3A5F]">
             <Camera className="w-4 h-4 shrink-0" />
-            <span>每日行程寫真速覽（點擊切換單日視圖）</span>
+            <span>每日行程速覽</span>
           </div>
           <span className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
             Day 0 – Day 6 · 共 7 天
@@ -113,14 +113,9 @@ export function TripOverviewVisualStrip({
       {showComparisonChart && (
         <div className="bg-white border border-[#E5E0D8] rounded-[28px] p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#EFECE6]">
-            <div>
-              <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono font-semibold text-[#1E3A5F]">
-                <BarChart3 className="w-4 h-4 shrink-0" />
-                <span>七日體力與交通節奏對比圖（點擊長條進入該日）</span>
-              </div>
-              <p className="text-sm md:text-xs text-[#78716C] mt-1">
-                一眼比較每天預估步行量與在地乘車時間，方便提前調整鞋襪與休息安排。
-              </p>
+            <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono font-semibold text-[#1E3A5F]">
+              <BarChart3 className="w-4 h-4 shrink-0" />
+              <span>七日步數與車程對比</span>
             </div>
 
             <div

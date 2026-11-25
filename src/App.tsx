@@ -1,19 +1,22 @@
 import {
   ArrowDownRight,
-  ArrowLeftRight,
   Building2,
-  CalendarDays,
   CarTaxiFront,
   Check,
-  Compass,
   Copy,
   ExternalLink,
   Luggage,
   MapPin,
   Plane,
-  TrainFront,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import {
+  CurrencyTabIcon,
+  ItineraryTabIcon,
+  LogisticsTabIcon,
+  OverviewTabIcon,
+  RailMapTabIcon,
+} from './components/TabNavIcons';
 import { CurrencyConverterSection } from './components/CurrencyConverterSection';
 import { HeroWeatherWidget } from './components/HeroWeatherWidget';
 import { ItinerarySection } from './components/ItinerarySection';
@@ -307,70 +310,90 @@ export default function App() {
             {TRIP_OVERVIEW.brand}
           </button>
 
-          {/* Zone 2: 5 Clean Single-Line Section Tabs (Desktop) */}
+          {/* Zone 2: 5 Clean Single-Line Section Tabs with Outline-to-Fill Active Icons (Desktop) */}
           <nav
             aria-label="主分頁導覽"
-            className="hidden md:flex items-center gap-7 text-sm font-medium text-[#57534E]"
+            className="hidden md:flex items-center gap-6 text-sm font-medium text-[#57534E]"
           >
             <button
               type="button"
               onClick={() => handleOpenTab({ type: 'overview' })}
               aria-current={activeTab.type === 'overview' ? 'page' : undefined}
-              className={`py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab.type === 'overview'
-                  ? 'text-[#1E3A5F] underline underline-offset-8 decoration-2'
+                  ? 'text-[#1E3A5F] font-semibold underline underline-offset-8 decoration-2'
                   : 'hover:text-[#1C1917] hover:underline underline-offset-8'
               }`}
             >
-              行程總覽
+              <OverviewTabIcon
+                filled={activeTab.type === 'overview'}
+                className="w-[17px] h-[17px] shrink-0"
+              />
+              <span>行程總覽</span>
             </button>
             <button
               type="button"
               onClick={() => handleOpenTab({ type: 'rail-map' })}
               aria-current={activeTab.type === 'rail-map' ? 'page' : undefined}
-              className={`py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab.type === 'rail-map'
-                  ? 'text-[#1E3A5F] underline underline-offset-8 decoration-2'
+                  ? 'text-[#1E3A5F] font-semibold underline underline-offset-8 decoration-2'
                   : 'hover:text-[#1C1917] hover:underline underline-offset-8'
               }`}
             >
-              鐵道路線
+              <RailMapTabIcon
+                filled={activeTab.type === 'rail-map'}
+                className="w-[17px] h-[17px] shrink-0"
+              />
+              <span>鐵道路線</span>
             </button>
             <button
               type="button"
               onClick={() => handleOpenTab({ type: 'day', day: lastViewedDay })}
               aria-current={activeTab.type === 'day' ? 'page' : undefined}
-              className={`py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab.type === 'day'
-                  ? 'text-[#1E3A5F] underline underline-offset-8 decoration-2'
+                  ? 'text-[#1E3A5F] font-semibold underline underline-offset-8 decoration-2'
                   : 'hover:text-[#1C1917] hover:underline underline-offset-8'
               }`}
             >
-              每日行程
+              <ItineraryTabIcon
+                filled={activeTab.type === 'day'}
+                className="w-[17px] h-[17px] shrink-0"
+              />
+              <span>每日行程</span>
             </button>
             <button
               type="button"
               onClick={() => handleOpenTab({ type: 'logistics' })}
               aria-current={activeTab.type === 'logistics' ? 'page' : undefined}
-              className={`py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab.type === 'logistics'
-                  ? 'text-[#1E3A5F] underline underline-offset-8 decoration-2'
+                  ? 'text-[#1E3A5F] font-semibold underline underline-offset-8 decoration-2'
                   : 'hover:text-[#1C1917] hover:underline underline-offset-8'
               }`}
             >
-              攻略行李
+              <LogisticsTabIcon
+                filled={activeTab.type === 'logistics'}
+                className="w-[17px] h-[17px] shrink-0"
+              />
+              <span>攻略行李</span>
             </button>
             <button
               type="button"
               onClick={() => handleOpenTab({ type: 'currency' })}
               aria-current={activeTab.type === 'currency' ? 'page' : undefined}
-              className={`py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab.type === 'currency'
-                  ? 'text-[#1E3A5F] underline underline-offset-8 decoration-2'
+                  ? 'text-[#1E3A5F] font-semibold underline underline-offset-8 decoration-2'
                   : 'hover:text-[#1C1917] hover:underline underline-offset-8'
               }`}
             >
-              幣值轉換
+              <CurrencyTabIcon
+                filled={activeTab.type === 'currency'}
+                className="w-[17px] h-[17px] shrink-0"
+              />
+              <span>幣值轉換</span>
             </button>
           </nav>
 
@@ -467,8 +490,8 @@ export default function App() {
                       {TRIP_OVERVIEW.title}
                     </h1>
 
-                    <p className="mt-4 md:mt-5 text-[18px] md:text-[16px] text-[#44403C] leading-[1.85] max-w-[60ch]">
-                      從 Day 0「樂house」開趴披薩夜暖身起跑，飛往福岡以博多為圓心連住五晚，串聯 ShinShin 拉麵、運河城與大東園和牛、門司港開橋秀與 B.LEAGUE 籃球賽、由布院釜飯心與中洲屋台街、熊本城與勝烈亭黑豚豬排，以及週六旦過市場大學丼、JRA 小倉賽馬場、吉塚鰻魚屋與唐吉訶德退稅採買。
+                    <p className="mt-4 md:mt-5 text-[18px] md:text-[16px] text-[#44403C] leading-[1.8] max-w-[54ch]">
+                      以博多為圓心連住五晚，持 JR 北九州 5 日券放射暢遊門司港、小倉、由布院與熊本。
                     </p>
 
                     {/* 4-Member Travel Crew Roster */}
@@ -561,35 +584,71 @@ export default function App() {
 
                     {/* Flights Block */}
                     <div className="py-4 md:py-5 border-b border-[#EFECE6] space-y-3.5">
-                      <div className="flex items-center gap-2 text-[17px] md:text-xs font-medium text-[#1E3A5F]">
-                        <Plane className="w-4 h-4 md:w-3.5 md:h-3.5" />
-                        <span>星宇航空直飛航班</span>
+                      <div className="flex items-center justify-between gap-2 text-[17px] md:text-xs font-medium text-[#1E3A5F]">
+                        <span className="inline-flex items-center gap-2">
+                          <Plane className="w-4 h-4 md:w-3.5 md:h-3.5" />
+                          <span>星宇航空直飛航班</span>
+                        </span>
+                        <span className="font-mono text-xs text-[#78716C] font-normal">
+                          皆為當地時間
+                        </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
-                            去程 · 02/23（二）
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <div className="flex items-baseline justify-between gap-2">
+                            <p className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
+                              去程 · 02/23（二）
+                            </p>
+                            <p className="font-mono text-[18px] md:text-sm font-semibold text-[#1E3A5F] tabular-nums">
+                              {TRIP_OVERVIEW.flights.outbound.code}
+                            </p>
+                          </div>
+                          <p className="font-mono text-2xl md:text-xl font-semibold text-[#1C1917] tabular-nums tracking-tight">
+                            {TRIP_OVERVIEW.flights.outbound.departTime}{' '}
+                            <span className="text-[#A8A29E] font-normal text-lg md:text-base">
+                              ➔
+                            </span>{' '}
+                            {TRIP_OVERVIEW.flights.outbound.arriveTime}
                           </p>
-                          <p className="font-mono text-2xl md:text-xl font-semibold text-[#1C1917] mt-1 tabular-nums">
-                            {TRIP_OVERVIEW.flights.outbound.code}
+                          <p className="text-[17px] md:text-xs text-[#44403C]">
+                            {TRIP_OVERVIEW.flights.outbound.from} ➔{' '}
+                            {TRIP_OVERVIEW.flights.outbound.to}
                           </p>
-                          <p className="text-[17px] md:text-xs text-[#57534E] mt-1">
-                            {TRIP_OVERVIEW.flights.outbound.from} ➔ {TRIP_OVERVIEW.flights.outbound.to}
+                          <p className="text-sm md:text-[11px] font-mono text-[#78716C] tabular-nums">
+                            飛行{TRIP_OVERVIEW.flights.outbound.duration}
                           </p>
                         </div>
-                        <div className="pl-4 border-l border-[#EFECE6]">
-                          <p className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
-                            回程 · 02/28（日）
+
+                        <div className="pt-4 sm:pt-0 sm:pl-4 border-t sm:border-t-0 sm:border-l border-[#EFECE6] space-y-1.5">
+                          <div className="flex items-baseline justify-between gap-2">
+                            <p className="text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
+                              回程 · 02/28（日）
+                            </p>
+                            <p className="font-mono text-[18px] md:text-sm font-semibold text-[#1E3A5F] tabular-nums">
+                              {TRIP_OVERVIEW.flights.inbound.code}
+                            </p>
+                          </div>
+                          <p className="font-mono text-2xl md:text-xl font-semibold text-[#1C1917] tabular-nums tracking-tight">
+                            {TRIP_OVERVIEW.flights.inbound.departTime}{' '}
+                            <span className="text-[#A8A29E] font-normal text-lg md:text-base">
+                              ➔
+                            </span>{' '}
+                            {TRIP_OVERVIEW.flights.inbound.arriveTime}
                           </p>
-                          <p className="font-mono text-2xl md:text-xl font-semibold text-[#1C1917] mt-1 tabular-nums">
-                            {TRIP_OVERVIEW.flights.inbound.code}
+                          <p className="text-[17px] md:text-xs text-[#44403C]">
+                            {TRIP_OVERVIEW.flights.inbound.from} ➔{' '}
+                            {TRIP_OVERVIEW.flights.inbound.to}
                           </p>
-                          <p className="text-[17px] md:text-xs text-[#57534E] mt-1">
-                            {TRIP_OVERVIEW.flights.inbound.from} ➔ {TRIP_OVERVIEW.flights.inbound.to}
+                          <p className="text-sm md:text-[11px] font-mono text-[#78716C] tabular-nums">
+                            飛行{TRIP_OVERVIEW.flights.inbound.duration}
                           </p>
                         </div>
                       </div>
+
+                      <p className="text-sm md:text-[11px] text-[#78716C]">
+                        ＊冬季參考時刻，以實際電子機票為準。
+                      </p>
                     </div>
 
                     {/* Base Hotel Block */}
@@ -793,8 +852,8 @@ export default function App() {
             <p className="font-serif text-[18px] md:text-sm font-semibold text-[#1C1917] tracking-wider">
               {TRIP_OVERVIEW.brand} — 2027 日本九州 6 天 5 夜自由行行程手冊
             </p>
-            <p className="mt-2 leading-[1.75]">
-              所有打卡完成紀錄、行李勾選、指定席劃位與費用統計皆儲存於此裝置的瀏覽器本機（localStorage）。
+            <p className="mt-1.5 leading-relaxed">
+              打卡、行李與預算紀錄皆自動儲存於本機瀏覽器。
             </p>
           </div>
 
@@ -824,71 +883,81 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Mobile-First Fixed Bottom Tab Bar (Thumb Reach Zone) */}
+      {/* Mobile-First Fixed Bottom Tab Bar (Thumb Reach Zone, Solid-Fill Active Icons) */}
       <nav
         aria-label="手機底部主導覽"
         className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E5E0D8] rounded-t-[28px] shadow-[0_-4px_20px_rgba(28,25,23,0.06)] pb-[env(safe-area-inset-bottom)]"
       >
-        <div className="grid grid-cols-5 h-16 px-1">
-          <button
-            type="button"
-            onClick={() => handleOpenTab({ type: 'overview' })}
-            aria-current={activeTab.type === 'overview' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
-              activeTab.type === 'overview' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
-            }`}
-          >
-            <Compass className="w-[22px] h-[22px]" />
-            <span className="text-[11px] font-medium whitespace-nowrap">總覽</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleOpenTab({ type: 'day', day: lastViewedDay })}
-            aria-current={activeTab.type === 'day' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
-              activeTab.type === 'day' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
-            }`}
-          >
-            <CalendarDays className="w-[22px] h-[22px]" />
-            <span className="text-[11px] font-medium whitespace-nowrap">行程</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleOpenTab({ type: 'rail-map' })}
-            aria-current={activeTab.type === 'rail-map' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
-              activeTab.type === 'rail-map' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
-            }`}
-          >
-            <TrainFront className="w-[22px] h-[22px]" />
-            <span className="text-[11px] font-medium whitespace-nowrap">路線</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleOpenTab({ type: 'logistics' })}
-            aria-current={activeTab.type === 'logistics' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
-              activeTab.type === 'logistics' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
-            }`}
-          >
-            <Luggage className="w-[22px] h-[22px]" />
-            <span className="text-[11px] font-medium whitespace-nowrap">行李攻略</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleOpenTab({ type: 'currency' })}
-            aria-current={activeTab.type === 'currency' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-1 rounded-xl cursor-pointer transition-colors ${
-              activeTab.type === 'currency' ? 'text-[#1E3A5F]' : 'text-[#78716C]'
-            }`}
-          >
-            <ArrowLeftRight className="w-[22px] h-[22px]" />
-            <span className="text-[11px] font-medium whitespace-nowrap">匯率</span>
-          </button>
+        <div className="grid grid-cols-5 h-[68px] px-1.5">
+          {(
+            [
+              {
+                key: 'overview',
+                label: '總覽',
+                active: activeTab.type === 'overview',
+                onClick: () => handleOpenTab({ type: 'overview' }),
+                Icon: OverviewTabIcon,
+              },
+              {
+                key: 'day',
+                label: '行程',
+                active: activeTab.type === 'day',
+                onClick: () => handleOpenTab({ type: 'day', day: lastViewedDay }),
+                Icon: ItineraryTabIcon,
+              },
+              {
+                key: 'rail-map',
+                label: '路線',
+                active: activeTab.type === 'rail-map',
+                onClick: () => handleOpenTab({ type: 'rail-map' }),
+                Icon: RailMapTabIcon,
+              },
+              {
+                key: 'logistics',
+                label: '行李攻略',
+                active: activeTab.type === 'logistics',
+                onClick: () => handleOpenTab({ type: 'logistics' }),
+                Icon: LogisticsTabIcon,
+              },
+              {
+                key: 'currency',
+                label: '匯率',
+                active: activeTab.type === 'currency',
+                onClick: () => handleOpenTab({ type: 'currency' }),
+                Icon: CurrencyTabIcon,
+              },
+            ] as const
+          ).map(({ key, label, active, onClick, Icon }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={onClick}
+              aria-current={active ? 'page' : undefined}
+              className={`flex flex-col items-center justify-center gap-0.5 rounded-2xl cursor-pointer transition-colors active:scale-[0.96] ${
+                active ? 'text-[#1E3A5F]' : 'text-[#78716C] hover:text-[#44403C]'
+              }`}
+            >
+              <span
+                className={`inline-flex items-center justify-center px-3.5 py-1 rounded-full transition-colors duration-150 ${
+                  active ? 'bg-[#1E3A5F]/[0.11]' : 'bg-transparent'
+                }`}
+              >
+                <Icon
+                  filled={active}
+                  className={`w-[22px] h-[22px] transition-transform duration-150 ${
+                    active ? 'scale-[1.06]' : 'scale-100'
+                  }`}
+                />
+              </span>
+              <span
+                className={`text-[11px] whitespace-nowrap leading-tight ${
+                  active ? 'font-bold text-[#1E3A5F]' : 'font-medium'
+                }`}
+              >
+                {label}
+              </span>
+            </button>
+          ))}
         </div>
       </nav>
 

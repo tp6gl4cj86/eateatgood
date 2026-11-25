@@ -16,7 +16,6 @@ import {
   ActivityCategory,
   DAYS_ITINERARY,
   DayItinerary,
-  TRIP_OVERVIEW,
 } from '../data/itineraryData';
 import {
   DailyForecastItem,
@@ -54,6 +53,14 @@ const CATEGORY_LABELS: Record<ActivityCategory, string> = {
 
 function buildGoogleMapsSearchUrl(query: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+function parseScheduleLine(line: string): { time: string | null; text: string } {
+  const match = line.match(/^(\d{2}:\d{2}(?:[–-]\d{2}:\d{2})?(?:（[^）]+）)?)\s+(.+)$/);
+  if (match) {
+    return { time: match[1], text: match[2] };
+  }
+  return { time: null, text: line };
 }
 
 export function ItinerarySection({
@@ -132,11 +139,11 @@ export function ItinerarySection({
 
           <div className="flex flex-wrap items-center gap-3 text-[17px] md:text-sm text-[#57534E] tabular-nums">
             <span>
-              {currentDayObj ? '本日進度：' : '全團進度：'}
+              進度：
               <strong className="text-[#1C1917] font-mono">
                 {activeCompletedCount}/{activeBlockList.length}
               </strong>{' '}
-              時段已打卡（儲存在本機瀏覽器）
+              已完成
             </span>
           </div>
         </div>
@@ -179,7 +186,7 @@ export function ItinerarySection({
           >
             <Users className="w-4 h-4 md:w-3.5 md:h-3.5" />
             <span>
-              {highlight1900 ? '已強調 19:00 隊友返程動線' : '標示 19:00 隊友每日分流時間'}
+              {highlight1900 ? '已標示 19:00 分流' : '強調 19:00 分流'}
             </span>
           </button>
         </div>
@@ -223,41 +230,15 @@ export function ItinerarySection({
 
                 {/* Day Header Grid (Asymmetric 4 / 8 split) */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 min-w-0">
-                  {/* Left Chapter Index Column */}
+                  {/* Left Daily Quick-Ref Column (Weather + Logistics + Cutoff, zero title repeat) */}
                   <div className="lg:col-span-4 space-y-5 min-w-0">
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2 text-sm md:text-xs font-mono text-[#78716C] tabular-nums">
-                        <span>DAY 0{day.dayNumber}</span>
-                        <span aria-hidden="true">/</span>
-                        <span>
-                          {day.date}（{day.weekday}）
-                        </span>
-                        {day.jrPassDay && (
-                          <>
-                            <span aria-hidden="true">·</span>
-                            <span className="text-[#1E3A5F] font-medium">
-                              JR 券第 {day.jrPassDay} 日
-                            </span>
-                          </>
-                        )}
-                      </div>
-
-                      <h2 className="font-serif text-2xl md:text-[1.75rem] font-semibold text-[#1C1917] mt-2.5 leading-snug headline-balance">
-                        {day.shortTitle}
-                      </h2>
-
-                      <p className="text-[18px] md:text-sm text-[#57534E] mt-2.5 leading-[1.8]">
-                        {day.routeSummary}
-                      </p>
-                    </div>
-
                     {/* Daily Weather Forecast Card */}
                     {dayWeather && (
                       <div className="bg-white border border-[#E5E0D8] rounded-[28px] p-5 space-y-3.5">
                         <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#EFECE6]">
                           <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono text-[#1E3A5F] font-semibold">
                             <WeatherGlyph icon={dayWeather.icon} className="w-4 h-4 shrink-0" />
-                            <span>本日天氣預估 · {dayWeather.city}</span>
+                            <span>天氣 · {dayWeather.city}</span>
                           </div>
 
                           <div
@@ -311,53 +292,35 @@ export function ItinerarySection({
                           </span>
                         </div>
 
-                        <p className="text-[17px] md:text-xs text-[#57534E] leading-[1.75] pt-2.5 border-t border-[#F3EFE8]">
+                        <p className="text-[17px] md:text-xs text-[#57534E] leading-[1.7] pt-2.5 border-t border-[#F3EFE8]">
                           {dayWeather.layeringTip}
                         </p>
                       </div>
                     )}
 
-                    {/* Day 0 Crew Attendance Card */}
-                    {day.dayNumber === 0 && (
-                      <div className="bg-white border border-[#E5E0D8] rounded-[28px] p-5 space-y-3.5">
-                        <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#EFECE6]">
-                          <div className="flex items-center gap-2 text-[15px] md:text-xs font-mono text-[#1E3A5F] font-semibold">
-                            <Users className="w-4 h-4 shrink-0" />
-                            <span>開趴出席成員 · 4 人</span>
+                    {/* Clean Unboxed Daily Key Info */}
+                    <div className="bg-white border border-[#E5E0D8] rounded-[28px] p-5">
+                      <dl className="space-y-3.5 text-[17px] md:text-xs leading-[1.65]">
+                        {day.jrPassDay && (
+                          <div className="flex items-baseline justify-between gap-4 pb-3 border-b border-[#EFECE6]">
+                            <dt className="text-[#78716C] shrink-0">票券</dt>
+                            <dd className="text-[#1E3A5F] font-semibold font-mono tabular-nums text-right">
+                              JR 北九州 5 日券 · Day {day.jrPassDay}
+                            </dd>
                           </div>
-                          <span className="text-sm md:text-xs font-mono text-[#78716C]">ALL HANDS</span>
+                        )}
+                        <div className="flex items-baseline justify-between gap-4">
+                          <dt className="text-[#78716C] shrink-0">住宿</dt>
+                          <dd className="text-[#1C1917] font-medium text-right">{day.stay}</dd>
                         </div>
-                        <div className="grid grid-cols-2 gap-2.5">
-                          {TRIP_OVERVIEW.members.map((member, index) => (
-                            <div
-                              key={member}
-                              className="px-4 py-3 bg-[#FBF9F5] border border-[#EFECE6] rounded-[28px] flex items-center justify-between gap-2"
-                            >
-                              <span className="font-mono text-sm md:text-xs text-[#A8A29E] tabular-nums">
-                                0{index + 1}
-                              </span>
-                              <span className="text-[18px] md:text-sm font-semibold text-[#1C1917] truncate">
-                                {member}
-                              </span>
-                            </div>
-                          ))}
+                        <div className="flex items-start justify-between gap-4 pt-3 border-t border-[#EFECE6]">
+                          <dt className="text-[#78716C] shrink-0">交通</dt>
+                          <dd className="text-[#57534E] text-right leading-[1.65]">
+                            {day.jrTicketAdvice}
+                          </dd>
                         </div>
-                      </div>
-                    )}
-
-                    {/* Clean Unboxed Metadata Ledger */}
-                    <dl className="pt-4 border-t border-[#E5E0D8] space-y-3.5 text-[17px] md:text-xs leading-[1.7]">
-                      <div className="flex items-baseline justify-between gap-4">
-                        <dt className="text-[#78716C] shrink-0">當晚住宿</dt>
-                        <dd className="text-[#1C1917] font-medium text-right">{day.stay}</dd>
-                      </div>
-                      <div className="flex items-start justify-between gap-4">
-                        <dt className="text-[#78716C] shrink-0">交通重點</dt>
-                        <dd className="text-[#57534E] text-right leading-[1.7]">
-                          {day.jrTicketAdvice}
-                        </dd>
-                      </div>
-                    </dl>
+                      </dl>
+                    </div>
 
                     {/* Dedicated 19:00 Teammate Summary Notice */}
                     {day.teammate1900Cutoff && (
@@ -444,24 +407,39 @@ export function ItinerarySection({
                               </button>
                             </div>
 
-                            {/* Title & Editorial Narrative */}
+                            {/* Title & Scannable Time-Anchored Steps */}
                             <h3
-                              className={`font-serif text-[1.45rem] sm:text-xl font-semibold mt-4 leading-snug ${
+                              className={`font-serif text-[1.4rem] sm:text-xl font-semibold mt-4 leading-snug ${
                                 isDone ? 'text-[#78716C] line-through' : 'text-[#1C1917]'
                               }`}
                             >
                               {block.title}
                             </h3>
 
-                            <p className="text-[18px] md:text-[15px] text-[#292524] leading-[1.85] mt-3 max-w-[68ch]">
-                              {block.description}
-                            </p>
+                            <ul className="mt-3.5 space-y-2.5 text-[18px] md:text-[15px] text-[#292524] leading-[1.7]">
+                              {block.description.split('\n').map((rawLine, lineIdx) => {
+                                const { time, text } = parseScheduleLine(rawLine.trim());
+                                return (
+                                  <li
+                                    key={`${block.id}-step-${lineIdx}`}
+                                    className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-3"
+                                  >
+                                    {time && (
+                                      <span className="font-mono text-[15px] md:text-xs font-semibold text-[#1E3A5F] tabular-nums shrink-0 sm:min-w-[96px]">
+                                        {time}
+                                      </span>
+                                    )}
+                                    <span className="min-w-0 flex-1">{text}</span>
+                                  </li>
+                                );
+                              })}
+                            </ul>
 
-                            {/* Transport Line Summary */}
+                            {/* Transport Line Summary (only when distinct) */}
                             {block.transportSummary && (
-                              <div className="mt-4 pt-4 border-t border-[#F3EFE8] flex items-start gap-2.5 text-[17px] md:text-xs text-[#57534E]">
+                              <div className="mt-4 pt-3.5 border-t border-[#F3EFE8] flex items-start gap-2.5 text-[17px] md:text-xs text-[#57534E]">
                                 <TrainFront className="w-5 h-5 md:w-4 md:h-4 text-[#1E3A5F] shrink-0 mt-1 md:mt-0.5" />
-                                <span className="leading-[1.75] tabular-nums">
+                                <span className="leading-[1.7] tabular-nums">
                                   {block.transportSummary}
                                 </span>
                               </div>
@@ -470,14 +448,14 @@ export function ItinerarySection({
                             {/* Inline 19:00 Teammate Alert */}
                             {block.teammate1900Note && (
                               <div
-                                className={`mt-4 px-5 py-4 border rounded-[28px] text-[17px] md:text-xs leading-[1.75] tabular-nums ${
+                                className={`mt-4 px-5 py-3.5 border rounded-[28px] text-[17px] md:text-xs leading-[1.7] tabular-nums ${
                                   highlight1900
                                     ? 'bg-[#FDF4F2] border-[#B43E2B] text-[#7F1D1D]'
                                     : 'bg-[#FAF7F2] border-[#E5E0D8] text-[#57534E]'
                                 }`}
                               >
-                                <span className="font-semibold text-[#B43E2B] mr-2">
-                                  分流提醒：
+                                <span className="font-semibold text-[#B43E2B] mr-1.5">
+                                  19:00 分流：
                                 </span>
                                 {block.teammate1900Note}
                               </div>
@@ -487,7 +465,7 @@ export function ItinerarySection({
                             {block.spots.length > 0 && (
                               <div className="mt-5 pt-4 border-t border-[#EFECE6]">
                                 <p className="text-sm md:text-xs font-mono tracking-wider text-[#78716C] mb-3">
-                                  關鍵地標（開啟 Google Maps 導航或複製名稱）
+                                  地點導航
                                 </p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                   {block.spots.map((spot) => {
