@@ -36,6 +36,7 @@ export interface FoodSpot {
   labelPlacement: 'top' | 'bottom' | 'left' | 'right';
   accentColor: string;
   mapQuery: string;
+  mapUrl?: string;
 }
 
 export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
@@ -240,11 +241,35 @@ export const KYUSHU_FOOD_SPOTS: FoodSpot[] = [
     budgetYenMax: 3200,
     hours: '18:00–24:00（多數攤位僅收現金）',
     tip: '多數屋台僅收日幣現金且無刷卡機，請備好千元鈔與零錢；21:10 搭計程車或地鐵回 Minn 博多。',
-    x: 172,
-    y: 272,
+    x: 182,
+    y: 266,
     labelPlacement: 'bottom',
     accentColor: '#2F6B4F',
     mapQuery: '中洲屋台横丁 福岡市博多区中洲',
+  },
+  {
+    id: 'itookashi',
+    dayNumber: 4,
+    regionLabel: '福岡・春吉',
+    name: '魚ト肴 いとおかし（Itookashi）',
+    shortMapLabel: 'いとおかし海鮮',
+    jpName: '魚ト肴 いとおかし（福岡・春吉）',
+    cuisine: '活魚現切九州刺身＆創意海鮮居酒屋',
+    categories: ['sushi', 'local'],
+    nearestStop: 'Day 4 18:30 晚餐三人組・自 Minn 博多搭計程車約 8 分',
+    description:
+      '福岡春吉人氣爆棚的海鮮名店！店內設有活魚水槽現場料理九州當季鮮魚，晚間時段供應豐盛刺身拼盤、福岡名物胡麻鯖魚（ゴマサバ）與多款精緻下酒海鮮小料理，搭配日本酒氣氛極佳。',
+    signatureDishes: ['九州旬味豪華刺身拼盤', '福岡名物胡麻鯖魚（ゴマサバ）', '當季炭烤鮮魚＆創意海鮮小品'],
+    budgetYenMin: 4000,
+    budgetYenMax: 6000,
+    hours: '晚間 17:30–23:00（人氣名店強烈建議提前線上訂位）',
+    tip: '18:00 返抵 Minn 博多放好戰利品後，晚餐三人組可直接搭計程車前往春吉用餐。',
+    x: 126,
+    y: 284,
+    labelPlacement: 'left',
+    accentColor: '#1E3A5F',
+    mapQuery: '魚ト肴 いとおかし 福岡市中央区春吉3-25-27',
+    mapUrl: 'https://maps.app.goo.gl/dr1dSXpLaZt5vATG9',
   },
   {
     id: 'katsuretsutei',

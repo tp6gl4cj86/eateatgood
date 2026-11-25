@@ -567,22 +567,22 @@ export const DAYS_ITINERARY: DayItinerary[] = [
     dayNumber: 4,
     date: '2027/02/26',
     weekday: '五',
-    shortTitle: '熊本城巡禮・上下通商店街・勝烈亭・AMU PLAZA 博多',
+    shortTitle: '熊本城巡禮・勝烈亭・AMU PLAZA・いとおかし海鮮晚餐',
     routeSummary:
-      '九州新幹線 ➔ 熊本城＆加藤神社＆城彩苑 ➔ 勝烈亭抽號＆上下通＆熊本熊廣場 ➔ 15:15 新幹線 ➔ AMU PLAZA 博多',
+      '九州新幹線 ➔ 熊本城＆加藤神社＆城彩苑 ➔ 勝烈亭＆上下通 ➔ 15:15 新幹線 ➔ AMU PLAZA ➔ 魚ト肴 いとおかし',
     regionId: 'kumamoto',
-    regionLabel: '熊本市區',
+    regionLabel: '熊本・博多',
     stay: 'Minn 博多 Station East',
     jrPassDay: 4,
     jrTicketAdvice:
       '使用 JR 北九州 5 日券預劃九州新幹線來回指定席（去程 08:00 出發、回程 15:15–16:00，單程約 35 分鐘）；熊本市區改搭熊本市電。',
     teammate1900Cutoff:
-      '全團 15:15 搭新幹線 16:00 返博多，逛完 AMU PLAZA 後 18:00 步行返回飯店，19:00 隊友準時回房上線。',
+      '全團 15:15 搭新幹線 16:00 返博多，逛完 AMU PLAZA 後 18:00 步行返回飯店，19:00 隊友準時回房上線；其餘三人前往「魚ト肴 いとおかし」享用晚餐。',
     highlights: [
       '熊本城・加藤神社・城彩苑',
       '12:25 勝烈亭先抽號碼牌',
-      '上下通商店街＆熊本熊廣場',
-      '16:00–17:45 AMU PLAZA 博多採買',
+      '16:00 AMU PLAZA 博多採買',
+      '魚ト肴 いとおかし 海鮮居酒屋晚餐',
     ],
     blocks: [
       {
@@ -654,17 +654,35 @@ export const DAYS_ITINERARY: DayItinerary[] = [
         timeRange: '15:15–18:00',
         title: '九州新幹線返博多、AMU PLAZA 博多採買與 18:00 返飯店',
         description:
-          '15:15–16:00 搭乘九州新幹線返回博多站。16:00–17:45 逛博多站共構的 AMU PLAZA 博多採買電器、服飾與九州伴手禮；18:00 步行返回 Minn 博多 Station East。',
+          '15:15–16:00 搭乘九州新幹線返回博多站。16:00–17:45 逛博多站共構的 AMU PLAZA 博多採買電器、服飾與九州伴手禮；18:00 步行返回 Minn 博多 Station East 放戰利品與分流。',
         categories: ['transport', 'sightseeing'],
         transportSummary: '15:15 熊本站搭九州新幹線 ➔ 16:00 抵博多站 ➔ 18:00 步行返飯店',
         teammate1900Note:
-          '18:00 全團步行返回 Minn 博多（19:00 返飯店隊友準時回房上線），其餘三人晚上可於博多站周邊自由用餐。',
+          '18:00 全團步行返回 Minn 博多（19:00 返飯店隊友準時回房上線）；其餘三人隨後前往春吉「魚ト肴 いとおかし」享用晚餐。',
         spots: [
           {
             name: 'AMU PLAZA 博多',
             jpName: 'アミュプラザ博多',
             note: '16:00–17:45 電器、服飾、伴手禮採買',
             category: 'sightseeing',
+          },
+        ],
+      },
+      {
+        id: 'd4-4',
+        timeRange: '18:30–20:30',
+        title: '晚餐三人組：魚ト肴 いとおかし（Itookashi）九州海鮮居酒屋',
+        description:
+          '自 Minn 博多搭計程車（約 8 分鐘）或地鐵前往福岡春吉人氣名店「魚ト肴 いとおかし（Itookashi）」。店內主打現撈九州旬味刺身拼盤、博多招牌胡麻鯖魚、創意下酒海鮮料理與精選日本酒，氣氛熱鬧道地，建議提前線上訂位。',
+        categories: ['dining'],
+        transportSummary: 'Minn 博多 ➔ 計程車（約 8 分）或地鐵至春吉 ➔ 餐後搭車返飯店',
+        spots: [
+          {
+            name: '魚ト肴 いとおかし（Itookashi）',
+            jpName: '魚ト肴 いとおかし（福岡・春吉）',
+            note: '九州鮮魚刺身・胡麻鯖魚・建議提前預約',
+            category: 'dining',
+            mapUrl: 'https://maps.app.goo.gl/dr1dSXpLaZt5vATG9',
           },
         ],
       },
@@ -906,8 +924,8 @@ export const INITIAL_CHECKLIST: ChecklistItem[] = [
   {
     id: 'chk-3',
     group: '住宿與賽事',
-    title: '提前預約 Day 1「燒肉・冷麵 大東園 本店」與 Day 2 B.LEAGUE 籃球賽門票',
-    detail: 'Day 1 17:45 晚餐時段建議事先訂位；Day 2 19:00 福岡新銳 vs 埼玉野馬球票提前購妥。',
+    title: '提前預約餐廳（大東園本店・いとおかし）與 Day 2 B.LEAGUE 球票',
+    detail: 'Day 1 17:45「燒肉大東園本店」、Day 4 晚間「魚ト肴 いとおかし」建議線上訂位；Day 2 籃球賽門票提前購妥。',
     deadline: '出發前完成',
   },
   {

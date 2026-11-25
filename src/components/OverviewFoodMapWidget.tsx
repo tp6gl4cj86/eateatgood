@@ -740,7 +740,7 @@ export function OverviewFoodMapWidget({
               {/* Action Footer: Google Maps Navigation + Jump to Day Itinerary */}
               <div className="pt-4 border-t border-[#E5E0D8] grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <a
-                  href={buildGoogleMapsUrl(activeSpot.mapQuery)}
+                  href={activeSpot.mapUrl ?? buildGoogleMapsUrl(activeSpot.mapQuery)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-4 min-h-[48px] bg-[#1E3A5F] text-white text-[16px] md:text-xs font-medium rounded-2xl hover:bg-[#162C49] active:scale-[0.98] transition-all whitespace-nowrap"
