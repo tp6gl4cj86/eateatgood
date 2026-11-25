@@ -468,7 +468,7 @@ export default function App() {
                     </h1>
 
                     <p className="mt-4 md:mt-5 text-[18px] md:text-[16px] text-[#44403C] leading-[1.85] max-w-[60ch]">
-                      從 Day 0「樂house」開趴披薩夜暖身起跑，飛往福岡以博多為圓心連住五晚，串聯博多和牛美食、門司港懷舊海峽與 B.LEAGUE 職業籃球賽、全車指定席觀光特急「由布院之森」、九州新幹線直達熊本城，以及週六 JRA 小倉競馬場全日熱戰。
+                      從 Day 0「樂house」開趴披薩夜暖身起跑，飛往福岡以博多為圓心連住五晚，串聯 ShinShin 拉麵、運河城與大東園和牛、門司港開橋秀與 B.LEAGUE 籃球賽、由布院釜飯心與中洲屋台街、熊本城與勝烈亭黑豚豬排，以及週六旦過市場大學丼、JRA 小倉賽馬場、吉塚鰻魚屋與唐吉訶德退稅採買。
                     </p>
 
                     {/* 4-Member Travel Crew Roster */}
@@ -695,7 +695,7 @@ export default function App() {
                     2 台計程車直達
                   </p>
                   <p className="mt-1 text-[17px] md:text-sm text-[#57534E] tabular-nums">
-                    約 10–15 分 · ¥1,500 起
+                    約 10–15 分 · 約 ¥1,600/台
                   </p>
                 </div>
               </div>

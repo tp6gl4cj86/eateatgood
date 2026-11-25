@@ -26,9 +26,9 @@ const DAY_FILTER_OPTIONS: Array<{ value: number | 'all'; label: string }> = [
   { value: 'all', label: '全部天數' },
   { value: 1, label: 'Day 1 博多' },
   { value: 2, label: 'Day 2 門司港・小倉' },
-  { value: 3, label: 'Day 3 由布院・博多' },
+  { value: 3, label: 'Day 3 由布院・中洲' },
   { value: 4, label: 'Day 4 熊本' },
-  { value: 5, label: 'Day 5 小倉' },
+  { value: 5, label: 'Day 5 小倉・中洲' },
   { value: 6, label: 'Day 6 博多站' },
 ];
 
